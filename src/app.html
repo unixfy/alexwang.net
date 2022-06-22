@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		%sveltekit.head%
-	</head>
-	<body>
-		<div>%sveltekit.body%</div>
-	</body>
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	%sveltekit.head%
+</head>
+
+<body>
+	<noscript>
+		<div style="background-color: red; padding: 15px;">
+			<p style="color:white; font-size: 2rem;">Please enable JavaScript for the best experience.</p>
+		</div>
+	</noscript>
+	
+	<div>%sveltekit.body%</div>
+</body>
+
 </html>
