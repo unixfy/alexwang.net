@@ -105,162 +105,208 @@
 		</div>
 		<div>
 			<div
-			id="scrollContainer"
-			class="flex flex-no-wrap overflow-x-scroll scroll-smooth cursor-[grab] scrolling-touch items-start mb-8"
-		>
-			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
-				<a href="#" class="space-y-4">
-					<div class="aspect-w-16 aspect-h-9">
-						<img
-							class="object-cover shadow-md hover:shadow-xl rounded-lg"
-							src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
-							alt=""
-						/>
-					</div>
-					<div class="px-4 py-2">
-						<div class="text-lg leading-6 font-medium space-y-1">
-							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+				id="scrollContainer"
+				class="flex flex-no-wrap overflow-x-scroll scroll-smooth cursor-[grab] scrolling-touch items-start mb-8"
+			>
+				<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+					<a href="#" class="space-y-4">
+						<div class="aspect-w-16 aspect-h-9">
+							<img
+								class="object-cover shadow-md hover:shadow-xl rounded-lg"
+								src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+								alt=""
+							/>
 						</div>
-						<div class="text-lg">
-							<p class="">
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
-								corrupti vel quisquam id itaque nam
-							</p>
-							<p class="font-medium text-sm text-indigo-600 mt-2">
-								Read more<span class="text-indigo-600">&hellip;</span>
-							</p>
+						<div class="px-4 py-2">
+							<div class="text-lg leading-6 font-medium space-y-1">
+								<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+							</div>
+							<div class="text-lg">
+								<p class="">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae,
+									consequatur corrupti vel quisquam id itaque nam
+								</p>
+								<p class="font-medium text-sm text-indigo-600 mt-2">
+									Read more<span class="text-indigo-600">&hellip;</span>
+								</p>
+							</div>
 						</div>
-					</div>
-				</a>
+					</a>
+				</div>
+				<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+					<a href="#" class="space-y-4">
+						<div class="aspect-w-16 aspect-h-9">
+							<img
+								class="object-cover shadow-md hover:shadow-xl rounded-lg"
+								src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+								alt=""
+							/>
+						</div>
+						<div class="px-4 py-2">
+							<div class="text-lg leading-6 font-medium space-y-1">
+								<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+							</div>
+							<div class="text-lg">
+								<p class="">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae,
+									consequatur corrupti vel quisquam id itaque nam
+								</p>
+								<p class="font-medium text-sm text-indigo-600 mt-2">
+									Read more<span class="text-indigo-600">&hellip;</span>
+								</p>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+					<a href="#" class="space-y-4">
+						<div class="aspect-w-16 aspect-h-9">
+							<img
+								class="object-cover shadow-md hover:shadow-xl rounded-lg"
+								src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+								alt=""
+							/>
+						</div>
+						<div class="px-4 py-2">
+							<div class="text-lg leading-6 font-medium space-y-1">
+								<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+							</div>
+							<div class="text-lg">
+								<p class="">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae,
+									consequatur corrupti vel quisquam id itaque nam
+								</p>
+								<p class="font-medium text-sm text-indigo-600 mt-2">
+									Read more<span class="text-indigo-600">&hellip;</span>
+								</p>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+					<a href="#" class="space-y-4">
+						<div class="aspect-w-16 aspect-h-9">
+							<img
+								class="object-cover shadow-md hover:shadow-xl rounded-lg"
+								src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+								alt=""
+							/>
+						</div>
+						<div class="px-4 py-2">
+							<div class="text-lg leading-6 font-medium space-y-1">
+								<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+							</div>
+							<div class="text-lg">
+								<p class="">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae,
+									consequatur corrupti vel quisquam id itaque nam
+								</p>
+								<p class="font-medium text-sm text-indigo-600 mt-2">
+									Read more<span class="text-indigo-600">&hellip;</span>
+								</p>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+					<a href="#" class="space-y-4">
+						<div class="aspect-w-16 aspect-h-9">
+							<img
+								class="object-cover shadow-md hover:shadow-xl rounded-lg"
+								src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+								alt=""
+							/>
+						</div>
+						<div class="px-4 py-2">
+							<div class="text-lg leading-6 font-medium space-y-1">
+								<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+							</div>
+							<div class="text-lg">
+								<p class="">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae,
+									consequatur corrupti vel quisquam id itaque nam
+								</p>
+								<p class="font-medium text-sm text-indigo-600 mt-2">
+									Read more<span class="text-indigo-600">&hellip;</span>
+								</p>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+					<a href="#" class="space-y-4">
+						<div class="aspect-w-16 aspect-h-9">
+							<img
+								class="object-cover shadow-md hover:shadow-xl rounded-lg"
+								src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+								alt=""
+							/>
+						</div>
+						<div class="px-4 py-2">
+							<div class="text-lg leading-6 font-medium space-y-1">
+								<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+							</div>
+							<div class="text-lg">
+								<p class="">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae,
+									consequatur corrupti vel quisquam id itaque nam
+								</p>
+								<p class="font-medium text-sm text-indigo-600 mt-2">
+									Read more<span class="text-indigo-600">&hellip;</span>
+								</p>
+							</div>
+						</div>
+					</a>
+				</div>
 			</div>
-			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
-				<a href="#" class="space-y-4">
-					<div class="aspect-w-16 aspect-h-9">
-						<img
-							class="object-cover shadow-md hover:shadow-xl rounded-lg"
-							src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
-							alt=""
-						/>
-					</div>
-					<div class="px-4 py-2">
-						<div class="text-lg leading-6 font-medium space-y-1">
-							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
-						</div>
-						<div class="text-lg">
-							<p class="">
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
-								corrupti vel quisquam id itaque nam
-							</p>
-							<p class="font-medium text-sm text-indigo-600 mt-2">
-								Read more<span class="text-indigo-600">&hellip;</span>
-							</p>
-						</div>
-					</div>
-				</a>
-			</div>
-			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
-				<a href="#" class="space-y-4">
-					<div class="aspect-w-16 aspect-h-9">
-						<img
-							class="object-cover shadow-md hover:shadow-xl rounded-lg"
-							src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
-							alt=""
-						/>
-					</div>
-					<div class="px-4 py-2">
-						<div class="text-lg leading-6 font-medium space-y-1">
-							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
-						</div>
-						<div class="text-lg">
-							<p class="">
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
-								corrupti vel quisquam id itaque nam
-							</p>
-							<p class="font-medium text-sm text-indigo-600 mt-2">
-								Read more<span class="text-indigo-600">&hellip;</span>
-							</p>
-						</div>
-					</div>
-				</a>
-			</div>
-			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
-				<a href="#" class="space-y-4">
-					<div class="aspect-w-16 aspect-h-9">
-						<img
-							class="object-cover shadow-md hover:shadow-xl rounded-lg"
-							src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
-							alt=""
-						/>
-					</div>
-					<div class="px-4 py-2">
-						<div class="text-lg leading-6 font-medium space-y-1">
-							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
-						</div>
-						<div class="text-lg">
-							<p class="">
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
-								corrupti vel quisquam id itaque nam
-							</p>
-							<p class="font-medium text-sm text-indigo-600 mt-2">
-								Read more<span class="text-indigo-600">&hellip;</span>
-							</p>
-						</div>
-					</div>
-				</a>
-			</div>
-			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
-				<a href="#" class="space-y-4">
-					<div class="aspect-w-16 aspect-h-9">
-						<img
-							class="object-cover shadow-md hover:shadow-xl rounded-lg"
-							src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
-							alt=""
-						/>
-					</div>
-					<div class="px-4 py-2">
-						<div class="text-lg leading-6 font-medium space-y-1">
-							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
-						</div>
-						<div class="text-lg">
-							<p class="">
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
-								corrupti vel quisquam id itaque nam
-							</p>
-							<p class="font-medium text-sm text-indigo-600 mt-2">
-								Read more<span class="text-indigo-600">&hellip;</span>
-							</p>
-						</div>
-					</div>
-				</a>
-			</div>
-			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
-				<a href="#" class="space-y-4">
-					<div class="aspect-w-16 aspect-h-9">
-						<img
-							class="object-cover shadow-md hover:shadow-xl rounded-lg"
-							src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
-							alt=""
-						/>
-					</div>
-					<div class="px-4 py-2">
-						<div class="text-lg leading-6 font-medium space-y-1">
-							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
-						</div>
-						<div class="text-lg">
-							<p class="">
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
-								corrupti vel quisquam id itaque nam
-							</p>
-							<p class="font-medium text-sm text-indigo-600 mt-2">
-								Read more<span class="text-indigo-600">&hellip;</span>
-							</p>
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
 		</div>
 	</div>
+</div>
 
-
+<div>
+	<div class="grid grid-cols-1 md:grid-cols-2">
+		<div class="grid grid-cols-3 grid-rows-3">
+			{#each Array(9) as it}
+				<div class="bg-orange-500 flex">
+					<span class="text-white m-auto"><i class="fa-brands fa-reddit fa-3x" /></span>
+				</div>
+			{/each}
+		</div>
+		<div class="p-8 bg-gray-100 flex">
+			<div class="m-auto">
+				<h1 class="text-3xl font-display font-bold mb-8 text-center">Let's get in touch!</h1>
+				<div
+					class="bg-slate-400 p-4 drop-shadow-lg hover:drop-shadow-2xl transition max-w-6xl text-white md:mx-8"
+				>
+					<div class="grid grid-cols-2 gap-12">
+						<div class="flex flex-col">
+							<p class="text-3xl font-display font-bold text-center mb-8">Alex Wang</p>
+							<img class="max-h-full mx-auto overflow-hidden" alt="Jumping out of an envelope" src="/envelope.png"/>
+						</div>
+						<div>
+							<p class="lowercase text-right font-extralight text-xl">Building reliable, efficient, usable, & informed solutions.</p>
+							<div class="my-8 grid grid-rows-4 gap-4 font-semibold text-right text-2xl">
+								<div class="flex flex-row justify-between">
+									<i class="fa-solid fa-envelope"></i>
+									<p>alex [at] unixfy.net</p>
+								</div>
+								<div class="flex flex-row justify-between">
+									<i class="fa-brands fa-linkedin"></i>
+									<p>/in/alex-y-wang</p>
+								</div>
+								<div class="flex flex-row justify-between">
+									<i class="fa-solid fa-link"></i>
+									<p>alex-wang.net</p>
+								</div>
+								<div class="flex flex-row justify-between">
+									<i class="fa-solid fa-phone"></i>
+									<p>+1 123-123-1234</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
