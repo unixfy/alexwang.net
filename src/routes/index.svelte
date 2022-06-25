@@ -44,13 +44,223 @@
 </div>
 
 <div class="py-12 px-8 bg-[#7E1F86] flex">
-    <p class="text-3xl italic text-white m-auto font-light">If passion drives you, let reason hold the reins.</p>
+	<p class="text-3xl italic text-white m-auto font-light">
+		If passion drives you, let reason hold the reins.
+	</p>
 </div>
 
 <div class="p-8">
-    <h1 class="font-display text-4xl font-bold text-center">Writing</h1>
+	<h1 class="font-display text-4xl font-bold text-center">Writing</h1>
+
+	<div class="grid grid-cols-2">
+		<a
+			href="#"
+			class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 w-full"
+		>
+			<img
+				class="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-1/3 object-cover md:rounded-none md:rounded-l-lg"
+				src="https://images.unsplash.com/photo-1656078249583-c73346944f44?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+				alt=""
+			/>
+			<div class="flex flex-col justify-between p-4 leading-normal w-full">
+				<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+					Noteworthy technology acquisitions 2021
+				</h5>
+				<p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+					Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse
+					chronological order.
+				</p>
+			</div>
+		</a>
+		<a
+			href="#"
+			class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+		>
+			<img
+				class="object-cover w-full h-96 rounded-t-lg md:h-auto md:w-1/3 object-cover md:rounded-none md:rounded-l-lg"
+				src="https://images.unsplash.com/photo-1656078249583-c73346944f44?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+				alt=""
+			/>
+			<div class="flex flex-col justify-between p-4 leading-normal">
+				<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+					Noteworthy technology acquisitions 2021
+				</h5>
+				<p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+					Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse
+					chronological order.
+				</p>
+			</div>
+		</a>
+	</div>
 </div>
 
 <div class="p-8 bg-gray-200">
-    <h1 class="font-display text-4xl font-bold text-center my-4 -rotate-90">Stuff I've Done</h1>
+	<div class="flex">
+		<div class="flex">
+			<h1
+				class="font-display text-4xl font-bold text-center [writing-mode:vertical-lr] rotate-180 inline my-auto  mr-8"
+			>
+				Stuff I've Done
+			</h1>
+		</div>
+		<div>
+			<div
+			id="scrollContainer"
+			class="flex flex-no-wrap overflow-x-scroll scroll-smooth cursor-[grab] scrolling-touch items-start mb-8"
+		>
+			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+				<a href="#" class="space-y-4">
+					<div class="aspect-w-16 aspect-h-9">
+						<img
+							class="object-cover shadow-md hover:shadow-xl rounded-lg"
+							src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+							alt=""
+						/>
+					</div>
+					<div class="px-4 py-2">
+						<div class="text-lg leading-6 font-medium space-y-1">
+							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+						</div>
+						<div class="text-lg">
+							<p class="">
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
+								corrupti vel quisquam id itaque nam
+							</p>
+							<p class="font-medium text-sm text-indigo-600 mt-2">
+								Read more<span class="text-indigo-600">&hellip;</span>
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+				<a href="#" class="space-y-4">
+					<div class="aspect-w-16 aspect-h-9">
+						<img
+							class="object-cover shadow-md hover:shadow-xl rounded-lg"
+							src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+							alt=""
+						/>
+					</div>
+					<div class="px-4 py-2">
+						<div class="text-lg leading-6 font-medium space-y-1">
+							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+						</div>
+						<div class="text-lg">
+							<p class="">
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
+								corrupti vel quisquam id itaque nam
+							</p>
+							<p class="font-medium text-sm text-indigo-600 mt-2">
+								Read more<span class="text-indigo-600">&hellip;</span>
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+				<a href="#" class="space-y-4">
+					<div class="aspect-w-16 aspect-h-9">
+						<img
+							class="object-cover shadow-md hover:shadow-xl rounded-lg"
+							src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+							alt=""
+						/>
+					</div>
+					<div class="px-4 py-2">
+						<div class="text-lg leading-6 font-medium space-y-1">
+							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+						</div>
+						<div class="text-lg">
+							<p class="">
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
+								corrupti vel quisquam id itaque nam
+							</p>
+							<p class="font-medium text-sm text-indigo-600 mt-2">
+								Read more<span class="text-indigo-600">&hellip;</span>
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+				<a href="#" class="space-y-4">
+					<div class="aspect-w-16 aspect-h-9">
+						<img
+							class="object-cover shadow-md hover:shadow-xl rounded-lg"
+							src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+							alt=""
+						/>
+					</div>
+					<div class="px-4 py-2">
+						<div class="text-lg leading-6 font-medium space-y-1">
+							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+						</div>
+						<div class="text-lg">
+							<p class="">
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
+								corrupti vel quisquam id itaque nam
+							</p>
+							<p class="font-medium text-sm text-indigo-600 mt-2">
+								Read more<span class="text-indigo-600">&hellip;</span>
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+				<a href="#" class="space-y-4">
+					<div class="aspect-w-16 aspect-h-9">
+						<img
+							class="object-cover shadow-md hover:shadow-xl rounded-lg"
+							src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+							alt=""
+						/>
+					</div>
+					<div class="px-4 py-2">
+						<div class="text-lg leading-6 font-medium space-y-1">
+							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+						</div>
+						<div class="text-lg">
+							<p class="">
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
+								corrupti vel quisquam id itaque nam
+							</p>
+							<p class="font-medium text-sm text-indigo-600 mt-2">
+								Read more<span class="text-indigo-600">&hellip;</span>
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="flex-none w-2/3 md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+				<a href="#" class="space-y-4">
+					<div class="aspect-w-16 aspect-h-9">
+						<img
+							class="object-cover shadow-md hover:shadow-xl rounded-lg"
+							src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
+							alt=""
+						/>
+					</div>
+					<div class="px-4 py-2">
+						<div class="text-lg leading-6 font-medium space-y-1">
+							<h3 class="font-bold text-gray-800 text-3xl mb-2">Some title goes here</h3>
+						</div>
+						<div class="text-lg">
+							<p class="">
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
+								corrupti vel quisquam id itaque nam
+							</p>
+							<p class="font-medium text-sm text-indigo-600 mt-2">
+								Read more<span class="text-indigo-600">&hellip;</span>
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+		</div>
+	</div>
+
+
 </div>
