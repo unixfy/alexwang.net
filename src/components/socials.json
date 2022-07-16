@@ -2,46 +2,55 @@
     {
         "color": "bg-[#000000]",
         "icon": "fa-github",
-        "url": "https://github.com/unixfy"
+        "url": "https://github.com/unixfy",
+        "name": "GitHub"
     },
     {
         "color": "bg-[#FF5700]",
         "icon": "fa-reddit",
-        "url": "https://reddit.com/u/unixfy"
+        "url": "https://reddit.com/u/unixfy",
+        "name": "Reddit"
     },
     {
         "color": "bg-[#66C0F4]",
         "icon": "fa-steam",
-        "url": "https://steamcommunity.com/id/unixfy"
+        "url": "https://steamcommunity.com/id/unixfy",
+        "name": "Steam"
     },
     {
         "color": "bg-[#FC4C02]",
         "icon": "fa-strava",
-        "url": "https://www.strava.com/athletes/43437310"
+        "url": "https://www.strava.com/athletes/43437310",
+        "name": "Strava"
     },
     {
         "color": "bg-[#9146FF]",
         "icon": "fa-twitch",
-        "url": "https://twitch.tv/unixfy"
+        "url": "https://twitch.tv/unixfy",
+        "name": "Twitch"
     },
     {
         "color": "bg-[#FE2C55]",
         "icon": "fa-tiktok",
-        "url": "https://tiktok.com/@alex.wang.64"
+        "url": "https://tiktok.com/@alex.wang.64",
+        "name": "TikTok"
     },
     {
         "color": "bg-[#7289DA]",
         "icon": "fa-discord",
-        "url": "https://unixfy.net/discord"
+        "url": "https://unixfy.net/discord",
+        "name": "Discord"
     },
     {
         "color": "bg-[#0072B1]",
         "icon": "fa-linkedin",
-        "url": "https://alex-wang.net/linkedin"
+        "url": "https://alex-wang.net/linkedin",
+        "name": "LinkedIn"
     },
     {
         "color": "bg-[#21759B]",
         "icon": "fa-wordpress",
-        "url": "https://blog.unixfy.net"
+        "url": "https://blog.unixfy.net",
+        "name": "Blog"
     }
 ]
