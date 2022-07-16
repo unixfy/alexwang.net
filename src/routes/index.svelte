@@ -3,17 +3,19 @@
 	import SocialGrid from '$components/SocialGrid.svelte';
 </script>
 
-<div class="min-h-screen px-8">
-	<img
-		src="/curvy_things.svg"
-		alt="Curvy things"
-		class="absolute top-0 left-0 w-[18rem] h-[18rem]"
-	/>
-	<div class="absolute top-0 right-0">
-		<Navbar />
-	</div>
+<div class="absolute top-0 right-0">
+	<Navbar />
+</div>
+
+<div class="min-h-screen px-8 dark:bg-slate-900 dark:text-white">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-screen">
 		<div class="flex justify-center contents-center flex-col">
+			<img
+				src="/curvy_things.svg"
+				alt="Curvy things"
+				class="absolute top-0 left-0 w-[18rem] h-[18rem] dark:brightness-90 dark:invert"
+			/>
+
 			<p class="font-display text-5xl drop-shadow-lg ml-16">👋 Hey there, I'm</p>
 			<h1
 				class="font-display text-8xl bg-gradient-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-black drop-shadow-lg my-8 py-2 ml-16"
@@ -23,7 +25,7 @@
 			<p class="font-display text-3xl ml-16">Driven by passion; restrained by reason.</p>
 		</div>
 		<div class="flex">
-			<img src="/blob.svg" alt="Background blob" width="550px" height="550px" class="m-auto" />
+			<img src="/blob.svg" alt="Background blob" width="550px" height="550px" class="m-auto dark:brightness-90" />
 		</div>
 	</div>
 </div>
