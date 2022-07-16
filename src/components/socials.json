@@ -1,0 +1,47 @@
+[
+    {
+        "color": "#000000",
+        "icon": "fa-github",
+        "url": "https://github.com/unixfy"
+    },
+    {
+        "color": "#FF5700",
+        "icon": "fa-reddit",
+        "url": "https://reddit.com/u/unixfy"
+    },
+    {
+        "color": "#66C0F4",
+        "icon": "fa-steam",
+        "url": "https://steamcommunity.com/id/unixfy"
+    },
+    {
+        "color": "#FC4C02",
+        "icon": "fa-strava",
+        "url": "https://www.strava.com/athletes/43437310"
+    },
+    {
+        "color": "#9146FF",
+        "icon": "fa-twitch",
+        "url": "https://twitch.tv/unixfy"
+    },
+    {
+        "color": "#FE2C55",
+        "icon": "fa-tiktok",
+        "url": "https://tiktok.com/@alex.wang.64"
+    },
+    {
+        "color": "#7289DA",
+        "icon": "fa-discord",
+        "url": "https://unixfy.net/discord"
+    },
+    {
+        "color": "#0072B1",
+        "icon": "fa-linkedin",
+        "url": "https://alex-wang.net/linkedin"
+    },
+    {
+        "color": "#21759B",
+        "icon": "fa-wordpress",
+        "url": "https://blog.unixfy.net"
+    }
+]
