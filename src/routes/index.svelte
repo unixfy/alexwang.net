@@ -1,5 +1,6 @@
 <script>
 	import Navbar from '$components/Navbar.svelte';
+	import SocialGrid from '$components/SocialGrid.svelte';
 </script>
 
 <div class="min-h-screen px-8">
@@ -268,14 +269,8 @@
 </div>
 
 <div>
-	<div class="grid grid-cols-1 md:grid-cols-2">
-		<div class="grid grid-cols-3 grid-rows-3">
-			{#each Array(9) as it}
-				<div class="bg-orange-500 flex">
-					<span class="text-white m-auto"><i class="fa-brands fa-reddit fa-3x" /></span>
-				</div>
-			{/each}
-		</div>
+	<div class="grid grid-cols-1 lg:grid-cols-2">
+		<SocialGrid />
 		<div class="p-8 bg-gray-100 flex">
 			<div class="m-auto">
 				<h1 class="text-3xl font-display font-bold mb-8 text-center">Let's get in touch!</h1>
@@ -285,11 +280,7 @@
 					<div class="grid grid-cols-2 gap-12">
 						<div class="flex flex-col">
 							<p class="text-3xl font-display font-bold text-center mb-8">Alex Wang</p>
-							<img
-								class="max-h-full mx-auto overflow-hidden"
-								alt="Jumping out of an envelope"
-								src="/envelope.png"
-							/>
+							<img class="mx-auto h-48 w-48" alt="Jumping out of an envelope" src="/envelope.png" />
 						</div>
 						<div>
 							<p class="lowercase text-right font-extralight text-xl">
