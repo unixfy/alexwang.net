@@ -20,7 +20,7 @@
 			>
 				Alex Wang
 			</h1>
-			<p class="font-display text-3xl ml-16">I like cheesy taglines.</p>
+			<p class="font-display text-3xl ml-16">Driven by passion; restrained by reason.</p>
 		</div>
 		<div class="flex">
 			<img src="/blob.svg" alt="Background blob" width="550px" height="550px" class="m-auto" />
@@ -48,11 +48,11 @@
 	</div>
 </div>
 
-<div class="py-12 px-8 bg-[#7E1F86] flex">
+<!-- <div class="py-12 px-8 bg-[#7E1F86] flex">
 	<p class="text-3xl italic text-white m-auto font-light">
 		If passion drives you, let reason hold the reins.
 	</p>
-</div>
+</div> -->
 
 <div class="p-8">
 	<h1 class="font-display text-4xl font-bold text-center">Writing</h1>
