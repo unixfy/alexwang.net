@@ -1,24 +1,28 @@
-<div class="min-h-screen">
+<script>
+	import Navbar from '$components/Navbar.svelte';
+</script>
+
+<div class="min-h-screen px-8">
+	<img
+		src="/curvy_things.svg"
+		alt="Curvy things"
+		class="absolute top-0 left-0 w-[18rem] h-[18rem]"
+	/>
+	<div class="absolute top-6 right-8">
+		<Navbar />
+	</div>
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-screen">
 		<div class="flex justify-center contents-center flex-col">
-			<img src="/curvy_things.svg" alt="Curvy things" class="absolute top-0 left-0 w-64" />
-			<p class="font-display text-4xl drop-shadow-lg ml-16">👋 Hey there, I'm</p>
+			<p class="font-display text-5xl drop-shadow-lg ml-16">👋 Hey there, I'm</p>
 			<h1
-				class="font-display text-8xl bg-gradient-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-bold drop-shadow-lg my-8 py-2 ml-16"
+				class="font-display text-8xl bg-gradient-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-black drop-shadow-lg my-8 py-2 ml-16"
 			>
 				Alex Wang
 			</h1>
-			<p class="font-display text-2xl ml-16">I like cheesy taglines.</p>
+			<p class="font-display text-3xl ml-16">I like cheesy taglines.</p>
 		</div>
-		<div class="flex justify-center contents-center flex-col">
-			<div class="relative">
-				<img src="/blob.svg" alt="Background blob" class="" />
-				<img
-					src="/hello.png"
-					alt="Hello!"
-					class="absolute top-[12.5%] w-[75%] h-[75%] left-[12.5%]"
-				/>
-			</div>
+		<div class="flex">
+			<img src="/blob.svg" alt="Background blob" width="550px" height="550px" class="m-auto" />
 		</div>
 	</div>
 </div>
@@ -281,25 +285,31 @@
 					<div class="grid grid-cols-2 gap-12">
 						<div class="flex flex-col">
 							<p class="text-3xl font-display font-bold text-center mb-8">Alex Wang</p>
-							<img class="max-h-full mx-auto overflow-hidden" alt="Jumping out of an envelope" src="/envelope.png"/>
+							<img
+								class="max-h-full mx-auto overflow-hidden"
+								alt="Jumping out of an envelope"
+								src="/envelope.png"
+							/>
 						</div>
 						<div>
-							<p class="lowercase text-right font-extralight text-xl">Building reliable, efficient, usable, & informed solutions.</p>
+							<p class="lowercase text-right font-extralight text-xl">
+								Building reliable, efficient, usable, & informed solutions.
+							</p>
 							<div class="my-8 grid grid-rows-4 gap-4 font-semibold text-right text-2xl">
 								<div class="flex flex-row justify-between">
-									<i class="fa-solid fa-envelope"></i>
+									<i class="fa-solid fa-envelope" />
 									<p>alex [at] unixfy.net</p>
 								</div>
 								<div class="flex flex-row justify-between">
-									<i class="fa-brands fa-linkedin"></i>
+									<i class="fa-brands fa-linkedin" />
 									<p>/in/alex-y-wang</p>
 								</div>
 								<div class="flex flex-row justify-between">
-									<i class="fa-solid fa-link"></i>
+									<i class="fa-solid fa-link" />
 									<p>alex-wang.net</p>
 								</div>
 								<div class="flex flex-row justify-between">
-									<i class="fa-solid fa-phone"></i>
+									<i class="fa-solid fa-phone" />
 									<p>+1 123-123-1234</p>
 								</div>
 							</div>
