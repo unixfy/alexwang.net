@@ -9,7 +9,7 @@
 		alt="Curvy things"
 		class="absolute top-0 left-0 w-[18rem] h-[18rem]"
 	/>
-	<div class="absolute top-6 right-8">
+	<div class="absolute top-0 right-0">
 		<Navbar />
 	</div>
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-screen">
