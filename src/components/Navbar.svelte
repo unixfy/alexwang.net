@@ -27,7 +27,7 @@
 
 <div class="text-xl font-display font-light">
 	<a href="/"><span class="bg-gray-200 hover:bg-gray-100 rounded py-2 px-6 mx-2">Home</span></a>
-	<a href="/projects"
+	<a href="/portfolio"
 		><span class="bg-gray-200 hover:bg-gray-100 rounded py-2 px-6 mx=2">Projects</span></a
 	>
 	<a href="/linkedin"
