@@ -30,7 +30,7 @@
 	</div>
 </div>
 
-<div class="bg-gray-200 p-8">
+<div class="bg-gray-200 p-8 dark:bg-slate-700 dark:text-white">
 	<div class="grid grid-cols-1 md:grid-cols-5 gap-6">
 		<div class="col-span-2 flex">
 			<h2 class="text-4xl m-auto">
@@ -56,7 +56,7 @@
 	</p>
 </div> -->
 
-<div class="p-8">
+<div class="p-8 dark:bg-slate-900 dark:text-white">
 	<h1 class="font-display text-4xl font-bold text-center">Writing</h1>
 
 	<div class="grid grid-cols-2">
@@ -273,11 +273,11 @@
 <div>
 	<div class="grid grid-cols-1 lg:grid-cols-2">
 		<SocialGrid />
-		<div class="p-8 bg-gray-100 flex">
+		<div class="p-8 bg-gray-100 flex dark:bg-slate-800 dark:text-white">
 			<div class="m-auto">
 				<h1 class="text-3xl font-display font-bold mb-8 text-center">Let's get in touch!</h1>
 				<div
-					class="bg-slate-400 p-4 drop-shadow-lg hover:drop-shadow-2xl transition max-w-6xl text-white md:mx-8"
+					class="bg-slate-400 dark:bg-slate-500 p-4 drop-shadow-lg hover:drop-shadow-2xl dark:drop-shadow-white transition max-w-6xl text-white md:mx-8"
 				>
 					<div class="grid grid-cols-2 gap-12">
 						<div class="flex flex-col">
