@@ -99,7 +99,7 @@
 	</div>
 </div>
 
-<div class="p-8 bg-gray-200">
+<div class="p-8 bg-[#7E1F86] text-white">
 	<div class="flex">
 		<div class="flex">
 			<h1
