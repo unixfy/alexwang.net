@@ -5,6 +5,6 @@
     import Footer from '$components/Footer.svelte';
 </script>
 
-<div class="min-h-screen"><slot /></div>
+<div class="min-h-screen max-w-[1920px]"><slot /></div>
 
 <Footer/>
