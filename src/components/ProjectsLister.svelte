@@ -1,10 +1,7 @@
-<div
-	id="scrollContainer"
-	class="flex flex-no-wrap overflow-x-scroll scroll-smooth cursor-[grab] scrolling-touch items-start"
->
+<div class="grid grid-cols-3 grid-rows-2 gap-8">
 	{#each Array(6) as item}
 		<div
-			class="flex-none w-2/3 md:w-1/3 mr-8 drop-shadow rounded-lg bg-white text-black dark:text-white dark:bg-slate-900"
+			class="flex-none mr-8 drop-shadow rounded-lg bg-white text-black dark:text-white dark:bg-slate-900"
 		>
 			<a href="#">
 				<div class="flex flex-col">
