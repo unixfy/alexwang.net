@@ -1,6 +1,6 @@
 <div
 	id="scrollContainer"
-	class="flex flex-no-wrap overflow-x-scroll scroll-smooth cursor-[grab] scrolling-touch items-start mb-8"
+	class="flex flex-no-wrap overflow-x-scroll scroll-smooth cursor-[grab] scrolling-touch items-start"
 >
 	{#each Array(6) as item}
 		<div
