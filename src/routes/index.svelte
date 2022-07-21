@@ -84,6 +84,12 @@
 	<h1 class="font-display text-4xl font-bold text-center mb-8">Writing</h1>
 
 	<BlogLister data={posts} />
+
+	<div class="text-center mt-6 text-lg text-blue-500 hover:text-blue-300 transition-all">
+		<a href="https://blog.unixfy.net" target="_blank" rel="noopener"
+			>View more <i class="fa-solid fa-arrow-right" /></a
+		>
+	</div>
 </div>
 
 <div class="p-8 bg-[#7E1F86] text-white">
@@ -96,7 +102,11 @@
 			</h1>
 		</div>
 		<ProjectsLister />
-		<a href="/portfolio" class="p-6 bg-white text-black flex rounded-lg ml-8 hover:bg-gray-100 dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800 transition-all" aria-label="View more projects">
+		<a
+			href="/portfolio"
+			class="p-6 bg-white text-black flex rounded-lg ml-8 hover:bg-gray-100 dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800 transition-all"
+			aria-label="View more projects"
+		>
 			<div class="m-auto">
 				<p class="md:hidden">View all</p>
 				<i class="fa-solid fa-arrow-right fa-3x m-auto" />

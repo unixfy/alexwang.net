@@ -29,9 +29,3 @@
 		</a>
 	{/each}
 </div>
-
-<div class="text-center mt-6 text-lg text-blue-500 hover:text-blue-300">
-	<a href="https://blog.unixfy.net" target="_blank" rel="noopener"
-		>View more <i class="fa-solid fa-arrow-right" /></a
-	>
-</div>
