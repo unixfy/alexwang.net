@@ -10,7 +10,7 @@
 					class="h-full flex flex-col md:flex-row justify-start transition-all bg-gray-200 rounded-lg shadow-md md:max-h-48 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
 				>
 					<img
-						class="w-full max-h-36 md:h-full object-cover md:w-1/3 md:max-h-full rounded-t-lg md:rounded-none md:rounded-l-lg dark:brightness-75"
+						class="w-full max-h-36 object-cover md:w-48 md:max-h-full rounded-t-lg md:rounded-none md:rounded-l-lg dark:brightness-75"
 						src={post.uagb_featured_image_src.medium[0]}
 						alt=""
 					/>
