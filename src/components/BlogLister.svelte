@@ -6,7 +6,9 @@
 <div class="grid grid-cols-1 grid-rows-4 sm:grid-rows-2 sm:grid-cols-2 gap-8">
 	<!-- We're using the await block here instead of a page endpoint to make the blog post loading asyncronous (won't hang up the entire page render) -->
 	{#await getPosts}
-		Loading...
+		{#each Array(4) as item}
+			<div class="bg-gray-300 dark:bg-gray-800 rounded-lg animate-pulse h-72 lg:h-48 w-full" />
+		{/each}
 	{:then data}
 		{#each data.posts as post}
 			<a href={post.link} target="_blank" rel="noopener">
@@ -34,6 +36,6 @@
 			</a>
 		{/each}
 	{:catch error}
-		<Error message={error}}></Error>
+		<Error message="{error}}" />
 	{/await}
 </div>
