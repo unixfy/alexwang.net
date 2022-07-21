@@ -1,24 +1,8 @@
-<script context="module">
-	export async function load({ fetch }) {
-		let response = await fetch('https://blog.unixfy.net/wp-json/wp/v2/posts?per_page=4');
-
-		return {
-			status: response.status,
-			error: !response.ok && (await response.json()).message,
-			props: {
-				posts: response.ok && (await response.json())
-			}
-		};
-	}
-</script>
-
 <script>
 	import Navbar from '$components/Navbar.svelte';
 	import SocialGrid from '$components/SocialGrid.svelte';
 	import BlogLister from '$components/BlogLister.svelte';
 	import ProjectsLister from '$components/ProjectsLister.svelte';
-
-	export let posts;
 </script>
 
 <div class="absolute top-0 right-0">
@@ -82,8 +66,7 @@
 
 <div class="p-8 dark:bg-slate-900 dark:text-white">
 	<h1 class="font-display text-4xl font-bold text-center mb-8">Writing</h1>
-
-	<BlogLister data={posts} />
+	<BlogLister />
 
 	<div class="text-center mt-6 text-lg text-blue-500 hover:text-blue-300 transition-all">
 		<a href="https://blog.unixfy.net" target="_blank" rel="noopener"
