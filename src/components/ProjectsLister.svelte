@@ -6,7 +6,7 @@
 			<a href="#">
 				<div class="flex flex-col">
 					<img
-						class="object-cover rounded-t-lg max-h-1/2"
+						class="object-cover rounded-t-lg max-h-1/2 dark:brightness-75"
 						src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixqx=3H1AJd0Pae&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80"
 						alt=""
 					/>
