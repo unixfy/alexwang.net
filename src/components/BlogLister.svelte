@@ -1,4 +1,5 @@
 <script>
+	import Error from '$components/Error.svelte';
 	let getPosts = fetch('/posts.json').then((resp) => resp.json());
 </script>
 
@@ -33,6 +34,6 @@
 			</a>
 		{/each}
 	{:catch error}
-		oops!
+		<Error message={error}}></Error>
 	{/await}
 </div>
