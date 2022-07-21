@@ -80,7 +80,7 @@
 			</h1>
 		</div>
 		<ProjectsLister />
-		<a href="/portfolio" class="p-6 bg-white text-black flex rounded-lg ml-8" aria-label="View more projects">
+		<a href="/portfolio" class="p-6 bg-white text-black flex rounded-lg ml-8 hover:bg-gray-100 dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800 transition-all" aria-label="View more projects">
 			<div class="m-auto">
 				<p class="md:hidden">View all</p>
 				<i class="fa-solid fa-arrow-right fa-3x m-auto" />

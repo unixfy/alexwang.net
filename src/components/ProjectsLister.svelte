@@ -1,7 +1,7 @@
 <div class="grid grid-cols-3 grid-rows-2 gap-8">
 	{#each Array(6) as item}
 		<div
-			class="flex-none drop-shadow rounded-lg bg-white text-black dark:text-white dark:bg-slate-900"
+			class="transition-all flex-none drop-shadow rounded-lg bg-white hover:bg-gray-100 text-black dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800"
 		>
 			<a href="#">
 				<div class="flex flex-col">
