@@ -1,0 +1,13 @@
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+
+[[headers]]
+  # Define which paths this specific [[headers]] block will cover.
+  for = "/*"
+
+  [headers.values]
+    X-Frame-Options = "deny"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
