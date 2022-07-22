@@ -52,7 +52,7 @@
 			>
 		</div>
 	</div>
-	<div class="w-[100vw] bg-gray-200 dark:bg-slate-700 dark:text-white py-3 px-6">
+	<div class="block sm:hidden w-[100vw] bg-gray-200 dark:bg-slate-700 dark:text-white py-3 px-6">
 		<div class="flex justify-between h-full w-full">
 			<div>
 				<span on:click={toggleMobileMenu}>
