@@ -60,7 +60,7 @@
 </div> -->
 
 <div class="p-8 dark:bg-slate-900 dark:text-white">
-	<h1 class="font-display text-4xl font-bold text-center mb-8">Writing</h1>
+	<h1 class="font-display text-3xl md:text-4xl font-bold text-center mb-8">Writing</h1>
 	<BlogLister />
 
 	<div class="text-center mt-6 text-lg text-blue-500 hover:text-blue-300 transition-all">
@@ -71,10 +71,10 @@
 </div>
 
 <div class="p-8 bg-[#7E1F86] text-white">
-	<div class="flex">
+	<div class="flex flex-col md:flex-row">
 		<div class="flex">
 			<h1
-				class="font-display text-4xl font-bold text-center [writing-mode:vertical-lr] rotate-180 inline my-auto  mr-8"
+				class="font-display text-3xl md:text-4xl font-bold md:[writing-mode:vertical-lr] md:rotate-180 m-auto mb-8 md:mr-8"
 			>
 				Stuff I've Done
 			</h1>
@@ -82,12 +82,13 @@
 		<ProjectsLister limit=6 />
 		<a
 			href="/portfolio"
-			class="p-6 bg-white text-black flex rounded-lg ml-8 hover:bg-gray-100 dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800 transition-all"
+			class="p-4 md:p-6 bg-white text-black flex rounded-lg mt-8 md:mt-0 md:ml-8 hover:bg-gray-100 dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800 transition-all"
 			aria-label="View more projects"
 		>
-			<div class="m-auto">
-				<p class="md:hidden">View all</p>
-				<i class="fa-solid fa-arrow-right fa-3x m-auto" />
+			<div class="m-auto text-center">
+				<p class="md:hidden text-xl">View all <i class="fa-solid fa-arrow-right"></i></p>
+				<!-- This bit only shows md or larger -->
+				<i class="hidden md:block fa-solid fa-arrow-right fa-3x m-auto" />
 			</div>
 		</a>
 	</div>
@@ -98,7 +99,7 @@
 		<SocialGrid />
 		<div class="p-8 bg-gray-100 flex dark:bg-slate-800 dark:text-white">
 			<div class="m-auto">
-				<h1 class="text-3xl font-display font-bold mb-8 text-center">Let's get in touch!</h1>
+				<h1 class="text-3xl md:text-4xl font-display font-bold mb-8 text-center">Let's get in touch!</h1>
 				<div
 					class="bg-slate-400 dark:bg-slate-500 p-4 drop-shadow-lg hover:drop-shadow-2xl dark:drop-shadow-white transition max-w-6xl text-white md:mx-8"
 				>
