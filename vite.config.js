@@ -11,8 +11,9 @@ const config = {
         },
         registerType: "prompt",
         strategies: "injectManifest",
-        srcDir: './build',
-        outDir: './.svelte-kit/output/client',
+        srcDir: './src',
+        scope: '/',
+        base: '/',
         manifest: {
             "background_color": "#ffffff",
             "theme_color": "#7E1F86",
