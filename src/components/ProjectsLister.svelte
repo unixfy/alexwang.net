@@ -28,7 +28,7 @@
 			<a href={project.slug}>
 				<div class="flex flex-col">
 					<img
-						class="object-cover rounded-t-lg max-h-1/2 dark:brightness-75"
+						class="object-cover rounded-t-lg max-h-1/2 dark:brightness-75 aspect-video"
 						src="/project/{project.metadata.image}"
 						alt="Image for project {project.metadata.title}"
 					/>

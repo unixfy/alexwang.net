@@ -17,7 +17,7 @@
 						class="h-full flex flex-col lg:flex-row justify-start transition-all bg-gray-200 rounded-lg shadow-md lg:max-h-48 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
 					>
 						<img
-							class="w-full max-h-36 object-cover lg:w-48 lg:max-h-full rounded-t-lg lg:rounded-none lg:rounded-l-lg dark:brightness-75"
+							class="w-full max-h-36 object-cover lg:w-48 lg:max-h-full rounded-t-lg lg:rounded-none lg:rounded-l-lg dark:brightness-75 aspect-square"
 							src={post.uagb_featured_image_src.medium[0]}
 							alt=""
 						/>
