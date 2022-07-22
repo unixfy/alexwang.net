@@ -5,7 +5,7 @@
 	import ProjectsLister from '$components/ProjectsLister.svelte';
 </script>
 
-<div class="min-h-screen px-8 dark:bg-slate-900 dark:text-white">
+<div class="min-h-screen px-8 dark:bg-slate-900 dark:text-white relative z-0">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-screen">
 		<div class="flex justify-center contents-center flex-col">
 			<img
