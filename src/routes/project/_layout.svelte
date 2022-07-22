@@ -1,7 +1,12 @@
 <script>
 	export let title;
 	export let image;
+	export let date;
+	import dayjs from "dayjs/esm";
+
+
 </script>
+
 <div class="bg-gray-100 dark:bg-gray-800 dark:text-white min-h-[33vh] flex text-center">
 	<div class="m-auto p-16">
 		<h1 class="text-2xl sm:text-3xl md:text-4xl font-display font-bold my-4">Project: {title}</h1>
@@ -16,6 +21,8 @@
 		</div>
 		<div class="text-lg space-y-6">
 			<slot/>
+			<hr class="my-4"/>
+			<p class="text-sm italic">Published {dayjs(date).format("MMMM DD, YYYY")}</p>
 		</div>
 	</div>
 </div>
