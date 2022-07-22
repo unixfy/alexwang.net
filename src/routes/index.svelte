@@ -21,7 +21,7 @@
 				>
 					Alex Wang
 				</h1>
-				<p class="font-display text-2xl sm:text-3xl">
+				<p class="font-display text-xl md:text-2xl sm:text-3xl">
 					I like cheesy taglines on portfolio sites.
 				</p>
 			</div>
