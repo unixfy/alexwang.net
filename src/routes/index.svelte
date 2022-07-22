@@ -103,16 +103,16 @@
 				<div
 					class="bg-slate-400 dark:bg-slate-500 p-4 drop-shadow-lg hover:drop-shadow-2xl dark:drop-shadow-white transition max-w-6xl text-white md:mx-8 aspect-[3.5 / 2]"
 				>
-					<div class="grid grid-cols-2 gap-12">
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
 						<div class="flex flex-col">
 							<p class="text-3xl font-display font-bold text-center mb-8">Alex Wang</p>
 							<img class="mx-auto h-48 w-48" alt="Jumping out of an envelope" src="/envelope.png" />
 						</div>
 						<div class="flex flex-col justify-between">
-							<p class="lowercase text-right font-extralight text-xl">
+							<p class="lowercase text-center sm:text-right font-extralight text-xl">
 								Building reliable, efficient, usable, & informed solutions.
 							</p>
-							<div class="my-8 grid grid-rows-4 gap-4 font-semibold text-right text-2xl">
+							<div class="mt-8 sm:mb-8 grid grid-rows-4 gap-4 font-semibold text-right text-2xl">
 								<div class="flex flex-row justify-between">
 									<i class="fa-solid fa-envelope" />
 									<p>alex [at] unixfy.net</p>
