@@ -6,29 +6,28 @@
 
 <div class="min-h-screen px-8 dark:bg-slate-900 dark:text-white relative z-0">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-screen">
-		<div class="flex justify-center contents-center flex-col">
-			<img
-				src="/curvy_things.svg"
-				alt="Curvy things"
-				class="absolute top-0 left-0 w-[18rem] h-[18rem] dark:brightness-90 dark:invert"
-			/>
-
-			<p class="font-display text-5xl drop-shadow-lg ml-16">👋 Hey there, I'm</p>
-			<h1
-				class="font-display text-8xl bg-gradient-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-black drop-shadow-lg my-8 py-2 ml-16"
-			>
-				Alex Wang
-			</h1>
-			<p class="font-display text-3xl ml-16">Driven by passion; restrained by reason.</p>
+		<img
+		src="/curvy_things.svg"
+		alt="Curvy things"
+		class="hidden md:block absolute top-0 left-0 w-[18rem] h-[18rem] dark:brightness-90 dark:invert"
+	/>
+		<div class="flex flex-col">
+			<div class="md:m-auto md:ml-16 text-center md:text-left">
+				<p class="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-lg">
+					👋 Hey there, I'm
+				</p>
+				<h1
+					class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-black drop-shadow-lg my-4 md:my-8 py-2"
+				>
+					Alex Wang
+				</h1>
+				<p class="font-display text-2xl sm:text-3xl">
+					I like cheesy taglines on portfolio sites.
+				</p>
+			</div>
 		</div>
-		<div class="flex">
-			<img
-				src="/blob.svg"
-				alt="Background blob"
-				width="550px"
-				height="550px"
-				class="m-auto dark:brightness-90"
-			/>
+		<div class="flex order-first md:order-last">
+			<img src="/blob.svg" alt="Background blob" class="md:m-auto mt-auto mx-auto dark:brightness-90 aspect-square h-56 sm:h-72 md:h-96 lg:h-[32rem]" />
 		</div>
 	</div>
 </div>
@@ -79,14 +78,14 @@
 				Stuff I've Done
 			</h1>
 		</div>
-		<ProjectsLister limit=6 />
+		<ProjectsLister limit="6" />
 		<a
 			href="/portfolio"
 			class="p-4 md:p-6 bg-white text-black flex rounded-lg mt-8 md:mt-0 md:ml-8 hover:bg-gray-100 dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800 transition-all"
 			aria-label="View more projects"
 		>
 			<div class="m-auto text-center">
-				<p class="md:hidden text-xl">View all <i class="fa-solid fa-arrow-right"></i></p>
+				<p class="md:hidden text-xl">View all <i class="fa-solid fa-arrow-right" /></p>
 				<!-- This bit only shows md or larger -->
 				<i class="hidden md:block fa-solid fa-arrow-right fa-3x m-auto" />
 			</div>
@@ -99,7 +98,9 @@
 		<SocialGrid />
 		<div class="p-8 bg-gray-100 flex dark:bg-slate-800 dark:text-white">
 			<div class="m-auto">
-				<h1 class="text-3xl md:text-4xl font-display font-bold mb-8 text-center">Let's get in touch!</h1>
+				<h1 class="text-3xl md:text-4xl font-display font-bold mb-8 text-center">
+					Let's get in touch!
+				</h1>
 				<div
 					class="bg-slate-400 dark:bg-slate-500 p-4 drop-shadow-lg hover:drop-shadow-2xl dark:drop-shadow-white transition max-w-6xl text-white md:mx-8 aspect-[3.5 / 2]"
 				>
