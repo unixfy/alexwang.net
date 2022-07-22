@@ -101,14 +101,14 @@
 			<div class="m-auto">
 				<h1 class="text-3xl md:text-4xl font-display font-bold mb-8 text-center">Let's get in touch!</h1>
 				<div
-					class="bg-slate-400 dark:bg-slate-500 p-4 drop-shadow-lg hover:drop-shadow-2xl dark:drop-shadow-white transition max-w-6xl text-white md:mx-8"
+					class="bg-slate-400 dark:bg-slate-500 p-4 drop-shadow-lg hover:drop-shadow-2xl dark:drop-shadow-white transition max-w-6xl text-white md:mx-8 aspect-[3.5 / 2]"
 				>
 					<div class="grid grid-cols-2 gap-12">
 						<div class="flex flex-col">
 							<p class="text-3xl font-display font-bold text-center mb-8">Alex Wang</p>
 							<img class="mx-auto h-48 w-48" alt="Jumping out of an envelope" src="/envelope.png" />
 						</div>
-						<div>
+						<div class="flex flex-col justify-between">
 							<p class="lowercase text-right font-extralight text-xl">
 								Building reliable, efficient, usable, & informed solutions.
 							</p>
