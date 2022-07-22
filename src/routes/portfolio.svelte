@@ -9,6 +9,6 @@
 	</div>
 </div>
 
-<div class="p-16 bg-[#7E1F86]">
+<div class="p-8 lg:p-16 bg-[#7E1F86]">
 	<ProjectsLister limit="12" />
 </div>
