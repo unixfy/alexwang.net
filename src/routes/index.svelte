@@ -80,7 +80,7 @@
 				Stuff I've Done
 			</h1>
 		</div>
-		<ProjectsLister />
+		<ProjectsLister limit=6 />
 		<a
 			href="/portfolio"
 			class="p-6 bg-white text-black flex rounded-lg ml-8 hover:bg-gray-100 dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800 transition-all"
