@@ -1,5 +1,4 @@
 <script>
-	import Navbar from '$components/Navbar.svelte';
 	import SocialGrid from '$components/SocialGrid.svelte';
 	import BlogLister from '$components/BlogLister.svelte';
 	import ProjectsLister from '$components/ProjectsLister.svelte';
