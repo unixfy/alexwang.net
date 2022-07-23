@@ -87,7 +87,7 @@
 		</div>
 		<ProjectsLister limit="6" />
 		<a
-			href="/portfolio"
+			href="/projects"
 			class="p-4 md:p-6 bg-white text-black flex rounded-lg mt-8 md:mt-0 md:ml-8 hover:bg-gray-100 dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800 transition-all"
 			aria-label="View more projects"
 		>

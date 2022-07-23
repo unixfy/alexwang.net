@@ -34,7 +34,7 @@
 					>Home</span
 				></a
 			>
-			<a href="/portfolio"
+			<a href="/projects"
 				><span
 					class="bg-gray-200 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white rounded py-2 px-6"
 					>Projects</span
@@ -69,7 +69,7 @@
 		</div>
 		<div class:hidden={!mobilemenu} class="bg-gray-200 dark:bg-slate-700 dark:text-white pt-2">
 			<div class="py-3" on:click="{toggleMobileMenu}"><a href="/">Home</a></div>
-			<div class="py-3" on:click="{toggleMobileMenu}"><a href="/portfolio">Projects</a></div>
+			<div class="py-3" on:click="{toggleMobileMenu}"><a href="/projects">Projects</a></div>
 			<div class="py-3" on:click="{toggleMobileMenu}"><a href="/linkedin">LinkedIn</a></div>
 		</div>
 	</div>
