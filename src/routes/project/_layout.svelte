@@ -14,7 +14,7 @@
 <div class="bg-gray-100 dark:bg-gray-800 dark:text-white min-h-[33vh] flex text-center">
 	<div class="m-auto p-16">
 		<h1 class="text-2xl sm:text-3xl md:text-4xl font-display font-bold my-4">Project: {title}</h1>
-		<p class="text-xl text-blue-500 hover:text-blue-300 transition-all">
+		<p class="text-xl">
 			<a href="/projects"><i class="fas fa-arrow-left" /> Return to all projects</a>
 		</p>
 	</div>

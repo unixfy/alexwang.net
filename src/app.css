@@ -3,3 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+p > a {
+    @apply text-blue-500 hover:text-blue-300 transition-all
+}

@@ -53,7 +53,9 @@
 				<span class="font-bold">🌐 GeoGuessr</span>, and <span class="font-bold">📚 learning</span>.
 			</p>
 			<p>
-				I'm currently a student at the <span class="font-bold">🐴 University of Southern California</span>.
+				I'm currently a student at the <span class="font-bold"
+					>🐴 University of Southern California</span
+				>.
 			</p>
 		</div>
 	</div>
@@ -69,11 +71,11 @@
 	<h1 class="font-display text-3xl md:text-4xl font-bold text-center mb-8">Writing</h1>
 	<BlogLister />
 
-	<div class="text-center mt-6 text-lg text-blue-500 hover:text-blue-300 transition-all">
+	<p class="text-center mt-6 text-lg">
 		<a href="https://blog.unixfy.net" target="_blank" rel="noopener"
 			>View more <i class="fa-solid fa-arrow-right" /></a
 		>
-	</div>
+	</p>
 </div>
 
 <div class="p-8 bg-[#7E1F86] text-white">
