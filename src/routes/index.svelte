@@ -82,7 +82,7 @@
 	<div class="flex flex-col md:flex-row">
 		<div class="flex">
 			<h1
-				class="font-display text-3xl md:text-4xl font-bold md:[writing-mode:vertical-lr] md:rotate-180 m-auto mb-8 md:mr-8"
+				class="font-display text-3xl md:text-4xl font-bold md:[writing-mode:vertical-lr] md:rotate-180 m-auto mb-8 md:mb-auto md:mr-8"
 			>
 				Stuff I've Done
 			</h1>
