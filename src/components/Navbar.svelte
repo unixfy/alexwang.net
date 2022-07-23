@@ -68,9 +68,9 @@
 			</div>
 		</div>
 		<div class:hidden={!mobilemenu} class="bg-gray-200 dark:bg-slate-700 dark:text-white pt-2">
-			<div class="py-3"><a href="/">Home</a></div>
-			<div class="py-3"><a href="/portfolio">Projects</a></div>
-			<div class="py-3"><a href="/linkedin">LinkedIn</a></div>
+			<div class="py-3" on:click="{toggleMobileMenu}"><a href="/">Home</a></div>
+			<div class="py-3" on:click="{toggleMobileMenu}"><a href="/portfolio">Projects</a></div>
+			<div class="py-3" on:click="{toggleMobileMenu}"><a href="/linkedin">LinkedIn</a></div>
 		</div>
 	</div>
 </div>
