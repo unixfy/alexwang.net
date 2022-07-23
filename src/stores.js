@@ -5,6 +5,9 @@
 import { writable } from "svelte/store";
 import { browser } from "$app/env";
 
+// This represents the page title (<title>) and is updated by each page
+export const title = writable('');
+
 const darkmodecalculator = function () {
     const store = writable(false)
     // Return false if we aren't running in a browser
@@ -17,7 +20,7 @@ const darkmodecalculator = function () {
         // If we are in SSR, just set to false
         storedvalue = false
     } else if
-    ((!('darkmode' in localStorage) &&
+        ((!('darkmode' in localStorage) &&
             window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         // If the system color scheme is set to dark, then enable darkmode
         storedvalue = true

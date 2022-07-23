@@ -2,15 +2,18 @@
 	import SocialGrid from '$components/SocialGrid.svelte';
 	import BlogLister from '$components/BlogLister.svelte';
 	import ProjectsLister from '$components/ProjectsLister.svelte';
+	import { title } from '../stores';
+
+	$title = 'Home';
 </script>
 
 <div class="min-h-screen px-8 dark:bg-slate-900 dark:text-white relative z-0">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-screen">
 		<img
-		src="/curvy_things.svg"
-		alt="Curvy things"
-		class="hidden md:block absolute top-0 left-0 w-[18rem] h-[18rem] dark:brightness-90 dark:invert"
-	/>
+			src="/curvy_things.svg"
+			alt="Curvy things"
+			class="hidden md:block absolute top-0 left-0 w-[18rem] h-[18rem] dark:brightness-90 dark:invert"
+		/>
 		<div class="flex flex-col">
 			<div class="md:m-auto md:ml-16 text-center md:text-left">
 				<p class="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-lg">
@@ -27,7 +30,11 @@
 			</div>
 		</div>
 		<div class="flex order-first md:order-last">
-			<img src="/blob.svg" alt="Background blob" class="md:m-auto mt-auto mx-auto dark:brightness-90 aspect-square h-56 sm:h-72 md:h-96 lg:h-[32rem]" />
+			<img
+				src="/blob.svg"
+				alt="Background blob"
+				class="md:m-auto mt-auto mx-auto dark:brightness-90 aspect-square h-56 sm:h-72 md:h-96 lg:h-[32rem]"
+			/>
 		</div>
 	</div>
 </div>

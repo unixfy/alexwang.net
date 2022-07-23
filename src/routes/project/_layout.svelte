@@ -4,8 +4,11 @@
 	export let date;
 	import dayjs from 'dayjs/esm';
 	import utc from 'dayjs/esm/plugin/utc';
+	// use "as" here to prevent name collision
+	import {title as pageTitle} from '../../stores'  
 
 	dayjs.extend(utc);
+	$pageTitle = title;
 </script>
 
 <div class="bg-gray-100 dark:bg-gray-800 dark:text-white min-h-[33vh] flex text-center">
