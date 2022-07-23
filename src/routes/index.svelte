@@ -9,10 +9,11 @@
 
 <div class="min-h-screen px-8 dark:bg-slate-900 dark:text-white relative z-0">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-screen">
+		<!-- the size of this thing should be ~56.25% of the size of the "hello" image -->
 		<img
 			src="/curvy_things.svg"
 			alt="Curvy things"
-			class="hidden md:block absolute top-0 left-0 w-[18rem] h-[18rem] dark:brightness-90 dark:invert"
+			class="absolute top-[3.125rem] sm:top-0 left-0 h-[10rem] md:h-[13rem] lg:h-[18rem] dark:brightness-90 dark:invert aspect-square"
 		/>
 		<div class="flex flex-col">
 			<div class="md:m-auto md:ml-16 text-center md:text-left">
