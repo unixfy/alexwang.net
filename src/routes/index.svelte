@@ -40,21 +40,20 @@
 	</div>
 </div>
 
-<div class="bg-gray-200 p-8 dark:bg-slate-700 dark:text-white">
-	<div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-		<div class="col-span-2 flex">
-			<h2 class="text-4xl m-auto">
-				I am a <span class="font-bold text-5xl font-display">web developer</span>
-			</h2>
-		</div>
-		<div class="col-span-3">
-			<p class="text-xl">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel tellus convallis, tincidunt
-				nisl eget, faucibus diam. Nullam ac nisi ac ante lacinia convallis. Suspendisse id lacus et
-				dui interdum tincidunt. Aenean sollicitudin diam vel suscipit auctor. Suspendisse tempus
-				rutrum nunc in pulvinar. Mauris auctor, nisi non auctor varius, diam ipsum efficitur nulla,
-				in accumsan lectus augue quis nulla. Sed ut ex libero. Sed aliquam sed massa sit amet
-				suscipit.
+<div class="bg-gray-200 p-8 md:p-12 dark:bg-slate-700 dark:text-white">
+	<div class="flex">
+		<div class="text-2xl md:text-3xl m-auto font-display md:leading-relaxed max-w-4xl space-y-6">
+			<p>
+				I'm a self-taught <span class="font-bold">💻 web developer</span> and
+				<span class="font-bold">🐍 sysadmin</span> based in Detroit, MI and Los Angeles, CA.
+			</p>
+			<p>
+				I like <span class="font-bold">😋 food</span>,
+				<span class="font-bold">🚆 transportation</span>,
+				<span class="font-bold">🌐 GeoGuessr</span>, and <span class="font-bold">📚 learning</span>.
+			</p>
+			<p>
+				I'm currently a student at the <span class="font-bold">🐴 University of Southern California</span>.
 			</p>
 		</div>
 	</div>
