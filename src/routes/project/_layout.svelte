@@ -5,7 +5,7 @@
 	import dayjs from 'dayjs/esm';
 	import utc from 'dayjs/esm/plugin/utc';
 	// use "as" here to prevent name collision
-	import {title as pageTitle} from '../../stores'  
+	import { title as pageTitle } from '../../stores';
 
 	dayjs.extend(utc);
 	$pageTitle = title;
@@ -21,18 +21,20 @@
 </div>
 
 <div class="p-8 sm:p-16 bg-white dark:bg-black dark:text-white min-h-[50vh]">
-	<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
-		<div>
-			<img
-				src="/project/{image}"
-				alt="Image for project {title}"
-				class="rounded-lg dark:brightness-75"
-			/>
-		</div>
-		<div class="text-lg space-y-6">
-			<slot />
-			<hr class="my-4" />
-			<p class="text-sm italic">Published {dayjs(date).utc().format('MMMM DD, YYYY')}</p>
+	<div class="ct">
+		<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
+			<div>
+				<img
+					src="/project/{image}"
+					alt="Image for project {title}"
+					class="rounded-lg dark:brightness-75"
+				/>
+			</div>
+			<div class="text-lg space-y-6">
+				<slot />
+				<hr class="my-4" />
+				<p class="text-sm italic">Published {dayjs(date).utc().format('MMMM DD, YYYY')}</p>
+			</div>
 		</div>
 	</div>
 </div>

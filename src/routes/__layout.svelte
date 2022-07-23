@@ -42,7 +42,7 @@
 	{/if}
 </svelte:head>
 
-<div class="min-h-screen max-w-[1920px] relative">
+<div class="min-h-screen">
 	<Navbar />
 
 	<slot />

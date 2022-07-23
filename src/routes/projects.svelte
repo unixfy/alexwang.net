@@ -1,7 +1,7 @@
 <script>
 	import ProjectsLister from '$components/ProjectsLister.svelte';
-	import { title } from '../stores';;
-	
+	import { title } from '../stores';
+
 	$title = 'Portfolio';
 </script>
 
@@ -13,5 +13,7 @@
 </div>
 
 <div class="p-8 lg:p-16 bg-[#7E1F86]">
-	<ProjectsLister limit="100" />
+	<div class="ct">
+		<ProjectsLister limit="100" />
+	</div>
 </div>
