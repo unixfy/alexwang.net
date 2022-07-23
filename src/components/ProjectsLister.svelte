@@ -1,4 +1,8 @@
 <script>
+	import dayjs from 'dayjs/esm';
+	import utc from 'dayjs/esm/plugin/utc';
+	dayjs.extend(utc);
+
 	export let limit;
 
 	//  note, we use the first n (n = limit) elements of our projects array
@@ -33,8 +37,11 @@
 						alt="Image for project {project.metadata.title}"
 					/>
 					<div class="p-4">
-						<div class="text-lg md:text-xl lg:text-2xl mb-2 font-bold font-display capitalize">
-							<p class="text-center">{project.metadata.title}</p>
+						<div class="text-lg md:text-xl lg:text-2xl my-2 font-bold font-display capitalize text-center">
+							<p>{project.metadata.title}</p>
+						</div>
+						<div class="text-sm text-center italic">
+							<p>{dayjs(project.metadata.date).utc().format('YYYY')}</p>
 						</div>
 						<!-- <div class="text-lg">
 							<p>
