@@ -10,7 +10,6 @@
 	let projects_raw = import.meta.glob('/src/routes/project/*.md', { eager: true });
 
 	let projects = Object.entries(projects_raw)
-		.slice(0, limit)
 		.map(([path, data]) => {
 			// this is a REALLY janky way to remove the .md extension and remove the first 2 parts of the path (the /src/routes bit)
 			let slug = '/' + path.replace(/\..+$/, '').split('/').slice(3).join('/');
@@ -23,7 +22,8 @@
 			};
 		})
 		// this sorting algorithm sorts our data from newest to oldest
-		.sort((a, b) => dayjs(b.metadata.date).diff(a.metadata.date));
+		.sort((a, b) => dayjs(b.metadata.date).diff(a.metadata.date))
+		.slice(0, limit);
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
