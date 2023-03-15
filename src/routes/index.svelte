@@ -28,7 +28,7 @@
 							Alex Wang
 						</h1>
 						<p class="font-display text-xl md:text-2xl sm:text-3xl">
-							I like cheesy taglines on portfolio sites.
+							I'm obsessed with mobility, technology, and solutions.
 						</p>
 					</div>
 				</div>
@@ -46,20 +46,23 @@
 
 <div class="bg-gray-200 p-8 md:p-12 dark:bg-slate-700 dark:text-white">
 	<div class="flex">
-		<div class="text-2xl md:text-3xl m-auto font-display md:leading-relaxed max-w-4xl space-y-6">
+		<div class="text-2xl md:text-3xl m-auto font-display md:leading-relaxed max-w-4xl space-y-8">
 			<p>
-				I'm a self-taught <span class="font-bold">💻 web developer</span> and
-				<span class="font-bold">🐍 sysadmin</span> based in Detroit, MI and Los Angeles, CA.
+				I'm a <span class="font-bold">📊 systems engineer</span> by training and an autodidactic
+				<span class="font-bold">💻 web developer</span>
+				+
+				<span class="font-bold">🐍 DevOps pro</span>.
+			</p>
+			<p>
+				I'm based in <span class="font-bold">🚗 Detroit, MI</span> and
+				<span class="font-bold">🌴 Los Angeles, CA</span>. I'm currently a student at the
+				<span class="font-bold">🐴 University of Southern California</span>.
 			</p>
 			<p>
 				I like <span class="font-bold">😋 food</span>,
 				<span class="font-bold">🚆 transportation</span>,
-				<span class="font-bold">🌐 GeoGuessr</span>, and <span class="font-bold">📚 learning</span>.
-			</p>
-			<p>
-				I'm currently a student at the <span class="font-bold"
-					>🐴 University of Southern California</span
-				>.
+				<span class="font-bold">🌐 GeoGuessr</span>, <span class="font-bold">💻 tech</span>, and
+				<span class="font-bold">📚 learning</span>.
 			</p>
 		</div>
 	</div>
@@ -125,7 +128,11 @@
 						<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
 							<div class="flex flex-col">
 								<p class="text-3xl font-display font-bold text-center mb-8">Alex Wang</p>
-								<img class="mx-auto h-48 w-48" alt="Jumping out of an envelope" src="/envelope.png" />
+								<img
+									class="mx-auto h-48 w-48"
+									alt="Jumping out of an envelope"
+									src="/envelope.png"
+								/>
 							</div>
 							<div class="flex flex-col justify-between">
 								<p class="lowercase text-center sm:text-right font-extralight text-xl">
@@ -157,4 +164,3 @@
 		</div>
 	</div>
 </div>
-
