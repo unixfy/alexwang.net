@@ -17,8 +17,8 @@ const config = {
         manifest: {
             "background_color": "#ffffff",
             "theme_color": "#7E1F86",
-            "name": "alex-wang.net",
-            "short_name": "alex-wang.net",
+            "name": "alexwang.net",
+            "short_name": "alexwang.net",
             "start_url": "/",
             "display": "standalone",
             "icons": [

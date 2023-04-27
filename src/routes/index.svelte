@@ -149,7 +149,7 @@
 									</div>
 									<div class="flex flex-row justify-between">
 										<i class="fa-solid fa-link" />
-										<p>alex-wang.net</p>
+										<p>alexwang.net</p>
 									</div>
 									<div class="flex flex-row justify-between">
 										<i class="fa-solid fa-phone" />

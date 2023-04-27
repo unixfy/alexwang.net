@@ -25,14 +25,14 @@
 
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://alex-wang.net/" />
+	<meta property="og:url" content="https://alexwang.net/" />
 	<meta property="og:title" content="Alex Wang" />
 	<meta property="og:description" content="Alex's portfolio site" />
 	<meta property="og:image" content="/favicon.png" />
 
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary" />
-	<meta property="twitter:url" content="https://alex-wang.net/" />
+	<meta property="twitter:url" content="https://alexwang.net/" />
 	<meta property="twitter:title" content="Alex Wang" />
 	<meta property="twitter:description" content="Alex's portfolio site" />
 	<meta property="twitter:image" content="/favicon.png" />
