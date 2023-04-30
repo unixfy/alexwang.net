@@ -141,7 +141,7 @@
 								<div class="mt-8 sm:mb-8 grid grid-rows-4 gap-4 font-semibold text-right text-2xl">
 									<div class="flex flex-row justify-between">
 										<i class="fa-solid fa-envelope" />
-										<p>alex [at] unixfy.net</p>
+										<p>alex [at] alexwang.net</p>
 									</div>
 									<div class="flex flex-row justify-between">
 										<i class="fa-brands fa-linkedin" />
