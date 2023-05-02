@@ -3,6 +3,7 @@
 	import BlogLister from '$components/BlogLister.svelte';
 	import ProjectsLister from '$components/ProjectsLister.svelte';
 	import { title } from '../stores';
+	export let data;
 
 	$title = 'Home';
 </script>
@@ -77,7 +78,7 @@
 <div class="p-8 dark:bg-slate-900 dark:text-white">
 	<div class="ct">
 		<h1 class="font-display text-3xl md:text-4xl font-bold text-center mb-8">Writing</h1>
-		<BlogLister />
+		<BlogLister posts="{data.blogPosts}" />
 
 		<p class="text-center mt-6 text-lg">
 			<a href="https://blog.unixfy.net" target="_blank" rel="noopener"
