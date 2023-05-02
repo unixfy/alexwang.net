@@ -5,7 +5,7 @@
 	import Footer from '$components/Footer.svelte';
 	import Navbar from '$components/Navbar.svelte';
 
-	import { browser, dev } from '$app/env';
+	import { browser, dev } from '$app/environment';
 	import { onMount } from 'svelte';
 	import { title } from '../stores';
 
