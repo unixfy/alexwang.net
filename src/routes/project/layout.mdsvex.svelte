@@ -4,10 +4,13 @@
 	export let date;
 	import dayjs from 'dayjs/esm';
 	import utc from 'dayjs/esm/plugin/utc';
-	// use "as" here to prevent name collision
-
 	dayjs.extend(utc);
 </script>
+
+<!--We do this hackiness because there's no way for endpoints to access the title frontmatter from our MD files (limitation of Mdsvex)-->
+<svelte:head>
+    <title>{title} | Alex Wang</title>
+</svelte:head>
 
 <div class="bg-gray-100 dark:bg-gray-800 dark:text-white min-h-[33vh] flex text-center">
 	<div class="m-auto p-16">

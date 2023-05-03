@@ -11,8 +11,8 @@ const config = defineConfig({
 	rehypePlugins: [],
 	layout: {
 		// this layout is for projects
-		// remember that mdsvex still doesn't have support for the sveltekit default __layout so we have to do this
-		project: "./src/routes/project/layout.svelte"
+		// remember that mdsvex still doesn't have (good) support for the sveltekit default +layout so we have to do this
+		project: "./src/routes/project/layout.mdsvex.svelte"
 	}
 });
 
