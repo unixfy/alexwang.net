@@ -1,17 +1,18 @@
-import { sveltekit } from '@sveltejs/kit/vite';
-import { VitePWA } from 'vite-plugin-pwa';
+import {sveltekit} from '@sveltejs/kit/vite';
+import {SvelteKitPWA} from '@vite-pwa/sveltekit';
 import path from 'path';
 
 
 /** @type {import('vite').UserConfig} */
 const config = {
-    plugins: [sveltekit(), VitePWA({
+    plugins: [sveltekit(), SvelteKitPWA({
         workbox: {
             globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         },
         registerType: "prompt",
         strategies: "injectManifest",
         srcDir: './src',
+        filename: 'sw.js',
         scope: '/',
         base: '/',
         manifest: {
@@ -36,7 +37,7 @@ const config = {
             '$components': path.resolve('./src/components')
         }
     },
-    legacy: { buildSsrCjsExternalHeuristics: true },
+    legacy: {buildSsrCjsExternalHeuristics: true},
     ssr: {
         // We have to add this workaround because of #4504 https://github.com/sveltejs/kit/issues/4504
         // In the future DayJS 2.0 will not require this workaround

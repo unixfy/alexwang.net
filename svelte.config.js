@@ -17,7 +17,13 @@ const config = {
 	],
 
 	kit: {
-		adapter: adapter()
+		adapter: adapter(),
+		files: {
+			serviceWorker: 'src/sw.js',
+		},
+		serviceWorker: {
+			register: false
+		}
 	},
 
 	serviceWorker: {
