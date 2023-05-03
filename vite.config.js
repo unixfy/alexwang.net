@@ -9,7 +9,7 @@ const config = {
         workbox: {
             globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         },
-        registerType: "autoUpdate",
+        registerType: "prompt",
         strategies: "generateSW",
         scope: '/',
         start_url: '/',
