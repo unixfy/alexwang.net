@@ -59,7 +59,7 @@
     <div class="ct">
         <p class="text-md">
             <span class="font-bold">My website has moved!</span> I've managed to get my hands on alexwang.net.
-            Everything on alex-wang.net has been be moved to alexwang.net, including emails. No dash for me! 🎉
+            Everything on alex-wang.net has been be moved to alexwang.net, including emails. (Existing links and emails on alex-wang.net will keep working.) No dash for me! 🎉
         </p>
     </div>
 </div>
