@@ -1,4 +1,4 @@
-export async function load() {
+export async function load({fetch}) {
     let response = await fetch('https://blog.unixfy.net/wp-json/wp/v2/posts?per_page=4');
 
     return {
