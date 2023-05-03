@@ -1,5 +1,5 @@
 <script>
-	import ProjectsLister from '$components/ProjectsLister.svelte';
+	import ProjectsLister from '$lib/ProjectsLister.svelte';
 	import { title } from '../../stores';
 
 	$title = 'Portfolio';

@@ -1,10 +1,10 @@
 <script>
-    import SocialGrid from '$components/SocialGrid.svelte';
-    import BlogLister from '$components/BlogLister.svelte';
-    import ProjectsLister from '$components/ProjectsLister.svelte';
+    import SocialGrid from '$lib/SocialGrid.svelte';
+    import BlogLister from '$lib/BlogLister.svelte';
+    import ProjectsLister from '$lib/ProjectsLister.svelte';
     import {title} from '../stores';
-    import BlogListerLoading from "$components/BlogListerLoading.svelte";
-    import Error from "$components/Error.svelte";
+    import BlogListerLoading from "$lib/BlogListerLoading.svelte";
+    import Error from "$lib/Error.svelte";
 
     export let data;
 

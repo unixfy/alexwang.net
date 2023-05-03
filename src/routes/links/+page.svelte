@@ -1,6 +1,6 @@
 <script>
     import { title } from "../../stores";
-	import SocialGrid from '$components/SocialGrid.svelte';
+	import SocialGrid from '$lib/SocialGrid.svelte';
 
 	export let data;
     

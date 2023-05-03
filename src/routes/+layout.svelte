@@ -2,8 +2,8 @@
     import '../app.css';
     import '@fontsource/ibm-plex-sans';
     import '@fontsource/space-grotesk';
-    import Footer from '$components/Footer.svelte';
-    import Navbar from '$components/Navbar.svelte';
+    import Footer from '$lib/Footer.svelte';
+    import Navbar from '$lib/Navbar.svelte';
 
     import {browser, dev} from '$app/environment';
     import {onMount} from 'svelte';
