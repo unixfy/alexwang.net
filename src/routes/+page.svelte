@@ -4,6 +4,7 @@
     import ProjectsLister from '$lib/ProjectsLister.svelte';
     import BlogListerLoading from "$lib/BlogListerLoading.svelte";
     import Error from "$lib/Error.svelte";
+
     export let data;
 </script>
 
@@ -149,7 +150,7 @@
                                 <p class="lowercase text-center sm:text-right font-light text-xl">
                                     Building reliable, efficient, usable, & informed solutions.
                                 </p>
-                                <div class="mt-8 sm:mb-8 grid grid-rows-4 gap-4 font-semibold text-right text-2xl">
+                                <div class="mt-8 sm:mb-8 grid grid-rows-4 gap-4 font-medium text-right text-2xl">
                                     <div class="flex flex-row justify-between">
                                         <i class="fa-solid fa-envelope"/>
                                         <p>alex [at] alexwang.net</p>
@@ -162,10 +163,11 @@
                                         <i class="fa-solid fa-link"/>
                                         <p>alexwang.net</p>
                                     </div>
-                                    <div class="flex flex-row justify-between">
-                                        <i class="fa-solid fa-phone"/>
-                                        <p>+1 123-123-1234</p>
-                                    </div>
+                                    <!--                                    Don't show the phone for now -->
+                                    <!--                                    <div class="flex flex-row justify-between">-->
+                                    <!--                                        <i class="fa-solid fa-phone"/>-->
+                                    <!--                                        <p>+1 123-123-1234</p>-->
+                                    <!--                                    </div>-->
                                 </div>
                             </div>
                         </div>
