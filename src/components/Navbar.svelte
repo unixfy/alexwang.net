@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { darkmode } from '../stores';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 
 	let mobilemenu = false;
 

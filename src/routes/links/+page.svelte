@@ -1,10 +1,8 @@
 <script>
-    import { browser } from '$app/env';
-    import { title } from "../stores";
-    import {page} from "$app/stores";
+    import { title } from "../../stores";
 	import SocialGrid from '$components/SocialGrid.svelte';
 
-	export let links;
+	export let data;
     
     $title = "Links"
 </script>
@@ -17,7 +15,7 @@
 
 <div class="bg-neutral-50 dark:bg-slate-800 dark:text-white sm:pb-8">
 	<div class="max-w-screen-sm mx-auto px-4 py-6 space-y-4 flex flex-col">
-		{#each links as link}
+		{#each data.links as link}
 			<a href={link.url} target="_blank" rel="noopener">
 				<div
 					class="text-center text-lg sm:text-xl bg-sky-500 text-white hover:bg-black transition-all rounded-full py-3"

@@ -3,7 +3,7 @@
 // Persists to localstorage
 
 import { writable } from "svelte/store";
-import { browser } from "$app/env";
+import { browser } from "$app/environment";
 
 // This represents the page title (<title>) and is updated by each page
 export const title = writable('');
@@ -28,7 +28,7 @@ const darkmodecalculator = function () {
         // If this isn't the case, then try to get the value of darkmode from localstorage and parse it as JSON
         // Any error occurs, disable darkmode
         try {
-            storedvalue = JSON.parse(localStorage.getItem("darkmode"))
+            storedvalue = JSON.parse(localStorage.getItem("darkmode") || "false")
         } catch {
             storedvalue = false
         }
