@@ -5,9 +5,6 @@
 import { writable } from "svelte/store";
 import { browser } from "$app/environment";
 
-// This represents the page title (<title>) and is updated by each page
-export const title = writable('');
-
 const darkmodecalculator = function () {
     const store = writable(false)
     // Return false if we aren't running in a browser

@@ -2,13 +2,9 @@
     import SocialGrid from '$lib/SocialGrid.svelte';
     import BlogLister from '$lib/BlogLister.svelte';
     import ProjectsLister from '$lib/ProjectsLister.svelte';
-    import {title} from '../stores';
     import BlogListerLoading from "$lib/BlogListerLoading.svelte";
     import Error from "$lib/Error.svelte";
-
     export let data;
-
-    $title = 'Home';
 </script>
 
 <div class="dark:bg-slate-900 dark:text-white">

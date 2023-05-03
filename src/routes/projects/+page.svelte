@@ -1,8 +1,5 @@
 <script>
 	import ProjectsLister from '$lib/ProjectsLister.svelte';
-	import { title } from '../../stores';
-
-	$title = 'Portfolio';
 </script>
 
 <div class="bg-gray-100 dark:bg-gray-800 dark:text-white text-center min-h-[33vh] flex">
