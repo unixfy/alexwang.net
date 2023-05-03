@@ -9,12 +9,10 @@ const config = {
         workbox: {
             globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         },
-        registerType: "prompt",
-        strategies: "injectManifest",
-        srcDir: './src',
-        filename: 'sw.js',
+        registerType: "autoUpdate",
+        strategies: "generateSW",
         scope: '/',
-        base: '/',
+        start_url: '/',
         manifest: {
             "background_color": "#ffffff",
             "theme_color": "#7E1F86",
