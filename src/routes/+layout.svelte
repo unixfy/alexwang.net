@@ -1,7 +1,13 @@
 <script>
     import '../app.css';
-    import '@fontsource/ibm-plex-sans';
-    import '@fontsource/space-grotesk';
+    import '@fontsource/ibm-plex-sans/300.css';
+    import '@fontsource/ibm-plex-sans/400.css';
+    import '@fontsource/ibm-plex-sans/600.css';
+    import '@fontsource/ibm-plex-sans/700.css';
+
+    import '@fontsource/space-grotesk/400.css';
+    import '@fontsource/space-grotesk/700.css';
+
     import Footer from '$lib/Footer.svelte';
     import Navbar from '$lib/Navbar.svelte';
 
@@ -17,8 +23,8 @@
                 immediate: true,
                 onRegistered(r) {
                     r && setInterval(() => {
-                       console.log('Checking for sw update')
-                       r.update()
+                        console.log('Checking for sw update')
+                        r.update()
                     }, 3600000)
                     console.log(`SW Registered: ${r}`)
                 },
@@ -59,7 +65,8 @@
     <div class="ct">
         <p class="text-md">
             <span class="font-bold">My website has moved!</span> I've managed to get my hands on alexwang.net.
-            Everything on alex-wang.net has been be moved to alexwang.net, including emails. (Existing links and emails on alex-wang.net will keep working.) No dash for me! 🎉
+            Everything on alex-wang.net has been be moved to alexwang.net, including emails. (Existing links and emails
+            on alex-wang.net will keep working.) No dash for me! 🎉
         </p>
     </div>
 </div>

@@ -23,7 +23,7 @@
                             👋 Hey there, I'm
                         </p>
                         <h1
-                                class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-black drop-shadow-lg my-4 md:my-8 py-2"
+                                class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-bold drop-shadow-lg my-4 md:my-8 py-2"
                         >
                             Alex Wang
                         </h1>
@@ -146,7 +146,7 @@
                                 />
                             </div>
                             <div class="flex flex-col justify-between">
-                                <p class="lowercase text-center sm:text-right font-extralight text-xl">
+                                <p class="lowercase text-center sm:text-right font-light text-xl">
                                     Building reliable, efficient, usable, & informed solutions.
                                 </p>
                                 <div class="mt-8 sm:mb-8 grid grid-rows-4 gap-4 font-semibold text-right text-2xl">
