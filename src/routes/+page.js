@@ -5,6 +5,7 @@ export async function load({fetch}) {
         // we stream the data to the browser as it's loaded so as to not delay pageloads
         streamed: {
             blogPostsRequest: fetch('https://blog.unixfy.net/wp-json/wp/v2/posts?per_page=4')
-        }
+        },
+        title: "Home"
     }
 }
