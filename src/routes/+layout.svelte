@@ -37,7 +37,7 @@
 </script>
 
 <svelte:head>
-    <title>{$page.data.title || "Welcome"} | Alex Wang</title>
+    <title>{(($page.error) ? "Error" : $page.data.title || "Welcome")} | Alex Wang</title>
     <meta name="description" content="Alex Wang's portfolio site"/>
     <link rel="apple-touch-icon" href="/favicon.png" sizes="512x512"/>
     <meta name="theme-color" content="#7E1F86"/>
