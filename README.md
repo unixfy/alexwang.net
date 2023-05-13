@@ -7,5 +7,7 @@ The homepage fetches the "Writing" using the API of my WordPress blog. The proje
 [![Netlify Status](https://api.netlify.com/api/v1/badges/09ab261f-a371-4bf4-b80d-5b28101a8736/deploy-status)](https://app.netlify.com/sites/sunny-croissant-b2ddcb/deploys)
 
 
+## Environment variables
 
+- `PUBLIC_SSHKEY`: Defines the SSH key returned on /sshkey (both API route and text/html route)
 
