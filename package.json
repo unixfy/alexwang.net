@@ -13,7 +13,7 @@
     "format": "prettier --write --plugin-search-dir=. ."
   },
   "devDependencies": {
-    "@fontsource/ibm-plex-sans": "^5.0.1",
+    "@fontsource/ibm-plex-sans": "^5.0.3",
     "@fontsource/space-grotesk": "^4.5.13",
     "@fortawesome/fontawesome-free": "^6.4.0",
     "@polka/url": "^1.0.0-next.21",
