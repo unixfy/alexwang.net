@@ -1,6 +1,4 @@
 <script>
-    import Error from '$lib/Error.svelte';
-
     export let posts;
 </script>
 
