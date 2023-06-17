@@ -25,5 +25,10 @@ h2 {
 }
 
 ul {
-    @apply list-disc list-inside
+    @apply list-disc list-outside
+}
+
+/*now-data-container is the container that holds the HTML on /now*/
+.now-data-container > h2 {
+    @apply text-3xl font-display pt-4
 }

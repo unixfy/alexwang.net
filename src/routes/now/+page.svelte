@@ -18,7 +18,7 @@
 
 <div class="dark:bg-gray-900 dark:text-white">
     <div class="p-8 lg:p-16 max-w-screen-sm m-auto">
-        <div class="flex flex-col space-y-4 text-lg">
+        <div class="flex flex-col space-y-4 text-lg now-data-container">
             {#await data.streamed.pageRequest}
                 <NowLoading/>
             {:then pageReq}
@@ -27,7 +27,7 @@
                 {:then pageData}
                     <p class="text-sm italic">Last
                         updated {dayjs(pageData[0].modified_gmt).utc().format('MMMM DD, YYYY')}</p>
-                    <hr class="my-4"/>
+                    <hr/>
                     {@html pageData[0].content.rendered}
                 {/await}
             {:catch error}
