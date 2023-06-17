@@ -4,12 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
-p > a {
+.link {
     @apply text-blue-500 hover:text-blue-300 transition-all
 }
 
-.link {
-    @apply text-blue-500 hover:text-blue-300 transition-all
+p > a {
+    @apply link
+}
+
+li > a {
+    @apply link
 }
 
 .ct {
