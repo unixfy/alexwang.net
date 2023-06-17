@@ -8,6 +8,18 @@ p > a {
     @apply text-blue-500 hover:text-blue-300 transition-all
 }
 
+.link {
+    @apply text-blue-500 hover:text-blue-300 transition-all
+}
+
 .ct {
     @apply max-w-[1920px] mx-auto container
+}
+
+h2 {
+    @apply text-2xl font-display
+}
+
+ul {
+    @apply list-disc list-inside
 }
