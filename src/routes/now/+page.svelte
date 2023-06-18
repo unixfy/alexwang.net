@@ -26,7 +26,7 @@
                     <NowLoading/>
                 {:then pageData}
                     <p class="text-sm italic">Last
-                        updated {dayjs(pageData[0].modified_gmt).utc().format('MMMM DD, YYYY')}</p>
+                        updated {dayjs(pageData[0].modified_gmt).format('MMMM DD, YYYY')}</p>
                     <hr/>
                     {@html pageData[0].content.rendered}
                 {/await}
