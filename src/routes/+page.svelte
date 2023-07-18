@@ -4,6 +4,7 @@
     import ProjectsLister from '$lib/ProjectsLister.svelte';
     import BlogListerLoading from "$lib/BlogListerLoading.svelte";
     import Error from "$lib/Error.svelte";
+    import CertificationsLister from "$lib/CertificationsLister.svelte";
 
     export let data;
 </script>
@@ -122,6 +123,13 @@
                 </div>
             </a>
         </div>
+    </div>
+</div>
+
+<div class="p-8 dark:bg-slate-900 dark:text-white">
+    <div class="ct">
+        <h1 class="font-display text-3xl md:text-4xl font-bold text-center mb-8">Certifications</h1>
+        <CertificationsLister/>
     </div>
 </div>
 
