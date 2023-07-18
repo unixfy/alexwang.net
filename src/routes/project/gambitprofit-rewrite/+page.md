@@ -11,3 +11,5 @@ I constructed the frontend using Svelte, Tailwind, and Daisy UI, while migrating
 The backend is built on Django with Django-rest-framework. The gambitrewards.com scraper is built into the Django app (as a Django Q async task) rather than being a separate AWS Lambda function, reducing my development overhead. Using Django rather than a prebuilt CMS solution like Strapi means I can implement more complex data models (particularly with relations, which Strapi didn't support very well). It also means I can build functionality to adjust settings for bet calculation on the fly, with no need to edit configuration files and restart the API server.
 
 Overall, the rewritten GambitProfit delivers a better experience both for the user and the developer. A win-win!
+
+The source code for the [backend](https://github.com/unixfy/gambitprofit-new-backend) and [frontend](https://github.com/unixfy/gambitprofit-new-frontend) is available on GitHub.

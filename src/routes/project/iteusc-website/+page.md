@@ -25,3 +25,5 @@ interface for non-technical users to manage the website's content. Through it, t
 projects, events, and other content on the website without needing to know how to update the code.
 
 Overall, I hope that the new website will be a valuable resource that helps ITE USC grow and thrive for years to come.
+
+You can [check out the source code on GitHub](https://github.com/unixfy/iteusc-website).
