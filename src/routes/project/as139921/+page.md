@@ -2,6 +2,7 @@
 title: AS139921 Unixfy Network
 image: as139921.jpg
 date: 2019-08-23
+url: https://unixfy.net/network
 ---
 
 I’ve been managing and maintaining my own ASN, AS139921 since August 2019.

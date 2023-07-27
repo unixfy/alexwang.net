@@ -2,6 +2,7 @@
 title: GambitProfit Rewrite
 image: gambitprofit-rewrite.png
 date: 07-29-2022
+url: https://gambitprofit.com
 ---
 
 The previous version of GambitProfit used Nuxt.js for the frontend and Strapi CMS for the backend. However, since I created that version, I've discovered the joys of Svelte and Django for frontend and backend, respectively. So, I decided to rewrite GambitProfit using those technologies while resolving lingering quality of life issues created by Strapi's limitations, such as its inability to handle the complex nested data structure I wanted.

@@ -2,6 +2,7 @@
 title: Interactive SoCal Mobility Map
 image: iscmm.png
 date: 07-01-2023
+url: https://iscmm.unixfy.net
 ---
 
 Interactive SoCal Mobility Map (ISCMM) is a project I developed for fun during the summer. Heavily inspired by [Interactive Bay Area Highway Map](https://ibahm.org), it aims to display a map of, along with useful information about important transportation-related locations in the Southern California region. Currently, it includes freeway exits and mass transit stops.

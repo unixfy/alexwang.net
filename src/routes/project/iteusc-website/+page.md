@@ -2,6 +2,7 @@
 title: ITE USC Website
 image: iteusc-website.png
 date: 05-15-2023
+url: https://iteusc.com
 ---
 
 

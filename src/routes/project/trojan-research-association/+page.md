@@ -2,6 +2,7 @@
 title: Trojan Research Association Website
 image: trojan-research-association.png
 date: 2023-01-01
+url: https://trojanresearch.org
 ---
 
 Trojan Research Association is a registered student organization at the University of Southern California that seeks to make research matching *better*. We recognize that students find it intimidating to "cold-email" faculty members in search of research positions, while faculty members find it too time-consuming to find students to fill research positions. Trojan Research Association mitigates these issues by providing matching as a service - students can apply to be matched to a position in our pool of positions with partnered faculty members at USC.
