@@ -32,6 +32,8 @@ jobs:
           api_location: "build/server" # Api source code path - optional
           output_location: "build/static" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
+        env:
+          PUBLIC_SSHKEY: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGgXd/scB9LOKkD0K+fBlIU44JpLMztvLCh2s2ULEE7x"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
