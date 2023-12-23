@@ -1,7 +1,6 @@
 import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import azure from 'svelte-adapter-azure-swa';
-import adapter from '@sveltejs/adapter-netlify';
 import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
