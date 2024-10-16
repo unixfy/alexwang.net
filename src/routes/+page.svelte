@@ -93,7 +93,7 @@
         {/await}
 
         <p class="text-center mt-6 text-lg">
-            <a href="https://blog.unixfy.net" target="_blank" rel="noopener"
+            <a href="https://blog.alexwang.net" target="_blank" rel="noopener"
             >View more <i class="fa-solid fa-arrow-right"></i></a
             >
         </p>

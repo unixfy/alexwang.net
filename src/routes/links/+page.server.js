@@ -18,7 +18,7 @@ export async function load() {
             },
             {
                 name: "Blog",
-                url: "https://blog.unixfy.net"
+                url: "https://blog.alexwang.net"
             }
         ]
     }
