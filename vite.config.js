@@ -8,6 +8,7 @@ const config = {
     plugins: [sveltekit(), SvelteKitPWA({
         workbox: {
             globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+            maximumFileSizeToCacheInBytes: 5000000,
         },
         registerType: "prompt",
         strategies: "generateSW",
@@ -30,7 +31,6 @@ const config = {
             ]
         }
     })],
-    legacy: {buildSsrCjsExternalHeuristics: true},
     ssr: {
         // We have to add this workaround because of #4504 https://github.com/sveltejs/kit/issues/4504
         // In the future DayJS 2.0 will not require this workaround
