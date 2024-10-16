@@ -50,7 +50,7 @@
     <div class="flex">
         <div class="text-2xl md:text-3xl m-auto font-display md:leading-relaxed max-w-4xl space-y-8">
             <p>
-                I'm a <span class="font-bold">📊 systems engineer</span> by training and an autodidactic
+                I'm a <span class="font-bold">⚙️ industrial engineer</span> by training and an autodidactic
                 <span class="font-bold">💻 web developer</span>
                 +
                 <span class="font-bold">🐍 DevOps pro</span>.
