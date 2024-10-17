@@ -19,7 +19,7 @@
 					{#if link.icon}
 						<i class="fa-solid {link.icon}" />
 					{/if}
-					{link.name}
+					{link.title}
 				</div>
 			</a>
 		{/each}
