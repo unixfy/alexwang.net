@@ -4,6 +4,7 @@ import { readItems } from '@directus/sdk';
 export async function load({ fetch }) {
     const directus = getDirectusInstance(fetch);
     return {
-        config: await directus.request(readItems('config', { fields: ["sshkey"] }))
+        config: await directus.request(readItems('config', { fields: ["sshkey"] })),
+        title: "SSH Key"
     }
 }
