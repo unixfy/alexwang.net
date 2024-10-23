@@ -4,7 +4,8 @@
     import ProjectsLister from '$lib/ProjectsLister.svelte';
     import BlogListerLoading from "$lib/BlogListerLoading.svelte";
     import Error from "$lib/Error.svelte";
-    import CertificationsLister from "$lib/CertificationsLister.svelte";
+	import dayjs from 'dayjs/esm';
+
 
     export let data;
 </script>
@@ -129,7 +130,24 @@
 <div class="p-8 dark:bg-slate-900 dark:text-white">
     <div class="ct">
         <h1 class="font-display text-3xl md:text-4xl font-bold text-center mb-8">Certifications</h1>
-        <CertificationsLister/>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-8 lg:gap-16">
+            {#each data.certifications as certification}
+                <div
+                    class="flex flex-col justify-between grayscale hover:grayscale-0 hover:scale-110 transition-all"
+                >
+                    <img
+                        src="https://cms.alexwang.net/assets/{certification.image}"
+                        alt="Shield for {certification.name}"
+                        class="w-36 aspect-square justify-self-start self-center mb-4"
+                    />
+                    <p class="font-bold font-display mb-2 text-center">{certification.name}</p>
+                    <p class="text-xs justify-self-end text-center">
+                        {certification.reference} - {dayjs(certification.date).utc().format('MMMM YYYY')}
+                    </p>
+                </div>
+            {/each}
+        </div>
     </div>
 </div>
 
