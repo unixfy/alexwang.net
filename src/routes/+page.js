@@ -11,6 +11,7 @@ export async function load({ fetch }) {
             blogPostsRequest: fetch('https://blog.alexwang.net/wp-json/wp/v2/posts?per_page=4')
         },
         certifications: await directus.request(readItems('certifications', { fields: ["name", "reference", "date", "image", "url"], sort: "sort" })),
+        socials: await directus.request(readItems('socials', { fields: ["name", "color", "url", "icon"], sort: "sort", limit: 9 })),
         title: "Home"
     }
 }

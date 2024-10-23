@@ -25,6 +25,6 @@
 		{/each}
 	</div>
 	<div class="max-w-screen-sm mx-auto">
-		<SocialGrid />
+		<SocialGrid socials={data.socials} />
 	</div>
 </div>
