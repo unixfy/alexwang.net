@@ -19,9 +19,11 @@
 </div>
 
 <div class="dark:bg-gray-900 dark:text-white min-h-[80vh]">
-    <div class="p-8 lg:p-16 max-w-screen-lg m-auto">
-        <div class="flex flex-col space-y-4 text-lg page-content-container">
-            {@html JSON.stringify(data.page.content)}
-        </div>
-    </div>
+	<div class="p-8 max-w-screen-lg m-auto">
+		<div class="flex flex-col space-y-4 text-lg page-content-container">
+			{#if data.page.content_html}
+				{@html data.page.content_html}
+			{/if}
+		</div>
+	</div>
 </div>
