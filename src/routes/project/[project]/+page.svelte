@@ -20,7 +20,7 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
 			<div>
 				<img
-					src="//cms.alexwang.net/assets/{data.project.image}"
+					src="//cms.alexwang.net/assets/{data.project.image}?format=webp"
 					alt="Image for project {data.project.title}"
 					class="rounded-lg dark:brightness-75"
 				/>
