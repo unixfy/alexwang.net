@@ -4,9 +4,10 @@ import { readItems } from "@directus/sdk";
 export async function load({ fetch }) {
     const directus = getDirectusInstance(fetch);
 
-    const [certifications, socials] = await Promise.all([
+    const [certifications, socials, projects] = await Promise.all([
         directus.request(readItems('certifications', { fields: ["name", "reference", "date", "image", "url"], sort: "sort" })),
-        directus.request(readItems('socials', { fields: ["name", "color", "url", "icon"], sort: "sort", limit: 9 }))
+        directus.request(readItems('socials', { fields: ["name", "color", "url", "icon"], sort: "sort", limit: 9 })),
+        directus.request(readItems('projects', { fields: ["title", "slug", "image", "date"], sort: "-date", limit: 6 }))
     ]);
 
     return {
@@ -17,6 +18,7 @@ export async function load({ fetch }) {
         },
         certifications,
         socials,
+        projects,
         title: "Home"
     }
 }
