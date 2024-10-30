@@ -4,6 +4,6 @@ import { readItems } from '@directus/sdk';
 export async function load({ fetch }) {
     const directus = getDirectusInstance(fetch);
     return {
-        config: await directus.request(readItems('config', { fields: ["banner_enabled", "banner_content"] }))
+        config: await directus.request(readItems('config', { fields: ["banner_enabled", "banner_content", "sshkey"] }))
     }
 }
