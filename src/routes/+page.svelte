@@ -112,7 +112,8 @@
 					Stuff I've Done
 				</h1>
 			</div>
-
+			
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each data.projects as project}
 				<div
 					class="transition-all flex-none drop-shadow rounded-lg bg-white hover:bg-gray-100 text-black dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800"
@@ -143,6 +144,7 @@
 					</a>
 				</div>
 			{/each}
+			</div>
 
 			<a
 				href="/projects"
