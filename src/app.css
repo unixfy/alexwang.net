@@ -31,3 +31,7 @@ ul {
 .page-content-container > h2 {
     @apply text-3xl font-display pt-4
 }
+
+.page-content-container a {
+    @apply link
+}
