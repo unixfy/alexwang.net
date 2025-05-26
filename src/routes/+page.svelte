@@ -203,7 +203,6 @@
 					<h1 class="text-3xl md:text-4xl font-display font-bold mb-8 text-center">
 						Let's get in touch!
 					</h1>
-					<div class="perspective-distant">
 					<div
 						class="bg-white dark:bg-slate-800 p-8 rounded-xl drop-shadow-lg hover:drop-shadow-2xl transition-all max-w-2xl mx-auto aspect-[1.618/1] border border-gray-200 dark:border-slate-700 hover:-translate-y-2 hover:scale-105 duration-300 ease-out"
 					>
@@ -235,7 +234,6 @@
 								</div>
 							</div>
 						</div>
-					</div>
 					</div>
 				</div>
 			</div>
