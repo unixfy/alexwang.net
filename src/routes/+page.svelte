@@ -24,10 +24,10 @@
 				<div class="flex flex-col">
 					<div class="md:m-auto md:ml-16 text-center md:text-left">
 						<p class="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-lg">
-							👋 Hey there, I'm
+							👋 Hey there. I'm
 						</p>
 						<h1
-							class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-bold drop-shadow-lg my-4 md:my-8 py-2"
+							class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-bold drop-shadow-lg my-2 md:my-8 py-2 hover:scale-105 transition-all leading-tight tracking-tight"
 						>
 							Alex Wang
 						</h1>
@@ -38,9 +38,9 @@
 				</div>
 				<div class="flex order-first md:order-last">
 					<img
-						src="/blob.svg"
-						alt="Background blob"
-						class="md:m-auto mt-auto mx-auto dark:brightness-90 aspect-square h-56 sm:h-72 md:h-96 lg:h-[32rem]"
+						src="/alex.jpg"
+						alt="Picture of Alex"
+						class="md:m-auto mt-auto mx-auto dark:brightness-90 aspect-square h-56 sm:h-72 md:h-96 lg:h-[32rem] rounded-2xl shadow-xl hover:scale-105 transition-all bg-gray-200 bg-pulse"
 					/>
 				</div>
 			</div>
@@ -52,21 +52,28 @@
 	<div class="flex">
 		<div class="text-2xl md:text-3xl m-auto font-display md:leading-relaxed max-w-4xl space-y-8">
 			<p>
-				I'm a <span class="font-bold">⚙️ industrial engineer</span> by training and an autodidactic
-				<span class="font-bold">💻 web developer</span>
-				+
-				<span class="font-bold">🐍 DevOps pro</span>.
+				I study <span class="font-bold">⚙️ industrial engineering</span> and
+				<span class="font-bold">🏦 public policy</span>
+				at the University of Southern California. I'm also a self-taught
+				<span class="font-bold">🧑‍💻 web developer</span>.
 			</p>
 			<p>
-				I'm based in <span class="font-bold">🚗 Detroit, MI</span> and
-				<span class="font-bold">🌴 Los Angeles, CA</span>. I'm currently a student at the
-				<span class="font-bold">🐴 University of Southern California</span>.
+				I'm interested in infrastructure policy, consumer technology, behavioral economics, and
+				operations research.
 			</p>
 			<p>
-				I like <span class="font-bold">😋 food</span>,
-				<span class="font-bold">🚆 transportation</span>,
-				<span class="font-bold">🌐 GeoGuessr</span>, <span class="font-bold">💻 tech</span>, and
-				<span class="font-bold">📚 learning</span>.
+				I am a 🚆 transportation nerd, 🔮 serial side quester, 🏃‍♂️ casual runner, ✈️ frequent miler,
+				😋 serious foodie, and 📜 longform journalist enthusiast.
+				<a class="font-bold" href="/i-like"
+					>But I like too many things, so I've put them here. <i
+						class="fa-solid fa-circle-arrow-right"
+					></i></a
+				>
+			</p>
+			<p class="font-bold">
+				<a href="/now"
+					>Find out what I'm up to right now. <i class="fa-solid fa-circle-arrow-right"></i></a
+				>
 			</p>
 		</div>
 	</div>
@@ -109,41 +116,43 @@
 				<h1
 					class="font-display text-3xl md:text-4xl font-bold md:[writing-mode:vertical-lr] md:rotate-180 m-auto mb-8 md:mb-auto md:mr-8"
 				>
-					Stuff I've Done
+					Things I've Worked On
 				</h1>
 			</div>
-			
+
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-			{#each data.projects as project}
-				<div
-					class="transition-all flex-none drop-shadow rounded-lg bg-white hover:bg-gray-100 text-black dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800"
-				>
-					<a href="/project/{project.slug}">
-						<div class="flex flex-col">
-							<img
-								class="object-cover rounded-t-lg max-h-1/2 dark:brightness-75 aspect-video"
-								src="//cms.alexwang.net/assets/{project.image}?format=webp"
-								alt="Image for project {project.title}"
-							/>
-							<div class="p-4">
-								<div class="text-lg md:text-xl lg:text-2xl my-2 font-bold font-display text-center">
-									<p>{project.title}</p>
-								</div>
-								<div class="text-sm text-center italic">
-									<p>{dayjs(project.date).utc().format('YYYY')}</p>
-								</div>
-								<!-- <div class="text-lg">
+				{#each data.projects as project}
+					<div
+						class="transition-all flex-none drop-shadow rounded-lg bg-white hover:bg-gray-100 text-black dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800"
+					>
+						<a href="/project/{project.slug}">
+							<div class="flex flex-col">
+								<img
+									class="object-cover rounded-t-lg max-h-1/2 dark:brightness-75 aspect-video"
+									src="//cms.alexwang.net/assets/{project.image}?format=webp"
+									alt="Image for project {project.title}"
+								/>
+								<div class="p-4">
+									<div
+										class="text-lg md:text-xl lg:text-2xl my-2 font-bold font-display text-center"
+									>
+										<p>{project.title}</p>
+									</div>
+									<div class="text-sm text-center italic">
+										<p>{dayjs(project.date).utc().format('YYYY')}</p>
+									</div>
+									<!-- <div class="text-lg">
 									<p>
 										Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
 										corrupti vel quisquam id itaque nam
 									</p>
 								</div> -->
-								<!-- Note that I don't have descriptions in the page metadata so we aren't using this -->
+									<!-- Note that I don't have descriptions in the page metadata so we aren't using this -->
+								</div>
 							</div>
-						</div>
-					</a>
-				</div>
-			{/each}
+						</a>
+					</div>
+				{/each}
 			</div>
 
 			<a
@@ -194,43 +203,39 @@
 					<h1 class="text-3xl md:text-4xl font-display font-bold mb-8 text-center">
 						Let's get in touch!
 					</h1>
+					<div class="perspective-distant">
 					<div
-						class="bg-slate-400 dark:bg-slate-500 p-4 drop-shadow-lg hover:drop-shadow-2xl dark:drop-shadow-white transition max-w-6xl text-white md:mx-8 aspect-[3.5 / 2]"
+						class="bg-white dark:bg-slate-800 p-8 rounded-xl drop-shadow-lg hover:drop-shadow-2xl transition-all max-w-2xl mx-auto aspect-[1.618/1] border border-gray-200 dark:border-slate-700 hover:-translate-y-2 hover:scale-105 duration-300 ease-out"
 					>
-						<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
-							<div class="flex flex-col">
-								<p class="text-3xl font-display font-bold text-center mb-8">Alex Wang</p>
+						<div class="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-8 h-full">
+							<div class="flex flex-col items-center gap-4">
 								<img
-									class="mx-auto h-48 w-48"
-									alt="Jumping out of an envelope"
-									src="/envelope.png"
+									src="/alex.jpg"
+									alt="Alex Wang"
+									class="w-32 h-32 rounded-full border-4 border-slate-400 dark:border-slate-600"
 								/>
+								<h2 class="text-3xl font-display font-bold text-slate-800 dark:text-white">
+									Alex Wang
+								</h2>
 							</div>
-							<div class="flex flex-col justify-between">
-								<p class="lowercase text-center sm:text-right font-light text-xl">
-									Building reliable, efficient, usable, & informed solutions.
-								</p>
-								<div class="mt-8 sm:mb-8 grid grid-rows-4 gap-4 font-medium text-right text-2xl">
-									<div class="flex flex-row justify-between">
-										<i class="fa-solid fa-envelope" />
+							<div class="flex flex-col justify-center">
+								<div class="space-y-4 font-medium text-slate-700 dark:text-slate-200">
+									<div class="flex items-center gap-4">
+										<i class="fa-solid fa-envelope w-6" />
 										<p>alex [at] alexwang.net</p>
 									</div>
-									<div class="flex flex-row justify-between">
-										<i class="fa-brands fa-linkedin" />
+									<div class="flex items-center gap-4">
+										<i class="fa-brands fa-linkedin w-6" />
 										<p>/in/alex-y-wang</p>
 									</div>
-									<div class="flex flex-row justify-between">
-										<i class="fa-solid fa-link" />
+									<div class="flex items-center gap-4">
+										<i class="fa-solid fa-link w-6" />
 										<p>alexwang.net</p>
 									</div>
-									<!--                                    Don't show the phone for now -->
-									<!--                                    <div class="flex flex-row justify-between">-->
-									<!--                                        <i class="fa-solid fa-phone"/>-->
-									<!--                                        <p>+1 123-123-1234</p>-->
-									<!--                                    </div>-->
 								</div>
 							</div>
 						</div>
+					</div>
 					</div>
 				</div>
 			</div>
