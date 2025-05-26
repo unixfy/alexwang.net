@@ -3,7 +3,7 @@
 	export let socials;
 </script>
 
-<div class="grid grid-cols-3 grid-rows-3">
+<div class="grid grid-cols-3">
 	{#each socials as social}
 		<a href={social.url} target="_blank" rel="noopener" aria-label={social.name}>
 			<div
