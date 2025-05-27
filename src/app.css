@@ -1,19 +1,27 @@
-@import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
+@import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css'
+  layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant hover (&:hover);
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+}
 
 .link {
     @apply text-blue-500 hover:text-blue-300 transition-all
 }
 
 p > a {
-    @reference link
+    @apply text-blue-500 hover:text-blue-300 transition-all
 }
 
 li > a {
-    @reference link
+    @apply text-blue-500 hover:text-blue-300 transition-all
 }
 
 .ct {
@@ -33,5 +41,5 @@ ul {
 }
 
 .page-content-container a {
-    @apply link
+    @apply text-blue-500 hover:text-blue-300 transition-all
 }

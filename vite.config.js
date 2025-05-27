@@ -1,11 +1,11 @@
 import {sveltekit} from '@sveltejs/kit/vite';
 import {SvelteKitPWA} from '@vite-pwa/sveltekit';
-import path from 'path';
+import tailwindcss from '@tailwindcss/vite';
 
 
 /** @type {import('vite').UserConfig} */
 const config = {
-    plugins: [sveltekit(), SvelteKitPWA({
+    plugins: [sveltekit(), tailwindcss(), SvelteKitPWA({
         workbox: {
             globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
             maximumFileSizeToCacheInBytes: 5000000,

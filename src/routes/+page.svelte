@@ -19,7 +19,7 @@
 				<img
 					src="/curvy_things.svg"
 					alt="Curvy things"
-					class="absolute top-[3.125rem] sm:top-0 left-0 h-[10rem] md:h-[13rem] lg:h-[18rem] dark:brightness-90 dark:invert aspect-square"
+					class="absolute top-12.5 sm:top-0 left-0 h-40 md:h-52 lg:h-72 dark:brightness-90 dark:invert aspect-square"
 				/>
 				<div class="flex flex-col">
 					<div class="md:m-auto md:ml-16 text-center md:text-left">
@@ -27,7 +27,7 @@
 							👋 Hey there. I'm
 						</p>
 						<h1
-							class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-bold drop-shadow-lg my-2 md:my-8 py-2 hover:scale-105 transition-all leading-tight tracking-tight"
+							class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl bg-linear-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-bold drop-shadow-lg my-2 md:my-8 py-2 hover:scale-105 transition-all leading-tight tracking-tight"
 						>
 							Alex Wang
 						</h1>
@@ -40,7 +40,7 @@
 					<img
 						src="/alex.jpg"
 						alt="Picture of Alex"
-						class="md:m-auto mt-auto mx-auto dark:brightness-90 aspect-square h-56 sm:h-72 md:h-96 lg:h-[32rem] rounded-2xl shadow-xl hover:scale-105 transition-all bg-gray-200 bg-pulse"
+						class="md:m-auto mt-auto mx-auto dark:brightness-90 aspect-square h-56 sm:h-72 md:h-96 lg:h-128 rounded-2xl shadow-xl hover:scale-105 transition-all bg-gray-200 bg-pulse"
 					/>
 				</div>
 			</div>
