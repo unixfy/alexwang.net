@@ -11,7 +11,7 @@
 	import { page } from '$app/stores';
 	import { pwaInfo } from 'virtual:pwa-info';
 
-	export let data;
+	let { data, children } = $props();
 
 	onMount(async () => {
 		if (pwaInfo) {
@@ -74,9 +74,9 @@
 
 	{#key $page.url.pathname}
 		<div in:fade={{ duration: 300 }}>
-			<slot />
+			{@render children()}
 		</div>
 	{/key}
-	
+
 	<Footer />
 </div>
