@@ -1,26 +1,34 @@
 @import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css'
-  layer(base);
+layer(base);
 
 @import 'tailwindcss';
+
+@import '@fontsource/ibm-plex-sans/300.css';
+@import '@fontsource/ibm-plex-sans/400.css';
+@import '@fontsource/ibm-plex-sans/500.css';
+@import '@fontsource/ibm-plex-sans/700.css';
+
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/700.css';
 
 @custom-variant hover (&:hover);
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: 'IBM Plex Sans', sans-serif;
-  --font-display: 'Space Grotesk', sans-serif;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
 }
 
 .link {
     @apply text-blue-500 hover:text-blue-300 transition-all
 }
 
-p > a {
+p>a {
     @apply text-blue-500 hover:text-blue-300 transition-all
 }
 
-li > a {
+li>a {
     @apply text-blue-500 hover:text-blue-300 transition-all
 }
 
@@ -36,7 +44,7 @@ ul {
     @apply list-disc list-outside
 }
 
-.page-content-container > h2 {
+.page-content-container>h2 {
     @apply text-3xl font-display pt-4
 }
 

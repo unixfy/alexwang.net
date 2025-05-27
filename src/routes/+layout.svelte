@@ -1,12 +1,5 @@
 <script>
 	import '../app.css';
-	import '@fontsource/ibm-plex-sans/300.css';
-	import '@fontsource/ibm-plex-sans/400.css';
-	import '@fontsource/ibm-plex-sans/500.css';
-	import '@fontsource/ibm-plex-sans/700.css';
-
-	import '@fontsource/space-grotesk/400.css';
-	import '@fontsource/space-grotesk/700.css';
 
 	import Footer from '$lib/Footer.svelte';
 	import Navbar from '$lib/Navbar.svelte';
