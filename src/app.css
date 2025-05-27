@@ -9,11 +9,11 @@
 }
 
 p > a {
-    @apply link
+    @reference link
 }
 
 li > a {
-    @apply link
+    @reference link
 }
 
 .ct {
