@@ -69,7 +69,7 @@
 	</div>
 {/if}
 
-<div class="min-h-screen">
+<div class="min-h-screen dark:bg-black">
 	<Navbar />
 
 	{#key $page.url.pathname}
