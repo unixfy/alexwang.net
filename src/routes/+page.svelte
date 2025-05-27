@@ -220,15 +220,15 @@
 							<div class="flex flex-col justify-center">
 								<div class="space-y-4 font-medium text-slate-700 dark:text-slate-200">
 									<div class="flex items-center gap-4">
-										<i class="fa-solid fa-envelope w-6" />
+										<i class="fa-solid fa-envelope w-6"></i>
 										<p>alex [at] alexwang.net</p>
 									</div>
 									<div class="flex items-center gap-4">
-										<i class="fa-brands fa-linkedin w-6" />
+										<i class="fa-brands fa-linkedin w-6"></i>
 										<p>/in/alex-y-wang</p>
 									</div>
 									<div class="flex items-center gap-4">
-										<i class="fa-solid fa-link w-6" />
+										<i class="fa-solid fa-link w-6"></i>
 										<p>alexwang.net</p>
 									</div>
 								</div>
