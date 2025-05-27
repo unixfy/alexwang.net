@@ -4,6 +4,8 @@
 	import Footer from '$lib/Footer.svelte';
 	import Navbar from '$lib/Navbar.svelte';
 
+	import { fade } from 'svelte/transition';
+
 	import { browser, dev } from '$app/environment';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -70,7 +72,11 @@
 <div class="min-h-screen">
 	<Navbar />
 
-	<slot />
-
+	{#key $page.url.pathname}
+		<div in:fade={{ duration: 300 }}>
+			<slot />
+		</div>
+	{/key}
+	
 	<Footer />
 </div>
