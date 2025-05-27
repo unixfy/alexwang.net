@@ -182,7 +182,7 @@
 					<img
 						src="https://cms.alexwang.net/assets/{certification.image}?format=webp"
 						alt="Shield for {certification.name}"
-						class="w-36 aspect-square justify-self-start self-center mb-4"
+						class="w-36 aspect-square justify-self-start self-center mb-4 dark:brightness-90"
 					/>
 					<p class="font-bold font-display mb-2 text-center">{certification.name}</p>
 					<p class="text-xs justify-self-end text-center">
@@ -211,7 +211,7 @@
 								<img
 									src="/alex.jpg"
 									alt="Alex Wang"
-									class="w-32 h-32 rounded-full border-4 border-slate-400 dark:border-slate-600"
+									class="w-32 h-32 rounded-full border-4 border-slate-400 dark:border-slate-600 dark:brightness-90"
 								/>
 								<h2 class="text-3xl font-display font-bold text-slate-800 dark:text-white">
 									Alex Wang
