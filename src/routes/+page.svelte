@@ -204,7 +204,7 @@
 						Let's get in touch!
 					</h1>
 					<div
-						class="bg-white dark:bg-slate-800 p-8 rounded-xl drop-shadow-lg hover:drop-shadow-2xl transition-all max-w-2xl mx-auto aspect-[1.618/1] border border-gray-200 dark:border-slate-700 hover:-translate-y-2 hover:scale-105 duration-300 ease-out"
+						class="bg-white dark:bg-slate-800 p-8 rounded-xl drop-shadow-lg hover:drop-shadow-2xl transition-all max-w-2xl mx-auto sm:aspect-[1.618/1] border border-gray-200 dark:border-slate-700 hover:-translate-y-2 hover:scale-105 duration-300 ease-out"
 					>
 						<div class="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-8 h-full">
 							<div class="flex flex-col items-center gap-4">
