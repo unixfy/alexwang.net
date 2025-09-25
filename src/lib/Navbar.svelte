@@ -25,8 +25,7 @@
 	});
 </script>
 
-<div class="ct relative">
-	<div class="absolute top-0 right-0 z-10">
+	<div class="md:absolute top-0 right-0 z-10">
 		<div class="hidden md:flex flex-row-reverse">
 			<div class="text-xl font-display font-light my-6 mx-8 space-x-2">
 				<a href="/"
@@ -89,4 +88,3 @@
 			</div>
 		</div>
 	</div>
-</div>

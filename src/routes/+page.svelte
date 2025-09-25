@@ -19,7 +19,7 @@
 				<img
 					src="/curvy_things.svg"
 					alt="Curvy things"
-					class="absolute top-12.5 sm:top-0 left-0 h-40 md:h-52 lg:h-72 dark:brightness-90 dark:invert aspect-square"
+					class="absolute top-0 left-0 h-40 md:h-52 lg:h-72 dark:brightness-90 dark:invert aspect-square"
 				/>
 				<div class="flex flex-col">
 					<div class="md:m-auto md:ml-16 text-center md:text-left">
