@@ -24,7 +24,7 @@
 						<div class="flex flex-col">
 							<img
 								class="object-cover rounded-t-lg max-h-1/2 dark:brightness-75 aspect-video"
-								src="//cms.alexwang.net/assets/{project.image}?format=webp"
+								src="//cms.alexwang.net/assets/{project.image}?format=webp&width=1000"
 								alt="Image for project {project.title}"
 							/>
 							<div class="p-4">
