@@ -70,9 +70,9 @@
 				<div>
 					<span on:click={toggleMobileMenu}>
 						{#if !mobilemenu}
-							<i class="fa-solid fa-bars fa-2x" />
+							<i class="fa-solid fa-bars fa-2x"></i>
 						{:else}
-							<i class="fa-solid fa-xmark fa-2x" />
+							<i class="fa-solid fa-xmark fa-2x"></i>
 						{/if}
 					</span>
 				</div>

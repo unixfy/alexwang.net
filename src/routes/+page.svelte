@@ -161,9 +161,9 @@
 				aria-label="View more projects"
 			>
 				<div class="m-auto text-center">
-					<p class="md:hidden text-xl">View all <i class="fa-solid fa-arrow-right" /></p>
+					<p class="md:hidden text-xl">View all <i class="fa-solid fa-arrow-right"></i></p>
 					<!-- This bit only shows md or larger -->
-					<i class="hidden md:block fa-solid fa-arrow-right fa-3x m-auto" />
+					<i class="hidden md:block fa-solid fa-arrow-right fa-3x m-auto"></i>
 				</div>
 			</a>
 		</div>

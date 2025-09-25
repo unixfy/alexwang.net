@@ -17,7 +17,7 @@
 					class="text-center text-lg sm:text-xl bg-sky-500 text-white hover:bg-black transition-all rounded-full py-3"
 				>
 					{#if link.icon}
-						<i class="fa-solid {link.icon}" />
+						<i class="fa-solid {link.icon}"></i>
 					{/if}
 					{link.title}
 				</div>
