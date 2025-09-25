@@ -194,6 +194,35 @@
 	</div>
 </div>
 
+<div class="p-8 bg-gray-200 dark:bg-slate-700 dark:text-white">
+	<div class="ct">
+		<h1 class="font-display text-3xl md:text-4xl font-bold text-center mb-6">
+			Selected Recognitions & Awards
+		</h1>
+
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+			{#each data.recognitions as recognition}
+				<div class="flex items-start border border-gray-400 dark:border-slate-500 rounded-lg p-4">
+					<div class="bg-white p-2 rounded-lg shadow-sm mr-4 flex-shrink-0 aspect-square">
+						<img
+							src="https://cms.alexwang.net/assets/{recognition.image}?format=webp&width=120"
+							alt="{recognition.name} logo or emblem"
+							class="w-10 h-10 object-contain dark:brightness-90"
+						/>
+					</div>
+					<div>
+						<h3 class="font-display text-lg font-bold">{recognition.name}</h3>
+						<p class="text-base text-gray-500 dark:text-gray-400 mt-1 mb-3">
+							{dayjs(recognition.date).utc().format('MMMM YYYY')}
+						</p>
+						<p class="text-base text-gray-700 dark:text-gray-300">{recognition.description}</p>
+					</div>
+				</div>
+			{/each}
+		</div>
+	</div>
+</div>
+
 <div class="dark:bg-slate-900 dark:text-white bg-gray-100">
 	<div class="ct">
 		<div class="grid grid-cols-1 lg:grid-cols-2">
