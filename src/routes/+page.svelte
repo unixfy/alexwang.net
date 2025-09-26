@@ -51,30 +51,7 @@
 <div class="bg-gray-200 p-8 md:p-12 dark:bg-slate-700 dark:text-white">
 	<div class="flex">
 		<div class="text-2xl md:text-3xl m-auto font-display md:leading-relaxed max-w-4xl space-y-8">
-			<p>
-				I study <span class="font-bold">⚙️ industrial engineering</span> and
-				<span class="font-bold">🏦 public policy</span>
-				at the University of Southern California. I'm also a self-taught
-				<span class="font-bold">🧑‍💻 web developer</span>.
-			</p>
-			<p>
-				I'm interested in infrastructure policy, consumer technology, behavioral economics, and
-				operations research.
-			</p>
-			<p>
-				I am a 🚆 transportation nerd, 🔮 serial side quester, 🏃‍♂️ casual runner, ✈️ frequent miler,
-				😋 serious foodie, and 📜 longform journalist enthusiast.
-				<a class="font-bold" href="/i-like"
-					>But I like too many things, so I've put them here. <i
-						class="fa-solid fa-circle-arrow-right"
-					></i></a
-				>
-			</p>
-			<p class="font-bold">
-				<a href="/now"
-					>Find out what I'm up to right now. <i class="fa-solid fa-circle-arrow-right"></i></a
-				>
-			</p>
+			{@html data.config.homepage_welcome_text}
 		</div>
 	</div>
 </div>
