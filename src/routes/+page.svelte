@@ -38,7 +38,7 @@
 				</div>
 				<div class="flex order-first md:order-last">
 					<img
-						src="//cms.alexwang.net/assets/{data.config.links_profile_picture}?format=webp&width=600"
+						src="//cms.alexwang.net/assets/{data.config.links_profile_picture}?format=webp&width=1200"
 						alt="Picture of Alex"
 						class="md:m-auto mt-auto mx-auto dark:brightness-90 aspect-square h-56 sm:h-72 md:h-96 lg:h-128 rounded-2xl shadow-xl hover:scale-105 transition-all bg-gray-200 bg-pulse"
 					/>
