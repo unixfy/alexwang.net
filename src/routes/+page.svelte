@@ -38,7 +38,7 @@
 				</div>
 				<div class="flex order-first md:order-last">
 					<img
-						src="/alex.jpg"
+						src="//cms.alexwang.net/assets/{data.config.links_profile_picture}?format=webp&width=600"
 						alt="Picture of Alex"
 						class="md:m-auto mt-auto mx-auto dark:brightness-90 aspect-square h-56 sm:h-72 md:h-96 lg:h-128 rounded-2xl shadow-xl hover:scale-105 transition-all bg-gray-200 bg-pulse"
 					/>
@@ -215,7 +215,7 @@
 						<div class="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-8 h-full">
 							<div class="flex flex-col items-center gap-4">
 								<img
-									src="/alex.jpg"
+									src="//cms.alexwang.net/assets/{data.config.links_profile_picture}?format=webp&width=200"
 									alt="Alex Wang"
 									class="w-32 h-32 rounded-full border-4 border-slate-400 dark:border-slate-600 dark:brightness-90"
 								/>
