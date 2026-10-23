@@ -107,6 +107,10 @@
 }
 
 @layer base {
+	body {
+		@apply text-gray-900 dark:text-white;
+	}
+
 	h1,
 	h2,
 	h3 {
