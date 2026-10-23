@@ -24,7 +24,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* UI primitives (buttons, navbar, menu, badge, collapse, swap, toast, alert, skeleton, progress) come
+/* UI primitives (buttons, navbar, menu, badge, collapse, swap, toast, alert, skeleton, kbd) come
    from daisyUI. Only the parts the site uses are included, and both themes are built from the site's
    own tokens, so every component wears the line-diagram world: flat, crisp, brand purple. */
 @plugin 'daisyui' {
@@ -32,7 +32,7 @@
 	logs: false;
 	include:
 		properties, svg, scrollbar, rootcolor, button, navbar, menu, badge, collapse, swap, toast,
-		alert, skeleton, progress;
+		alert, skeleton, kbd;
 }
 
 @plugin 'daisyui/theme' {
@@ -681,6 +681,13 @@ nav li.station:focus-within .station-ring {
 		.ride:has(> h2) > :is(p, ul, ol, details) {
 			max-width: 74ch;
 		}
+	}
+
+	/* the first paragraph of a project page leads in the display face; WordPress's empty blocks don't count */
+	.first-lede > p:not(:empty):not(p:not(:empty) ~ *) {
+		font-family: var(--font-display);
+		font-size: 1.2em;
+		line-height: 1.45;
 	}
 
 	/* content types the CMS may use later, drawn in the line's own language */

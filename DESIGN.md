@@ -304,7 +304,7 @@ Projects are grouped by year; each year is a Title-role station cycling line col
 
 ### Project page
 
-Terminus title, meta line "Stop N of M" paired with a primary progress bar (decorative), then the year and a link to all projects; image beside 65ch of CMS prose, a full-width primary large "View project" button under the image, and a published date.
+Terminus title; a meta line "Stop N of M · year" beside the route strip (from sm: one dot per project on a hairline, newest first, the stops already passed lit like the trunk, the current one a station ring, every dot a link with the project name as its label) and a link to all projects. Below: the image as a sticky exhibit beside the CMS prose, whose first paragraph leads in the display face (`first-lede`), a full-width primary "View project" button whose arrow lifts on hover, and a published date. The closing station, "Keep riding", is a pair of stops that say which way they go: Previous is a quiet outlined card with a grey ring and a back arrow on the left; Next is the way on, brand-tinted with a filled brand ring, a forward arrow and the label in brand colour, on the right (first on phones); the newest project has no Previous and the oldest ends with a flag ring and "End of the line", linking to all projects. On wide screens the cards carry thumbnails and ← / → key hints, and the keys move between projects.
 
 ### CMS page
 

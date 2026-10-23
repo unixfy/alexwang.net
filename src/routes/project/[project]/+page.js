@@ -34,6 +34,7 @@ export async function load({ fetch, params }) {
 
 	return {
 		project,
+		route: all.map(({ slug, title }) => ({ slug, title })),
 		index: at,
 		total: all.length,
 		prev: at > 0 ? all[at - 1] : null,
