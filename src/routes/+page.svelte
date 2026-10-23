@@ -1,8 +1,8 @@
 <script>
-	import SocialGrid from '$lib/SocialGrid.svelte';
-	import BlogLister from '$lib/BlogLister.svelte';
-	import BlogListerLoading from '$lib/BlogListerLoading.svelte';
-	import Error from '$lib/Error.svelte';
+	import SocialGrid from '#lib/SocialGrid.svelte';
+	import BlogLister from '#lib/BlogLister.svelte';
+	import BlogListerLoading from '#lib/BlogListerLoading.svelte';
+	import Error from '#lib/Error.svelte';
 	import dayjs from 'dayjs/esm';
 	import utc from 'dayjs/esm/plugin/utc';
 

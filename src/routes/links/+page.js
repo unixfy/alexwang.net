@@ -1,4 +1,4 @@
-import getDirectusInstance from "$lib/directus";
+import getDirectusInstance from "#lib/directus.js";
 import { readItems } from '@directus/sdk';
 
 export async function load({ fetch }) {
