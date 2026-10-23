@@ -26,7 +26,7 @@
 	</header>
 
 	<nav aria-label="Links">
-		<ol class="max-w-2xl list-none">
+		<ol class="max-w-2xl list-none 2xl:max-w-3xl">
 			{#each data.links as link, i}
 				<li class="station pr-6" style="--ring-top: 50%; --line: var(--line-{lines[i % 3]})">
 					<span class="station-ring" aria-hidden="true"></span>
@@ -50,7 +50,7 @@
 	</nav>
 
 	<Station id="elsewhere" title="Elsewhere" line="contact" end>
-		<ul class="flex max-w-2xl list-none flex-wrap gap-3">
+		<ul class="flex max-w-2xl list-none flex-wrap gap-3 2xl:max-w-3xl">
 			{#each data.socials as social}
 				<li>
 					<a

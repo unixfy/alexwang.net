@@ -2,7 +2,9 @@
 	let { posts } = $props();
 </script>
 
-<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
+<ol
+	class="list-none grid gap-x-14 @5xl:grid-cols-2 [&>li]:border-b [&>li]:border-gray-300 dark:[&>li]:border-gray-700"
+>
 	{#each posts as post}
 		<li>
 			<a

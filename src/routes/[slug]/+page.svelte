@@ -72,7 +72,9 @@
 	</header>
 
 	<div class="station pr-6 md:pr-12 pb-16">
-		<div class="xl:grid xl:grid-cols-[minmax(0,70ch)_15rem] xl:gap-14">
+		<div
+			class="xl:grid xl:grid-cols-[minmax(0,70ch)_15rem] xl:gap-14 2xl:grid-cols-[minmax(0,max-content)_16rem] 2xl:gap-20"
+		>
 			<div>
 				{#if stops.length > 3}
 					<details class="collapse collapse-arrow mb-8 bg-base-200 xl:hidden">

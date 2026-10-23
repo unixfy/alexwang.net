@@ -181,6 +181,19 @@
 }
 
 @layer base {
+	/* Big displays are read from further back: everything is in rem, so the whole page scales with the screen */
+	@media (min-width: 100rem) {
+		html {
+			font-size: 112.5%;
+		}
+	}
+
+	@media (min-width: 137.5rem) {
+		html {
+			font-size: 125%;
+		}
+	}
+
 	body {
 		@apply text-gray-900 dark:text-white;
 	}
@@ -216,6 +229,26 @@
 
 	.ct {
 		@apply max-w-[1920px] mx-auto container;
+	}
+
+	/* The measure of a station's lists. It widens with the screen, never runs under a rail on its right
+	   (--rail), and is a query container, so a list inside can go to two or three columns once there is
+	   room for them (@5xl: and up) instead of stretching one row across the page. */
+	.wide {
+		container-type: inline-size;
+		max-width: min(56rem, 100%);
+	}
+
+	@media (min-width: 80rem) {
+		.wide {
+			max-width: min(64rem, 100%);
+		}
+	}
+
+	@media (min-width: 96rem) {
+		.wide {
+			max-width: min(96rem, 100%, calc(100vw - var(--content-x) - var(--rail, 0rem) - 4rem));
+		}
 	}
 
 	.page-content-container > h2 {
@@ -603,6 +636,51 @@ nav li.station:focus-within .station-ring {
 		width: calc(var(--content-x) - var(--trunk-x) - 1.25rem);
 		height: 0.3125rem;
 		background: var(--line);
+	}
+
+	/* On wide screens a CMS page reads as an annotated timeline: each station's name stands on the trunk
+	   in a column of its own, its text sits beside it, and what comes before the first station spans both.
+	   Nothing in the HTML changes; the grid places headings and everything else by element. */
+	@media (min-width: 96rem) {
+		.ride:has(> h2) {
+			display: grid;
+			grid-template-columns: minmax(11rem, 20rem) minmax(0, 74ch);
+			column-gap: 3.5rem;
+			--section-gap: 2.75rem;
+		}
+
+		.ride:has(> h2) > * {
+			grid-column: 2;
+		}
+
+		.ride:has(> h2) > :not(h2, h2 ~ *) {
+			grid-column: 1 / -1;
+			max-width: 74ch;
+		}
+
+		.ride:has(> h2) > h2 {
+			grid-column: 1;
+			padding-top: 0;
+			text-wrap: balance;
+		}
+
+		/* the heading and its first block share a row, so they share a top edge and a gap above. WordPress
+		   leaves hidden empty paragraphs after headings, so "first block" skips up to two of them. */
+		.ride:has(> h2) > h2,
+		.ride:has(> h2) > h2 + :not(:empty),
+		.ride:has(> h2) > h2 + :empty + :not(:empty),
+		.ride:has(> h2) > h2 + :empty + :empty + :not(:empty) {
+			margin-top: var(--section-gap);
+		}
+
+		.ride:has(> h2) > h2::before,
+		.ride:has(> h2) > h2::after {
+			top: 0.6em;
+		}
+
+		.ride:has(> h2) > :is(p, ul, ol, details) {
+			max-width: 74ch;
+		}
 	}
 
 	/* content types the CMS may use later, drawn in the line's own language */

@@ -16,7 +16,11 @@ export async function load({ fetch, params }) {
 		// the whole line, newest first, so the page knows its neighbours
 		directus
 			.request(
-				readItems('projects', { fields: ['slug', 'title', 'date'], sort: '-date', limit: -1 })
+				readItems('projects', {
+					fields: ['slug', 'title', 'date', 'image'],
+					sort: '-date',
+					limit: -1
+				})
 			)
 			.catch(() => [])
 	]);

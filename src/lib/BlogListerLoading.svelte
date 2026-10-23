@@ -1,4 +1,7 @@
-<div class="max-w-4xl divide-y divide-base-300" aria-hidden="true">
+<div
+	class="grid gap-x-14 @5xl:grid-cols-2 [&>div]:border-b [&>div]:border-base-300"
+	aria-hidden="true"
+>
 	{#each Array(4) as _}
 		<div class="flex gap-6 py-5">
 			<div

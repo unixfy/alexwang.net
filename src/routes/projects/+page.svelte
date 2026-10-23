@@ -29,7 +29,9 @@
 
 	{#each years as [yr, projects], i}
 		<Station id="y{yr}" title={yr} line={lines[i % 3]} end={i === years.length - 1}>
-			<ul class="grid max-w-6xl list-none gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
+			<ul
+				class="grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,20rem),30rem))] gap-x-8 gap-y-10 2xl:gap-x-10"
+			>
 				{#each projects as project}
 					<li>
 						<a
