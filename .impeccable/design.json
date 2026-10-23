@@ -1,47 +1,222 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-23T12:00:00Z",
+  "generatedAt": "2026-10-23T18:00:00Z",
   "title": "Design System: alexwang.net",
   "extensions": {
     "colorMeta": {
-      "brand-600": { "role": "primary", "displayName": "Trunk Purple", "canonical": "oklch(0.438 0.176 324.6)", "tonalRamp": ["oklch(0.18 0.06 324.6)", "oklch(0.24 0.09 324.6)", "oklch(0.3 0.12 324.6)", "oklch(0.37 0.15 324.6)", "oklch(0.438 0.176 324.6)", "oklch(0.55 0.18 324.6)", "oklch(0.7 0.15 324.6)", "oklch(0.82 0.1 324.6)"] },
-      "brand-300": { "role": "primary", "displayName": "Night Lilac", "canonical": "oklch(0.82 0.1 324.6)", "tonalRamp": ["oklch(0.3 0.12 324.6)", "oklch(0.55 0.18 324.6)", "oklch(0.7 0.15 324.6)", "oklch(0.82 0.1 324.6)", "oklch(0.9 0.06 324.6)", "oklch(0.95 0.03 324.6)", "oklch(0.975 0.012 324.6)"] },
-      "line-writing-day": { "role": "secondary", "displayName": "Writing Teal (day)", "canonical": "oklch(0.52 0.09 200)", "tonalRamp": ["oklch(0.52 0.09 200)", "oklch(0.78 0.09 200)"] },
-      "line-contact-day": { "role": "secondary", "displayName": "Contact Amber (day)", "canonical": "oklch(0.62 0.14 65)", "tonalRamp": ["oklch(0.62 0.14 65)", "oklch(0.8 0.14 75)"] },
-      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "oklch(0.985 0.004 324.6)", "tonalRamp": ["oklch(0.145 0.01 324.6)", "oklch(0.21 0.012 324.6)", "oklch(0.27 0.014 324.6)", "oklch(0.37 0.016 324.6)", "oklch(0.55 0.016 324.6)", "oklch(0.7 0.014 324.6)", "oklch(0.87 0.011 324.6)", "oklch(0.985 0.004 324.6)"] },
-      "night": { "role": "neutral", "displayName": "Night", "canonical": "oklch(0.145 0.01 324.6)", "tonalRamp": ["oklch(0.145 0.01 324.6)", "oklch(0.21 0.012 324.6)", "oklch(0.27 0.014 324.6)", "oklch(0.37 0.016 324.6)"] }
+      "brand-600": {
+        "role": "primary",
+        "displayName": "Trunk Purple",
+        "canonical": "oklch(0.438 0.176 324.6)",
+        "tonalRamp": [
+          "oklch(0.18 0.06 324.6)",
+          "oklch(0.24 0.09 324.6)",
+          "oklch(0.3 0.12 324.6)",
+          "oklch(0.37 0.15 324.6)",
+          "oklch(0.438 0.176 324.6)",
+          "oklch(0.55 0.18 324.6)",
+          "oklch(0.7 0.15 324.6)",
+          "oklch(0.82 0.1 324.6)"
+        ]
+      },
+      "brand-300": {
+        "role": "primary",
+        "displayName": "Night Lilac",
+        "canonical": "oklch(0.82 0.1 324.6)",
+        "tonalRamp": [
+          "oklch(0.3 0.12 324.6)",
+          "oklch(0.55 0.18 324.6)",
+          "oklch(0.7 0.15 324.6)",
+          "oklch(0.82 0.1 324.6)",
+          "oklch(0.9 0.06 324.6)",
+          "oklch(0.95 0.03 324.6)",
+          "oklch(0.975 0.012 324.6)"
+        ]
+      },
+      "line-writing-day": {
+        "role": "secondary",
+        "displayName": "Writing Teal (day)",
+        "canonical": "oklch(0.52 0.09 200)",
+        "tonalRamp": [
+          "oklch(0.52 0.09 200)",
+          "oklch(0.78 0.09 200)"
+        ]
+      },
+      "line-contact-day": {
+        "role": "secondary",
+        "displayName": "Contact Amber (day)",
+        "canonical": "oklch(0.62 0.14 65)",
+        "tonalRamp": [
+          "oklch(0.62 0.14 65)",
+          "oklch(0.8 0.14 75)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "oklch(0.985 0.004 324.6)",
+        "tonalRamp": [
+          "oklch(0.145 0.01 324.6)",
+          "oklch(0.21 0.012 324.6)",
+          "oklch(0.27 0.014 324.6)",
+          "oklch(0.37 0.016 324.6)",
+          "oklch(0.55 0.016 324.6)",
+          "oklch(0.7 0.014 324.6)",
+          "oklch(0.87 0.011 324.6)",
+          "oklch(0.985 0.004 324.6)"
+        ]
+      },
+      "night": {
+        "role": "neutral",
+        "displayName": "Night",
+        "canonical": "oklch(0.145 0.01 324.6)",
+        "tonalRamp": [
+          "oklch(0.145 0.01 324.6)",
+          "oklch(0.21 0.012 324.6)",
+          "oklch(0.27 0.014 324.6)",
+          "oklch(0.37 0.016 324.6)"
+        ]
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "The name on the home terminus only; Archivo at weight 800, width 118%." },
-      "title": { "displayName": "Title", "purpose": "Station headings and door labels; ring position derives from its size." },
-      "page": { "displayName": "Page", "purpose": "Interior page h1." },
-      "group": { "displayName": "Group", "purpose": "Sub-heads inside a station." },
-      "item": { "displayName": "Item", "purpose": "List titles for projects, posts and destinations." },
-      "lede": { "displayName": "Lede", "purpose": "The tagline under the name." },
-      "prose": { "displayName": "Prose", "purpose": "Long reading, 65ch max; opened up at night." },
-      "meta": { "displayName": "Meta", "purpose": "Dates and references." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "The name on the home terminus only; Archivo at weight 800, width 118%."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Station headings and door labels; ring position derives from its size."
+      },
+      "page": {
+        "displayName": "Page",
+        "purpose": "Interior page h1."
+      },
+      "group": {
+        "displayName": "Group",
+        "purpose": "Sub-heads inside a station."
+      },
+      "item": {
+        "displayName": "Item",
+        "purpose": "List titles for projects, posts and destinations."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "The tagline under the name."
+      },
+      "prose": {
+        "displayName": "Prose",
+        "purpose": "Long reading, 65ch max; opened up at night."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Dates and references."
+      }
     },
     "shadows": [
-      { "name": "none", "value": "none", "purpose": "The line-diagram surfaces are flat. Night depth comes from shader bloom on pulsing routes (0.35 strength at 7px sigma), not box-shadow." },
-      { "name": "legacy-card-drop", "value": "drop-shadow (Tailwind default)", "purpose": "Interior /projects cards only; carried by the build, not part of the line-diagram system." }
+      {
+        "name": "none",
+        "value": "none",
+        "purpose": "The line-diagram surfaces are flat. Night depth comes from shader bloom on pulsing routes (0.35 strength at 7px sigma), not box-shadow. The build carries no box-shadow or drop-shadow anywhere; interior edges are borders."
+      }
     ],
     "motion": [
-      { "name": "trunk-lit", "value": "clip-path inset from (0 0 calc(100% - 50vh) 0) to 0, linear, animation-timeline: scroll(root)", "purpose": "The lit trunk starts lit to mid-screen and the edge travels with the reader. Needs animation-timeline support and no-preference motion; otherwise the whole line is lit." },
-      { "name": "train-ride", "value": "top from 50vh to 100%, linear, scroll(root)", "purpose": "The vehicle rides the lit edge on the same scroll range as the trunk. display:none unless supported and motion allowed." },
-      { "name": "signature-wipe", "value": "clip-path inset(0 100% 0 0) to inset(0), linear, view() range entry 0% to entry 100%", "purpose": "Signature written left to right on entry; shown whole when motion is off." },
-      { "name": "ring-light", "value": "background-color 0.2s ease-out", "purpose": "A door lights its ring with the branch color on hover or focus-within; transition none under reduced motion." },
-      { "name": "arrow-nudge", "value": "transform translate 4px on group hover (down on doors, right on lists)", "purpose": "Affordance on rows; motion-reduce disables the transition." },
-      { "name": "theme-dissolve", "value": "view-transition root, 0.4s", "purpose": "Theme switch crossfades; skipped under reduced motion or without startViewTransition." },
-      { "name": "page-fade", "value": "svelte fade 200ms cubicOut, 0 under reduced motion", "purpose": "Route change." },
-      { "name": "smooth-scroll", "value": "html scroll-behavior: smooth (no-preference only)", "purpose": "Door jumps." },
-      { "name": "network-draw-in", "value": "2.4s, easeOutCubic (1-(1-x)^3); station rings appear staggered 0.05 per index", "purpose": "The WebGL map draws itself in on load; reduced motion starts at 1 (finished)." },
-      { "name": "network-pulses", "value": "two comet pulses per route, speeds 100 to 210 px/s, tail 70px, head 6px; bright core mixes toward white 75% at night, base*0.55 by day", "purpose": "Light travels the routes; uPulse is 0 under reduced motion." },
-      { "name": "network-lens", "value": "gaussian radius 150px, pull 0.38; stations grow up to 35% within 130px; parallax up to 7px x, 5px y; smoothing 0.18 / 0.08 / 0.06", "purpose": "Cursor bends nearby lines and enlarges stations. Disabled for coarse pointers and reduced motion." }
+      {
+        "name": "trunk-lit",
+        "value": "clip-path inset from (0 0 calc(100% - 50vh) 0) to 0, linear, animation-timeline: scroll(root)",
+        "purpose": "The lit trunk starts lit to mid-screen and the edge travels with the reader. Needs animation-timeline support and no-preference motion; otherwise the whole line is lit."
+      },
+      {
+        "name": "train-ride",
+        "value": "top from 50vh to 100%, linear, scroll(root)",
+        "purpose": "The vehicle rides the lit edge on the same scroll range as the trunk. display:none unless supported and motion allowed."
+      },
+      {
+        "name": "signature-wipe",
+        "value": "clip-path inset(0 100% 0 0) to inset(0), linear, view() range entry 0% to entry 100%",
+        "purpose": "Signature written left to right on entry; shown whole when motion is off."
+      },
+      {
+        "name": "ring-light",
+        "value": "background-color 0.2s ease-out",
+        "purpose": "A door lights its ring with the branch color on hover or focus-within; transition none under reduced motion."
+      },
+      {
+        "name": "arrow-nudge",
+        "value": "transform translate 4px on group hover (down on doors, right on lists)",
+        "purpose": "Affordance on rows; motion-reduce disables the transition."
+      },
+      {
+        "name": "theme-dissolve",
+        "value": "view-transition root, 0.4s",
+        "purpose": "Theme switch crossfades; skipped under reduced motion or without startViewTransition."
+      },
+      {
+        "name": "page-fade",
+        "value": "svelte fade 200ms cubicOut; 0 whenever view transitions are in use or motion is reduced",
+        "purpose": "Route change fallback where startViewTransition is missing."
+      },
+      {
+        "name": "smooth-scroll",
+        "value": "html scroll-behavior: smooth (no-preference only)",
+        "purpose": "Door jumps."
+      },
+      {
+        "name": "network-draw-in",
+        "value": "2.4s, easeOutCubic (1-(1-x)^3); station rings appear staggered 0.05 per index",
+        "purpose": "The WebGL map draws itself in on load; reduced motion starts at 1 (finished)."
+      },
+      {
+        "name": "network-pulses",
+        "value": "two comet pulses per route, speeds 100 to 210 px/s, tail 70px, head 6px; bright core mixes toward white 75% at night, base*0.55 by day",
+        "purpose": "Light travels the routes; uPulse is 0 under reduced motion."
+      },
+      {
+        "name": "network-lens",
+        "value": "gaussian radius 150px, pull 0.38; stations grow up to 35% within 130px; parallax up to 7px x, 5px y; smoothing 0.18 / 0.08 / 0.06",
+        "purpose": "Cursor bends nearby lines and enlarges stations. Disabled for coarse pointers and reduced motion."
+      },
+      {
+        "name": "page-view-transition",
+        "value": "onNavigate wraps client navigation in document.startViewTransition when supported and prefers-reduced-motion is not reduce; ::view-transition-group(*) 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Pages cross-fade and shared elements morph. Navbar theme switch uses its own transition (0.4s root)."
+      },
+      {
+        "name": "shared-image-morph",
+        "value": "view-transition-name: p-{slug} on the project image in the list and on the project page",
+        "purpose": "A project picture travels from its list tile to the project page. Tiles with no image have no name."
+      },
+      {
+        "name": "project-tile-hover",
+        "value": "filter transition 200ms, brightness 1.1 on group hover; none under reduced motion",
+        "purpose": "Affordance on project tiles, with title underline."
+      },
+      {
+        "name": "route-strip-current",
+        "value": "IntersectionObserver rootMargin -35% 0 -60% 0 on the page's h2s; sets aria-current=location on the matching stop",
+        "purpose": "Marks the stop nearest the reading position. Chevron of the small-screen disclosure rotates 180deg, transition off under reduced motion."
+      }
     ],
     "breakpoints": [
-      { "name": "md / trunk offset", "value": "48rem" },
-      { "name": "map narrow geometry", "value": "700px (canvas width)" },
-      { "name": "sm", "value": "640px" }
+      {
+        "name": "md / trunk offset",
+        "value": "48rem"
+      },
+      {
+        "name": "map narrow geometry",
+        "value": "700px (canvas width)"
+      },
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "xl (route strip aside, 3-up projects, CMS 70ch + 15rem grid)",
+        "value": "1280px"
+      },
+      {
+        "name": "lg (project image and text split)",
+        "value": "1024px"
+      }
     ],
     "webgl": {
       "api": "WebGL2, one fragment shader, fullscreen triangle, no library; premultiplied alpha, antialias off, powerPreference low-power",
@@ -60,7 +235,33 @@
       "skipLink": "sr-only until focus, then fixed top-left, brand-600 fill, white text"
     },
     "baseText": "body colour is set in the base layer: gray-900 by day, white at night (tinted ink, not the browser default)",
-    "darkMode": "html.dark class set by a pre-paint inline script in app.html from localStorage 'darkmode', falling back to prefers-color-scheme; Tailwind custom variant dark = .dark"
+    "darkMode": "html.dark class set by a pre-paint inline script in app.html from localStorage 'darkmode', falling back to prefers-color-scheme; Tailwind custom variant dark = .dark",
+    "interiorPages": {
+      "terminus": ".terminus-page: --pt 6.5rem (8rem from 48rem); --ring-top = --pt + --page-size/2; --page-size clamp(2rem, 1.5rem + 2vw, 3rem). Links page sets its own --pt/--av so the ring centres on the avatar (5rem, 7rem from sm).",
+      "endStation": "Station component with end: closing station covers the trunk below its ring. CMS 'Next stop' (next page or Projects) and project 'Keep riding' are line contact; projects list uses cycled colour on its last year.",
+      "colourCycle": "Stations cycle line-work, line-writing, line-contact by position (3n: work, 3n+2: writing, 3n: contact) for project years, link rows and CMS h2s.",
+      "projects": "Grouped by year, each year a station; grid 1 / 2 (sm) / 3 (xl) columns; tile = 16:9 image (width=1000 webp, lazy) + Item title, no chrome; gray placeholder block when no image; project page shows 'Stop N of M · year' and image + 65ch prose.",
+      "links": "Avatar (CMS serves the profile picture only at width 200, 600 or 1200; the page requests 200) is the terminus; rows are stations with --ring-top 50% and min-height 4rem; hover or focus-within fills the ring; socials are pills (min-height 3rem, 2px border) in the Elsewhere end station.",
+      "sshkey": "Ticket: 2px bordered rounded-2xl plate, key in bold mono with select-all, dashed divider with two 1.5rem ground-coloured notches, CopyButton; shows a plain message when the key is unavailable.",
+      "error": "404: bar, dashed gap, dashed ring (missing stop), 'This stop isn't on the line.'. Other statuses: two bars with a gap, 'Service interrupted.'. Decorative line is aria-hidden."
+    },
+    "behaviour": {
+      "routeStrip": "Built client-side from the CMS page's own h2s (ids assigned stop-N when missing). Shown only with more than 3 stops: sticky aside nav (aria-label 'Stops on this page') from xl, collapsible details below xl. Current stop gets aria-current=location, bold text and a filled ring. Without scripts there is no strip and the content is intact.",
+      "foldLists": "enhance.js foldLists: any ul/ol with more than 12 items keeps the first 8 and hides the rest (hidden attribute) behind a button.fold-toggle ('Show N more' / 'Show fewer', aria-expanded toggled, min-height 2.75rem, brand text underlined). Without scripts every item shows.",
+      "freshness": "localStorage seen:{slug} is compared with date_updated; if the stored value is older, a brand pill 'New since your last visit' shows beside the updated date. First visits and unavailable storage show nothing.",
+      "copyButton": "CopyButton: navigator.clipboard.writeText; label becomes 'Copied' for 1800ms; visually hidden suffix names what is copied; a separate role=status region announces '{what} copied'. If the clipboard fails the text stays selectable.",
+      "viewTransitions": "Layout skips the transition when reduced motion is on or startViewTransition is missing, and turns the 200ms fade off whenever transitions are used or motion is reduced.",
+      "progressiveEnhancement": "Route strip, list fold and freshness badge are enhancements only; CMS content renders whole and readable without scripts."
+    },
+    "cmsContent": {
+      "keying": "All CMS styling is keyed to semantic elements inside .page-content-container, so editors can rewrite pages freely without classes.",
+      "rhythm": ".page-content-container > * + * margin-top 1rem; li + li 0.35rem; ul padding-left 1.5rem; empty p/h2/h3 hidden; links brand-coloured and underlined.",
+      "h2Stations": ".ride > h2: ring (1.5rem, 5px border in --line, ground-filled) and 5px stub drawn with ::before / ::after at the h2, positioned left of the content column; --line cycles work / writing (3n+2) / contact (3n); weight 700, tracking -0.01em.",
+      "blockquote": "Plate: 0.5rem radius, 2px brand-600 border (brand-300 at night), Archivo, white ground (gray-900 at night).",
+      "hr": "3px dashed track in --line-work.",
+      "table": "Timetable: full width, collapsed borders, tabular numerals; th inverted (brand-600 fill with white text; brand-300 fill with gray-950 text at night), left aligned, 0.55rem 0.75rem padding; td has a gray-300 (gray-700 at night) bottom border.",
+      "figcaption": "text-sm, gray-600 (gray-300 at night)."
+    }
   },
   "components": [
     {
@@ -118,36 +319,93 @@
       "description": "Brand-filled call to action on interior pages (project link).",
       "html": "<a class=\"ds-cta\" href=\"#\">Visit project</a>",
       "css": ".ds-cta { display: block; text-align: center; padding: 16px; font-size: 1.25rem; border-radius: 0.5rem; background: oklch(0.438 0.176 324.6); color: #fff; text-decoration: none; transition: background-color 0.15s; } .ds-cta:hover { background: oklch(0.37 0.15 324.6); } .ds-cta:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Project tile",
+      "kind": "card",
+      "refersTo": "door-title",
+      "description": "Image plus Item title on the line; no card chrome.",
+      "html": "<a class=\"ds-tile\" href=\"#\"><div class=\"ds-tile-img\"></div><span class=\"ds-tile-t\">Project title</span></a>",
+      "css": ".ds-tile { display: block; text-decoration: none; color: oklch(0.21 0.012 324.6); } .ds-tile-img { aspect-ratio: 16 / 9; width: 100%; border-radius: 0.5rem; background: oklch(0.92 0.009 324.6); transition: filter 0.2s; } .ds-tile:hover .ds-tile-img { filter: brightness(1.1); } .ds-tile-t { display: block; margin-top: 0.75rem; font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 700; font-size: 1.375rem; line-height: 1.25; } .ds-tile:hover .ds-tile-t { text-decoration: underline; text-underline-offset: 4px; } .ds-tile:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Route stop",
+      "kind": "nav",
+      "refersTo": "station-ring",
+      "description": "One stop in a CMS page's route strip; the current stop is filled.",
+      "html": "<a class=\"ds-stop\" href=\"#\">Earlier work</a> <a class=\"ds-stop\" href=\"#\" aria-current=\"location\">This section</a>",
+      "css": ".ds-stop { position: relative; display: block; padding: 0.25rem 0 0.25rem 1.25rem; text-decoration: none; color: oklch(0.37 0.016 324.6); } .ds-stop::before { content: ''; position: absolute; left: 0; top: 0.6rem; width: 0.625rem; height: 0.625rem; border-radius: 999px; border: 2px solid oklch(0.438 0.176 324.6); box-sizing: border-box; } .ds-stop[aria-current='location'] { font-weight: 700; color: oklch(0.21 0.012 324.6); } .ds-stop[aria-current='location']::before { background: oklch(0.438 0.176 324.6); } .ds-stop:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ticket",
+      "kind": "custom",
+      "refersTo": "copy-button",
+      "description": "The SSH key page: perforated ticket with the key and a copy button.",
+      "html": "<div class=\"ds-ticket\"><div class=\"ds-ticket-b\"><h1>SSH key</h1><p>ssh-ed25519 AAAA...</p></div><div class=\"ds-ticket-f\"><span class=\"ds-notch ds-l\"></span><span class=\"ds-notch ds-r\"></span><span>Click the key to select all of it.</span><button class=\"ds-copy\" type=\"button\">Copy</button></div></div>",
+      "css": ".ds-ticket { position: relative; max-width: 40rem; border: 2px solid oklch(0.87 0.011 324.6); border-radius: 1rem; background: #fff; } .ds-ticket-b { padding: 2rem; } .ds-ticket-b h1 { margin: 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 700; font-size: 1.5rem; color: oklch(0.438 0.176 324.6); } .ds-ticket-b p { margin: 1rem 0 0; font-family: ui-monospace, monospace; font-weight: 700; font-size: 1.25rem; word-break: break-all; user-select: all; } .ds-ticket-f { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem 2rem; border-top: 2px dashed oklch(0.87 0.011 324.6); font-size: 0.875rem; color: oklch(0.46 0.016 324.6); } .ds-notch { position: absolute; top: -0.75rem; width: 1.5rem; height: 1.5rem; border-radius: 999px; background: oklch(0.985 0.004 324.6); border: 0 solid oklch(0.87 0.011 324.6); } .ds-l { left: -0.75rem; border-right-width: 2px; } .ds-r { right: -0.75rem; border-left-width: 2px; } .ds-copy { border: 1px solid oklch(0.7 0.014 324.6); border-radius: 0.25rem; padding: 2px 8px; font-size: 0.875rem; background: transparent; color: oklch(0.21 0.012 324.6); cursor: pointer; } .ds-copy:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
     }
   ],
   "narrative": {
     "northStar": "The Line Diagram",
-    "overview": "The site is one person's hub drawn as a Beck-style transit diagram. One purple trunk runs down the home page; every section is a station hung off it as a ring; the three doors (Work, Writing, Contact) are lines that continue into a living WebGL map behind the hero. By day it is ink on paper; by night it is a glowing map on near-black. Light and dark are equal citizens, switched by the .dark class on html.\n\nThe type is signage: Archivo Variable set expanded and heavy for the name, a tight heavy title for each station, Public Sans Variable for everything read. Every neutral shares the brand hue (324.6), so no gray is dead. Color is rationed: purple owns the trunk, links, focus and the name; teal and amber each belong to exactly one branch.\n\nThe home page is the full expression of the world. Interior pages share the tokens and type roles but are quieter, ordinary page layouts.",
+    "overview": "The site is one person's hub drawn as a Beck-style transit diagram. One purple trunk runs down the home page; every section is a station hung off it as a ring; the three doors (Work, Writing, Contact) are lines that continue into a living WebGL map behind the hero. By day it is ink on paper; by night it is a glowing map on near-black. Light and dark are equal citizens, switched by the .dark class on html.\n\nThe type is signage: Archivo Variable set expanded and heavy for the name, a tight heavy title for each station, Public Sans Variable for everything read. Every neutral shares the brand hue (324.6), so no gray is dead. Color is rationed: purple owns the trunk, links, focus and the name; teal and amber each belong to exactly one branch.\n\nThe home page is the full expression of the world, and the interior pages inherit it. Projects, project pages, CMS pages and links are more stops on the same line: the page heading is the terminus, section headings are stations, and the page ends at a closing station that points onward. They use the same trunk, rings and type roles but drop the map. Errors and the SSH key page are the exceptions: the error page is a line that runs out, and the SSH key is a ticket.\n\nCMS content styling is keyed to semantic elements (h2, blockquote, hr, table, figcaption), so editors can rewrite pages freely without classes. The route strip, the list fold and the freshness badge are progressive enhancements: without scripts the content is complete and intact.",
     "keyCharacteristics": [
       "One vertical trunk, stations as ringed nodes, content indented to a fixed content column.",
       "Octilinear geometry only in the map: 45 and 90 degree routes.",
       "Brand purple plus two branch hues; tinted neutrals.",
       "Flat surfaces, no elevation system; depth comes from the lit trunk, rings and the map's bloom at night.",
-      "Every motion has a still equivalent; the page is complete without WebGL2 or JavaScript."
+      "Every motion has a still equivalent; the page is complete without WebGL2 or JavaScript.",
+      "Interior pages ride the same line; CMS content is styled by its semantic elements, so editors can rewrite freely."
     ],
     "rules": [
-      { "name": "The Hue Rule", "body": "Every gray carries hue 324.6 at chroma 0.004 to 0.016. A neutral with no hue does not belong.", "section": "colors" },
-      { "name": "The One Line, One Color Rule", "body": "Teal means Writing and amber means Contact, everywhere. Branch hues are never used decoratively, and no fourth line color is added without a fourth door.", "section": "colors" },
-      { "name": "The Underline Rule", "body": "Links are brand-colored and always underlined; color is never the only cue.", "section": "colors" },
-      { "name": "The Signage Rule", "body": "Only Archivo carries wide, heavy, tight-tracked setting; and only the name uses the 118% width. Text never goes heavy-expanded.", "section": "typography" },
-      { "name": "The Role Rule", "body": "New text takes one of the named roles. Heading balance and prose pretty wrapping are on globally.", "section": "typography" },
-      { "name": "The Flat Line Rule", "body": "On the line-diagram surfaces, stations and rings are drawn with borders and fills, never shadows.", "section": "elevation" }
+      {
+        "name": "The Hue Rule",
+        "body": "Every gray carries hue 324.6 at chroma 0.004 to 0.016. A neutral with no hue does not belong.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Line, One Color Rule",
+        "body": "On the home page teal means Writing and amber means Contact. Branch hues are never used decoratively, and no fourth line color is added without a fourth door. On interior pages the same three hues cycle by station position (the Cycle Rule below), the one sanctioned departure.",
+        "section": "colors"
+      },
+      {
+        "name": "The Cycle Rule",
+        "body": "Down any interior page, successive stations take Work, Writing, Contact in turn (every third) and then repeat. The end station is Contact.",
+        "section": "colors"
+      },
+      {
+        "name": "The Underline Rule",
+        "body": "Links are brand-colored and always underlined; color is never the only cue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Signage Rule",
+        "body": "Only Archivo carries wide, heavy, tight-tracked setting; and only the name uses the 118% width. Text never goes heavy-expanded.",
+        "section": "typography"
+      },
+      {
+        "name": "The Role Rule",
+        "body": "New text takes one of the named roles. Heading balance and prose pretty wrapping are on globally.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Line Rule",
+        "body": "On the line-diagram surfaces, stations and rings are drawn with borders and fills, never shadows.",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "Do let brand-600 (brand-300 at night) own the trunk, links, name and focus.",
       "Do give any new branch a line color via --line and keep the ring, stub and underline in that color.",
       "Do give every effect a still equivalent: whole lit trunk, finished map frame, whole signature.",
       "Do keep light and dark equal: override colors in the .dark class, not by media query.",
-      "Do keep map fades behind type (data-calm regions go to about a tenth strength)."
+      "Do keep map fades behind type (data-calm regions go to about a tenth strength).",
+      "Do open every interior page on a terminus ring and close it on an end station.",
+      "Do style CMS content through semantic elements (h2, blockquote, table, hr), never per-page classes, and keep scripted enhancements optional so the content reads whole without scripts."
     ],
     "donts": [
       "Don't stack alternating colored bands, hero cards or grids of equal cards on the home page.",
       "Don't introduce neutrals without the brand hue.",
+      "Don't wrap interior project or link items in cards; they are rows or image-plus-title on the line.",
       "Don't use heavy expanded Archivo for running text.",
       "Don't add dependencies for an effect; the map is one shader.",
       "Don't put the direction contract or surface brief into any browser-delivered file."

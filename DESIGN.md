@@ -132,6 +132,9 @@ components:
     padding: '16px'
   cta-fill-hover:
     backgroundColor: '{colors.brand-700}'
+  cta-fill-night:
+    backgroundColor: '{colors.brand-300}'
+    textColor: '{colors.night}'
 ---
 
 # Design System: alexwang.net
@@ -144,7 +147,7 @@ The site is one person's hub drawn as a Beck-style transit diagram. One purple t
 
 The type is signage: Archivo Variable set expanded and heavy for the name, a tight heavy title for each station, Public Sans Variable for everything read. Every neutral shares the brand hue (324.6), so no gray is dead. Color is rationed: purple owns the trunk, links, focus and the name; teal and amber each belong to exactly one branch.
 
-The home page is the full expression of the world. Interior pages (projects, links, CMS pages, error) share the tokens and type roles but are quieter, ordinary page layouts.
+The home page is the full expression of the world, and the interior pages inherit it. Projects, project pages, CMS pages and links are more stops on the same line: the page heading is the terminus, section headings are stations, and the page ends at a closing station that points onward. They use the same trunk, rings and type roles but drop the map. Errors and the SSH key page are the exceptions: the error page is a line that runs out, and the SSH key is a ticket.
 
 **Key Characteristics:**
 
@@ -153,6 +156,7 @@ The home page is the full expression of the world. Interior pages (projects, lin
 - Brand purple plus two branch hues; tinted neutrals.
 - Flat surfaces, no elevation system; depth comes from the lit trunk, rings and the map's bloom at night.
 - Every motion has a still equivalent; the page is complete without WebGL2 or JavaScript.
+- Interior pages ride the same line; CMS content is styled by its semantic elements, so editors can rewrite freely.
 
 ## Colors
 
@@ -168,6 +172,8 @@ A purple trunk and ink-on-paper neutrals, with one teal and one amber branch. Br
 - **Writing Teal** (`--line-writing`: oklch(0.52 0.09 200) day, oklch(0.78 0.09 200) night): the Writing door, its station and its map route.
 - **Contact Amber** (`--line-contact`: oklch(0.62 0.14 65) day, oklch(0.8 0.14 75) night): the Contact door, its station and its map route.
 
+On interior pages the three line colours cycle (Work, Writing, Contact, repeat) down successive stations: project years, links, and the h2s of CMS content. There they mark position along the line, not a section; the closing end station is always Contact amber.
+
 ### Neutral
 
 - **Paper** (gray-50) and **Night** (gray-950): page grounds; ring centers and covers repaint with the ground.
@@ -180,7 +186,9 @@ A purple trunk and ink-on-paper neutrals, with one teal and one amber branch. Br
 
 **The Hue Rule.** Every gray carries hue 324.6 at chroma 0.004 to 0.016. A neutral with no hue does not belong.
 
-**The One Line, One Color Rule.** Teal means Writing and amber means Contact, everywhere. Branch hues are never used decoratively, and no fourth line color is added without a fourth door.
+**The One Line, One Color Rule.** On the home page teal means Writing and amber means Contact. Branch hues are never used decoratively, and no fourth line color is added without a fourth door. On interior pages the same three hues cycle by station position (the Cycle Rule below), the one sanctioned departure.
+
+**The Cycle Rule.** Down any interior page, successive stations take Work, Writing, Contact in turn (every third) and then repeat. The end station is Contact.
 
 **The Underline Rule.** Links are brand-colored and always underlined; color is never the only cue.
 
@@ -194,7 +202,7 @@ A purple trunk and ink-on-paper neutrals, with one teal and one amber branch. Br
 
 - **Display** (800, clamp(3.25rem, 1.5rem + 7vw, 6rem), 1.0, width 118%, -0.035em): the name on the home terminus only.
 - **Title** (700, clamp(1.875rem, 1.3rem + 2.2vw, 3rem), 1.0, -0.02em): each station heading and each door label. Ring position derives from this size.
-- **Page** (700, clamp(2rem, 1.5rem + 2vw, 3rem), 1.1): the h1 of interior pages.
+- **Page** (700, clamp(2rem, 1.5rem + 2vw, 3rem), 1.1): the h1 of interior pages, brand-coloured; the ring centres on it (`--page-size`).
 - **Group** (700, 1.5rem, 1.2): sub-heads inside a station (Certifications, Recognition).
 - **Item** (700, clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem), 1.25): list titles: projects, posts, destinations.
 - **Lede** (400 Archivo, clamp(1.25rem, 1rem + 1.2vw, 1.875rem), 1.3): the tagline.
@@ -209,7 +217,9 @@ A purple trunk and ink-on-paper neutrals, with one teal and one amber branch. Br
 
 ## Layout
 
-The home page is a single column offset by the trunk. `.line-page` is a relative box with the trunk as a 0.375rem pill at `--trunk-x` (1.5rem, 2.5rem from 48rem); content starts at `--content-x` (3.5rem, 6rem from 48rem). Stations pad 3.5rem top and bottom (5rem from 48rem); the terminus pads 6rem on top (8rem from 48rem). Station content is capped near 4xl (56rem) and the hero grid at 6xl; the portrait sits at the right on wide screens and above or below on narrow. Interior pages use the `.ct` container (max 1920px) and ordinary stacked bands and grids.
+The home page is a single column offset by the trunk. `.line-page` is a relative box with the trunk as a 0.375rem pill at `--trunk-x` (1.5rem, 2.5rem from 48rem); content starts at `--content-x` (3.5rem, 6rem from 48rem). Stations pad 3.5rem top and bottom (5rem from 48rem); the terminus pads 6rem on top (8rem from 48rem). Station content is capped near 4xl (56rem) and the hero grid at 6xl; the portrait sits at the right on wide screens and above or below on narrow. Interior pages (projects, a project, CMS pages, links) also sit on `.line-page`: the opener is `.terminus-page` (6.5rem top padding, 8rem from 48rem; ring centred on the Page-role heading), followed by stations and a closing `station-end`. Grids sit inside the station column: project cards are two columns from 640px and three from xl, a project is a 5:6 image and text split from lg, and a CMS page is a 70ch column plus a 15rem route strip from xl. The `.ct` container (max 1920px) remains for the navbar and footer. The SSH key page is a standalone centred ticket.
+
+CMS content (`.page-content-container`) gets an even 1rem vertical rhythm between blocks (0.35rem between list items), empty blocks are hidden, and links are brand-coloured and underlined. Each `h2` inside a `.ride` container becomes a station: ring and stub hang left of the content column in the cycling line colour.
 
 The trunk is hidden above the first station and below the last by ground-colored covers (`station-start`, `station-end`), so the line has real termini. The map is a canvas filling the hero and doors host; it is decorative and absolute behind the type. Below 700px the map's geometry changes: the door lines turn back into the free space beside the portrait instead of running right.
 
@@ -217,7 +227,7 @@ Spacing rhythm is Tailwind's 4px scale; lists are dividers, not cards.
 
 ## Elevation & Depth
 
-Flat. Surfaces are not lifted; there are no shadows on the home page. Depth is the lit trunk over the unlit trunk, ring covers, and, at night only, soft bloom on pulsing map routes. Photos dim slightly at night (brightness 0.9; 0.75 on interior cards). The one drop shadow in the codebase is on interior project cards (`drop-shadow`), a legacy of the older pages.
+Flat. Surfaces are not lifted; there are no shadows on the home page. Depth is the lit trunk over the unlit trunk, ring covers, and, at night only, soft bloom on pulsing map routes. Photos dim slightly at night (brightness 0.9). The build carries no shadows at all; project cards have no chrome, just image and title. The SSH ticket and CMS blockquotes get their edge from a border.
 
 ### Named Rules
 
@@ -225,7 +235,7 @@ Flat. Surfaces are not lifted; there are no shadows on the home page. Depth is t
 
 ## Shapes
 
-Rings are circles (1.5rem, 0.3125rem border in the line color, center filled with the page ground). Lines are pills (999px caps). Photography is softly rounded (rounded 4px for thumbnails, 1rem for the portrait, 0.5rem for interior cards). Interior links and CTA buttons use 0.5rem or full pills. The map is strictly octilinear: routes turn only at multiples of 45 degrees. Its station rings, interchanges included, are filled with the page ground colour (gray-50 / gray-950), not white.
+Rings are circles (1.5rem, 0.3125rem border in the line color, center filled with the page ground). Lines are pills (999px caps). Photography is softly rounded (rounded 4px for thumbnails, 1rem for the portrait, 0.5rem for project images, a full circle for the links avatar). Interior CTA buttons use 0.5rem; link pills are full pills with a 2px border. The missing stop on a 404 is a dashed ring; the SSH ticket is 1rem rounded with circular notches (1.5rem) at the ends of its dashed divider. The map is strictly octilinear: routes turn only at multiples of 45 degrees. Its station rings, interchanges included, are filled with the page ground colour (gray-50 / gray-950), not white.
 
 ## Components
 
@@ -247,11 +257,43 @@ Project, post and destination rows are dividers (gray-300 / gray-700) with a yea
 
 ### Navigation (interior and home)
 
-Gray pills (gray-200 / gray-700, 0.25rem radius, Archivo xl) fixed at the top right on wide screens; the current page is filled brand-600 (brand-300 with dark text at night). Under 48rem it is a full-width gray bar with a toggle. The theme switch crossfades through the view transition API over 0.4s.
+Gray pills (gray-200 / gray-700, 0.25rem radius, Archivo xl) fixed at the top right on wide screens; the current page is filled brand-600 (brand-300 with dark text at night). Under 48rem it is a full-width gray bar with a toggle. The theme switch crossfades through the view transition API over 0.4s. Page changes use a view transition too where supported (0.5s group timing, so shared images morph) and a 200ms fade otherwise; neither runs under reduced motion.
 
 ### Copy button
 
-Small outlined (1px gray-400 / gray-500), 0.25rem radius, label swaps to "Copied" with a polite status announcement.
+Shared component. Small outlined (1px gray-400 / gray-500), 0.25rem radius, label swaps to "Copied" for 1.8s with a polite live status region. Used for the email on the home page and the SSH key.
+
+### Interior terminus and end station
+
+Every interior page opens with the ring on the Page-role heading (`.terminus-page`) and closes on a `station-end` titled for where to go next: "Next stop" on CMS pages, "Keep riding" on projects (previous and next project, with year in meta), the last year on the projects list, "Elsewhere" on links. The closing station is Contact amber (on the projects list the last year takes its cycle colour).
+
+### Project list
+
+Projects are grouped by year; each year is a Title-role station cycling line colours. A project is a 16:9 image and an Item-role title, with no card chrome; hover underlines the title and brightens the image slightly. A project without an image shows a gray block of the same ratio. The list image and the project page image share a view-transition name so the picture travels between pages.
+
+### Project page
+
+Terminus title, meta line "Stop N of M · year" with a link to all projects, image beside 65ch of CMS prose, a brand-filled "View project" button (white text on brand-600 by day, dark text on brand-300 at night), and a published date.
+
+### CMS page
+
+The title is the terminus; each h2 is a station. A route strip lists the page's own h2s as small rings (sticky aside from xl, a collapsible "Stops on this page" disclosure below); the stop nearest the reading position is marked current. A returning visitor sees a brand pill, "New since your last visit", when the page changed since they last looked. Lists over 12 items keep 8 visible behind a "Show N more" toggle.
+
+### CMS content elements
+
+Styled by semantic element so editors need no classes: blockquote is a plate (0.5rem radius, 2px brand border, Archivo, raised ground); hr is a 3px dashed track in the Work colour; a table is a timetable (full width, tabular numerals, inverted header row in brand-600 with white text, brand-300 with dark text at night, hairline row dividers); figcaption is meta.
+
+### Links page
+
+The avatar is the terminus. Each link is a station row (ring centred on the row, line colour cycling); hover or focus fills its ring. Social links are bordered pills in the "Elsewhere" end station.
+
+### SSH key ticket
+
+A perforated ticket: bordered rounded plate, the key in bold monospace (select-all on click), a dashed divider with a notch at each end, and the Copy button.
+
+### Error page
+
+A line that runs out. A 404 shows a bar, a dashed gap, then a dashed ring: the stop that is not there. Any other error shows the bar broken in two by the gap. Headline in Page role, with links back to the start and to projects.
 
 ### Signature
 
@@ -266,11 +308,14 @@ The hand-written signature SVG closes the page and is written left to right as i
 - **Do** give every effect a still equivalent: whole lit trunk, finished map frame, whole signature.
 - **Do** keep light and dark equal: override colors in the `.dark` class, not by media query.
 - **Do** keep map fades behind type (data-calm regions go to about a tenth strength).
+- **Do** open every interior page on a terminus ring and close it on an end station.
+- **Do** style CMS content through semantic elements (`h2`, `blockquote`, `table`, `hr`), never per-page classes, and keep scripted enhancements optional so the content reads whole without scripts.
 
 ### Don't:
 
 - **Don't** stack alternating colored bands, hero cards or grids of equal cards on the home page.
 - **Don't** introduce neutrals without the brand hue.
+- **Don't** wrap interior project or link items in cards; they are rows or image-plus-title on the line.
 - **Don't** use heavy expanded Archivo for running text.
 - **Don't** add dependencies for an effect; the map is one shader.
 - **Don't** put the direction contract or surface brief into any browser-delivered file.
