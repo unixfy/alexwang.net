@@ -1,14 +1,14 @@
 <script>
 	import '../app.css';
 
-	import Footer from '$lib/Footer.svelte';
-	import Navbar from '$lib/Navbar.svelte';
+	import Footer from '#lib/Footer.svelte';
+	import Navbar from '#lib/Navbar.svelte';
 
 	import { fade } from 'svelte/transition';
 
-	import { browser, dev } from '$app/environment';
+	import { browser, dev } from '$app/env';
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { pwaInfo } from 'virtual:pwa-info';
 
 	let { data, children } = $props();
@@ -35,7 +35,7 @@
 </script>
 
 <svelte:head>
-	<title>{$page.error ? 'Error' : $page.data.title || 'Welcome'} | Alex Wang</title>
+	<title>{page.error ? 'Error' : page.data.title || 'Welcome'} | Alex Wang</title>
 	<meta name="description" content="Alex Wang's portfolio site" />
 	<link rel="apple-touch-icon" href="/favicon.png" sizes="512x512" />
 	<meta name="theme-color" content="#7E1F86" />
@@ -72,7 +72,7 @@
 <div class="min-h-screen dark:bg-black">
 	<Navbar />
 
-	{#key $page.url.pathname}
+	{#key page.url.pathname}
 		<div in:fade={{ duration: 300 }}>
 			{@render children()}
 		</div>

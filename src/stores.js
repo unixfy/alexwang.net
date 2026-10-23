@@ -3,7 +3,7 @@
 // Persists to localstorage
 
 import { writable } from "svelte/store";
-import { browser } from "$app/environment";
+import { browser } from "$app/env";
 
 const darkmodecalculator = function () {
     const store = writable(false)

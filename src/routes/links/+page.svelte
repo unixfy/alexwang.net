@@ -1,5 +1,5 @@
 <script>
-	import SocialGrid from '$lib/SocialGrid.svelte';
+	import SocialGrid from '#lib/SocialGrid.svelte';
 	export let data;
 </script>
 
