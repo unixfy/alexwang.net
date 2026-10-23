@@ -32,7 +32,6 @@ const SCALE = 64; // css px per world unit
 const TILT = 0.5; // radians toward the viewer
 const COS_TILT = Math.cos(TILT);
 const SHELF = -0.64; // how far below its label each platform sits (world units)
-const SPINE_PX = 42; // distance of the spine from the left edge of the rail
 
 const lerp = (/** @type {number} */ a, /** @type {number} */ b, /** @type {number} */ t) =>
 	a + (b - a) * t;
@@ -219,7 +218,9 @@ export function startTower(host, canvas, ids, lines, onActive) {
 			const r = a.getBoundingClientRect();
 			return (h / 2 - (r.top + r.height / 2 - hr.top)) / SCALE / COS_TILT;
 		});
-		tower.position.set((SPINE_PX - w / 2) / SCALE, 0, 0);
+		// the spine's distance from the rail's left edge is defined once, in the stylesheet (--spine-x)
+		const spinePx = parseFloat(getComputedStyle(host).getPropertyValue('--spine-x')) || 42;
+		tower.position.set((spinePx - w / 2) / SCALE, 0, 0);
 		stations.forEach((s, k) => s.g.position.set(0, ys[k] ?? 0, 0));
 
 		const top = (ys[0] ?? 0) + 1.2;

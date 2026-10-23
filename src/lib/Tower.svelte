@@ -66,6 +66,10 @@
 </div>
 
 <style>
+	.tower {
+		--spine-x: 42px;
+	}
+
 	.stop {
 		position: relative;
 		display: flex;
@@ -101,7 +105,7 @@
 	.tower:not(.ready) ol::before {
 		content: '';
 		position: absolute;
-		left: calc(42px - 3px);
+		left: calc(var(--spine-x) - 3px);
 		top: 1.5rem;
 		bottom: 1.5rem;
 		width: 6px;
@@ -115,7 +119,7 @@
 
 	.stop-dot {
 		position: absolute;
-		left: calc(42px - 11px);
+		left: calc(var(--spine-x) - 11px);
 		top: 50%;
 		translate: 0 -50%;
 		width: 22px;
