@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-23T18:00:00Z",
+  "generatedAt": "2026-10-23T20:00:00Z",
   "title": "Design System: alexwang.net",
   "extensions": {
     "colorMeta": {
@@ -116,7 +116,7 @@
       {
         "name": "none",
         "value": "none",
-        "purpose": "The line-diagram surfaces are flat. Night depth comes from shader bloom on pulsing routes (0.35 strength at 7px sigma), not box-shadow. The build carries no box-shadow or drop-shadow anywhere; interior edges are borders."
+        "purpose": "The line-diagram surfaces are flat. Night depth comes from shader bloom on pulsing routes (0.35 strength at 7px sigma), not box-shadow. The build carries no box-shadow or drop-shadow anywhere; interior edges are borders. daisyUI themes set --depth 0 and --noise 0, so buttons, alerts and menus are flat as well."
       }
     ],
     "motion": [
@@ -148,7 +148,7 @@
       {
         "name": "theme-dissolve",
         "value": "view-transition root, 0.4s",
-        "purpose": "Theme switch crossfades; skipped under reduced motion or without startViewTransition."
+        "purpose": "Theme switch crossfades; skipped under reduced motion or without startViewTransition. The sun/moon and burger/X swap-rotate icons are daisyUI swaps."
       },
       {
         "name": "page-fade",
@@ -192,8 +192,13 @@
       },
       {
         "name": "route-strip-current",
-        "value": "IntersectionObserver rootMargin -35% 0 -60% 0 on the page's h2s; sets aria-current=location on the matching stop",
-        "purpose": "Marks the stop nearest the reading position. Chevron of the small-screen disclosure rotates 180deg, transition off under reduced motion."
+        "value": "scroll listener (rAF-throttled, passive): the current stop is the last h2 whose top is above 45% of the viewport height, the first until then; sets aria-current=location on the matching menu link",
+        "purpose": "Marks the stop nearest the reading position as the active (brand purple) menu item. The small-screen collapse-arrow is drawn by daisyUI; no hand-made chevron."
+      },
+      {
+        "name": "copy-toast",
+        "value": "svelte fade 150ms on a daisyUI toast (toast-end toast-bottom, alert-success); Copied state lasts 1800ms",
+        "purpose": "Confirms a copy visibly; aria-hidden, the separate status region announces it."
       }
     ],
     "breakpoints": [
@@ -235,23 +240,26 @@
       "skipLink": "sr-only until focus, then fixed top-left, brand-600 fill, white text"
     },
     "baseText": "body colour is set in the base layer: gray-900 by day, white at night (tinted ink, not the browser default)",
-    "darkMode": "html.dark class set by a pre-paint inline script in app.html from localStorage 'darkmode', falling back to prefers-color-scheme; Tailwind custom variant dark = .dark",
+    "darkMode": "html.dark class and html[data-theme] ('line-night' dark, 'line' light) set together by a pre-paint inline script in app.html (from localStorage 'darkmode', falling back to prefers-color-scheme; light leaves data-theme unset so the default theme 'line' applies) and by the darkmode store in stores.js on every change; Tailwind custom variant dark = .dark",
     "interiorPages": {
       "terminus": ".terminus-page: --pt 6.5rem (8rem from 48rem); --ring-top = --pt + --page-size/2; --page-size clamp(2rem, 1.5rem + 2vw, 3rem). Links page sets its own --pt/--av so the ring centres on the avatar (5rem, 7rem from sm).",
       "endStation": "Station component with end: closing station covers the trunk below its ring. CMS 'Next stop' (next page or Projects) and project 'Keep riding' are line contact; projects list uses cycled colour on its last year.",
       "colourCycle": "Stations cycle line-work, line-writing, line-contact by position (3n: work, 3n+2: writing, 3n: contact) for project years, link rows and CMS h2s.",
-      "projects": "Grouped by year, each year a station; grid 1 / 2 (sm) / 3 (xl) columns; tile = 16:9 image (width=1000 webp, lazy) + Item title, no chrome; gray placeholder block when no image; project page shows 'Stop N of M · year' and image + 65ch prose.",
-      "links": "Avatar (CMS serves the profile picture only at width 200, 600 or 1200; the page requests 200) is the terminus; rows are stations with --ring-top 50% and min-height 4rem; hover or focus-within fills the ring; socials are pills (min-height 3rem, 2px border) in the Elsewhere end station.",
-      "sshkey": "Ticket: 2px bordered rounded-2xl plate, key in bold mono with select-all, dashed divider with two 1.5rem ground-coloured notches, CopyButton; shows a plain message when the key is unavailable.",
-      "error": "404: bar, dashed gap, dashed ring (missing stop), 'This stop isn't on the line.'. Other statuses: two bars with a gap, 'Service interrupted.'. Decorative line is aria-hidden."
+      "projects": "Grouped by year, each year a station; grid 1 / 2 (sm) / 3 (xl) columns; tile = 16:9 image (width=1000 webp, lazy) + Item title, no chrome; gray placeholder block when no image; project page shows 'Stop N of M' with a progress bar, then the year, and image + 65ch prose.",
+      "links": "Avatar (CMS serves the profile picture only at width 200, 600 or 1200; the page requests 200) is the terminus; rows are stations with --ring-top 50% and min-height 4rem; hover or focus-within fills the ring; socials are btn btn-soft btn-lg rounded-full pills (48px) in the Elsewhere end station.",
+      "sshkey": "Ticket: 2px bordered rounded-2xl plate, key in bold mono with select-all, dashed divider with two 1.5rem ground-coloured notches, CopyButton; shows an alert alert-warning when the key is unavailable.",
+      "error": "404: bar, dashed gap, dashed ring (missing stop), 'This stop isn't on the line.'. Other statuses: two bars with a gap, 'Service interrupted.'. Actions are btn btn-primary 'Back to the start' and btn btn-ghost 'Projects'. Decorative line is aria-hidden."
     },
     "behaviour": {
-      "routeStrip": "Built client-side from the CMS page's own h2s (ids assigned stop-N when missing). Shown only with more than 3 stops: sticky aside nav (aria-label 'Stops on this page') from xl, collapsible details below xl. Current stop gets aria-current=location, bold text and a filled ring. Without scripts there is no strip and the content is intact.",
-      "foldLists": "enhance.js foldLists: any ul/ol with more than 12 items keeps the first 8 and hides the rest (hidden attribute) behind a button.fold-toggle ('Show N more' / 'Show fewer', aria-expanded toggled, min-height 2.75rem, brand text underlined). Without scripts every item shows.",
-      "freshness": "localStorage seen:{slug} is compared with date_updated; if the stored value is older, a brand pill 'New since your last visit' shows beside the updated date. First visits and unavailable storage show nothing.",
-      "copyButton": "CopyButton: navigator.clipboard.writeText; label becomes 'Copied' for 1800ms; visually hidden suffix names what is copied; a separate role=status region announces '{what} copied'. If the clipboard fails the text stays selectable.",
+      "routeStrip": "Built client-side from the CMS page's own h2s (ids assigned stop-N when missing). Shown only with more than 3 stops: from xl a sticky aside nav (aria-label 'Stops on this page') holding a menu menu-lg; below xl a daisyUI collapse collapse-arrow (details/summary, base-200) around a menu menu-md. The current stop (scroll-spy: last h2 above 45% of the viewport, first by default) gets aria-current=location in the aside and renders as the active brand-purple menu item. Without scripts there is no strip and the content is intact.",
+      "foldLists": "enhance.js foldLists: any ul/ol with more than 12 items keeps the first 8 and hides the rest (hidden attribute) behind a button.btn.btn-link.btn-sm ('Show N more' / 'Show fewer', aria-expanded toggled). Without scripts every item shows.",
+      "freshness": "localStorage seen:{slug} is compared with date_updated; if the stored value is older, a daisyUI badge badge-primary 'New since your last visit' shows beside the updated date. First visits and unavailable storage show nothing.",
+      "copyButton": "CopyButton: navigator.clipboard.writeText; btn btn-outline btn-sm that gains btn-success and reads 'Copied' for 1800ms; a daisyUI toast (toast-end toast-bottom) with alert-success '{what} copied' fades in (aria-hidden); visually hidden suffix names what is copied; a separate role=status region announces '{what} copied'. If the clipboard fails the text stays selectable.",
       "viewTransitions": "Layout skips the transition when reduced motion is on or startViewTransition is missing, and turns the 200ms fade off whenever transitions are used or motion is reduced.",
-      "progressiveEnhancement": "Route strip, list fold and freshness badge are enhancements only; CMS content renders whole and readable without scripts."
+      "progressiveEnhancement": "Route strip, list fold and freshness badge are enhancements only; CMS content renders whole and readable without scripts. The phone menu is forced open without scripts.",
+      "navigation": "Navbar.svelte: desktop (md up) is a navbar with a menu-horizontal menu-lg list, current page via aria-current=page rendered as the active pill, and a btn-ghost btn-circle swap-rotate sun/moon toggle (aria-label Dark mode, aria-pressed). Phone is a bar on base-200 with a btn-ghost btn-square btn-lg swap-rotate burger/X (aria-label Menu, aria-expanded, aria-controls=mobile-menu) and a btn-lg theme toggle; the menu-lg list closes on Escape, on a pointerdown outside the nav, and when a link is chosen. Phone targets are 48px (btn-lg).",
+      "alertsAndSkeleton": "SSH key missing: alert alert-warning (role=alert). Home blog failure: alert alert-soft (role=status) with a btn btn-sm link. BlogListerLoading: skeleton blocks, animation off under reduced motion.",
+      "progress": "Project page 'Stop N of M' is paired with progress progress-primary (w-28, value N of M, aria-hidden: the text carries the meaning)."
     },
     "cmsContent": {
       "keying": "All CMS styling is keyed to semantic elements inside .page-content-container, so editors can rewrite pages freely without classes.",
@@ -261,6 +269,24 @@
       "hr": "3px dashed track in --line-work.",
       "table": "Timetable: full width, collapsed borders, tabular numerals; th inverted (brand-600 fill with white text; brand-300 fill with gray-950 text at night), left aligned, 0.55rem 0.75rem padding; td has a gray-300 (gray-700 at night) bottom border.",
       "figcaption": "text-sm, gray-600 (gray-300 at night)."
+    },
+    "daisyui": {
+      "role": "UI primitives come from daisyUI 5. The line-diagram pieces (trunk, stations, rings, terminus, ticket, error line, map) are bespoke and not daisyUI.",
+      "plugin": "@plugin 'daisyui' { themes: false; logs: false; include: properties, svg, scrollbar, rootcolor, button, navbar, menu, badge, collapse, swap, toast, alert, skeleton, progress; } in src/app.css. Add a component to the include list only when the site uses it.",
+      "themes": "Two @plugin 'daisyui/theme' blocks: 'line' (default, color-scheme light) and 'line-night' (dark). No stock theme is shipped. @theme static makes the brand and gray variables always exist so the themes can reference them.",
+      "themeToTokenMapping": {
+        "line": "base-100/200/300 = gray-50/100/200; base-content gray-900; primary brand-600 (content white); secondary oklch(0.52 0.09 200) teal; accent oklch(0.62 0.14 65) amber (content gray-950); neutral gray-900 (content gray-50); info brand-500; success = teal; warning = amber; error oklch(0.5 0.2 27)",
+        "line-night": "base-100/200/300 = gray-950/900/800; base-content white; primary brand-300 (content gray-950); secondary oklch(0.78 0.09 200); accent oklch(0.8 0.14 75); neutral gray-100 (content gray-950); info brand-400; success = night teal; warning = night amber; error oklch(0.7 0.17 25); all contents gray-950",
+        "shared": "radius-selector 0.25rem, radius-field 0.5rem, radius-box 0.75rem, size-selector 0.25rem, size-field 0.25rem, border 2px, depth 0, noise 0"
+      },
+      "derivation": "Brand and gray values are referenced by var(--color-brand-*) / var(--color-gray-*); the line hues are the same oklch values as --line-writing / --line-contact. A token change flows through to every primitive.",
+      "overrides": [
+        ".menu { --menu-active-bg: var(--color-primary); --menu-active-fg: var(--color-primary-content) } so the active menu item is brand purple, not neutral",
+        "Link rule uses :where(li:not(.menu li)) > a (with .link, p > a, .page-content-container a) so daisyUI buttons and menus are not repainted brand-underlined"
+      ],
+      "sizes": "btn-sm 2rem, btn-md 2.5rem, btn-lg 3rem (48px) from size-field 0.25rem",
+      "dataThemeMechanism": "See darkMode: .dark and data-theme change together in the pre-paint script and in the store.",
+      "noscript": "app.html forces .mobile-menu to display:flex under noscript so phone navigation stays reachable."
     }
   },
   "components": [
@@ -297,28 +323,28 @@
       "css": ".ds-row { display: flex; align-items: baseline; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid oklch(0.87 0.011 324.6); text-decoration: none; color: oklch(0.21 0.012 324.6); } .ds-row-y { width: 3.5rem; font-variant-numeric: tabular-nums; color: oklch(0.46 0.016 324.6); } .ds-row-t { font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 700; font-size: 1.375rem; line-height: 1.25; } .ds-row:hover .ds-row-t { text-decoration: underline; text-underline-offset: 4px; } .ds-row:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
     },
     {
-      "name": "Nav pill",
+      "name": "Nav item",
       "kind": "nav",
-      "refersTo": "nav-pill",
-      "description": "Top-right navigation pill; current page is filled brand purple.",
-      "html": "<a class=\"ds-pill\" href=\"#\">Projects</a> <a class=\"ds-pill ds-pill-cur\" href=\"#\" aria-current=\"page\">Home</a>",
-      "css": ".ds-pill { display: inline-block; padding: 8px 24px; border-radius: 0.25rem; background: #e5e7eb; color: oklch(0.21 0.012 324.6); font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 1.25rem; text-decoration: none; } .ds-pill:hover { background: #f3f4f6; } .ds-pill-cur { background: oklch(0.438 0.176 324.6); color: #fff; } .ds-pill:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+      "refersTo": "nav-item-current",
+      "description": "daisyUI menu item in the top-right navigation; the current page (aria-current=page) is the active pill in brand purple.",
+      "html": "<ul class=\"ds-menu\"><li><a class=\"ds-item\" href=\"#\">Projects</a></li> <li><a class=\"ds-item ds-item-cur\" href=\"#\" aria-current=\"page\">Home</a></li></ul>",
+      "css": ".ds-menu { display: flex; gap: 0.25rem; margin: 0; padding: 0; list-style: none; } .ds-item { display: block; padding: 0.5rem 1rem; border-radius: 0.25rem; color: oklch(0.21 0.012 324.6); font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 1.125rem; text-decoration: none; } .ds-item:hover { background: oklch(0.21 0.012 324.6 / 0.1); } .ds-item-cur { background: oklch(0.438 0.176 324.6); color: #fff; } .ds-item:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
     },
     {
       "name": "Copy button",
       "kind": "button",
       "refersTo": "copy-button",
-      "description": "Small outlined button beside the email address.",
-      "html": "<button class=\"ds-copy\" type=\"button\">Copy</button>",
-      "css": ".ds-copy { border: 1px solid oklch(0.7 0.014 324.6); border-radius: 0.25rem; padding: 2px 8px; font-size: 0.875rem; background: transparent; color: oklch(0.21 0.012 324.6); cursor: pointer; } .ds-copy:hover { background: oklch(0.92 0.009 324.6); } .ds-copy:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+      "description": "daisyUI btn-outline btn-sm; turns success teal and reads Copied.",
+      "html": "<button class=\"ds-copy\" type=\"button\">Copy</button> <button class=\"ds-copy ds-copy-done\" type=\"button\">Copied</button>",
+      "css": ".ds-copy { box-sizing: border-box; height: 2rem; padding: 0 0.75rem; border: 2px solid oklch(0.21 0.012 324.6); border-radius: 0.5rem; font-size: 0.875rem; background: transparent; color: oklch(0.21 0.012 324.6); cursor: pointer; } .ds-copy:hover { background: oklch(0.21 0.012 324.6); color: oklch(0.985 0.004 324.6); } .ds-copy-done { border-color: oklch(0.52 0.09 200); background: oklch(0.52 0.09 200); color: #fff; } .ds-copy:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
     },
     {
       "name": "Fill button",
       "kind": "button",
       "refersTo": "cta-fill",
-      "description": "Brand-filled call to action on interior pages (project link).",
-      "html": "<a class=\"ds-cta\" href=\"#\">Visit project</a>",
-      "css": ".ds-cta { display: block; text-align: center; padding: 16px; font-size: 1.25rem; border-radius: 0.5rem; background: oklch(0.438 0.176 324.6); color: #fff; text-decoration: none; transition: background-color 0.15s; } .ds-cta:hover { background: oklch(0.37 0.15 324.6); } .ds-cta:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+      "description": "daisyUI btn-primary btn-lg btn-block: the 'View project' call to action on project pages.",
+      "html": "<a class=\"ds-cta\" href=\"#\">View project</a>",
+      "css": ".ds-cta { display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-sizing: border-box; height: 3rem; padding: 0 1.5rem; font-size: 1.125rem; font-weight: 600; border: 2px solid oklch(0.438 0.176 324.6); border-radius: 0.5rem; background: oklch(0.438 0.176 324.6); color: #fff; text-decoration: none; transition: background-color 0.15s; } .ds-cta:hover { background: oklch(0.37 0.15 324.6); border-color: oklch(0.37 0.15 324.6); } .ds-cta:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
     },
     {
       "name": "Project tile",
@@ -332,26 +358,35 @@
       "name": "Route stop",
       "kind": "nav",
       "refersTo": "station-ring",
-      "description": "One stop in a CMS page's route strip; the current stop is filled.",
-      "html": "<a class=\"ds-stop\" href=\"#\">Earlier work</a> <a class=\"ds-stop\" href=\"#\" aria-current=\"location\">This section</a>",
-      "css": ".ds-stop { position: relative; display: block; padding: 0.25rem 0 0.25rem 1.25rem; text-decoration: none; color: oklch(0.37 0.016 324.6); } .ds-stop::before { content: ''; position: absolute; left: 0; top: 0.6rem; width: 0.625rem; height: 0.625rem; border-radius: 999px; border: 2px solid oklch(0.438 0.176 324.6); box-sizing: border-box; } .ds-stop[aria-current='location'] { font-weight: 700; color: oklch(0.21 0.012 324.6); } .ds-stop[aria-current='location']::before { background: oklch(0.438 0.176 324.6); } .ds-stop:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+      "description": "One stop in a CMS page's route strip, a daisyUI menu item; the current stop (aria-current=location) is the active brand-purple item.",
+      "html": "<ul class=\"ds-menu\"><li><a class=\"ds-stop\" href=\"#\">Earlier work</a></li> <li><a class=\"ds-stop ds-stop-cur\" href=\"#\" aria-current=\"location\">This section</a></li></ul>",
+      "css": ".ds-menu { margin: 0; padding: 0; list-style: none; } .ds-stop { display: block; padding: 0.5rem 0.75rem; border-radius: 0.25rem; text-decoration: none; color: oklch(0.21 0.012 324.6); font-size: 1.125rem; } .ds-stop:hover { background: oklch(0.21 0.012 324.6 / 0.1); } .ds-stop-cur { background: oklch(0.438 0.176 324.6); color: #fff; } .ds-stop:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
     },
     {
       "name": "Ticket",
       "kind": "custom",
       "refersTo": "copy-button",
-      "description": "The SSH key page: perforated ticket with the key and a copy button.",
+      "description": "The SSH key page: perforated ticket (bespoke) with the key and a daisyUI copy button.",
       "html": "<div class=\"ds-ticket\"><div class=\"ds-ticket-b\"><h1>SSH key</h1><p>ssh-ed25519 AAAA...</p></div><div class=\"ds-ticket-f\"><span class=\"ds-notch ds-l\"></span><span class=\"ds-notch ds-r\"></span><span>Click the key to select all of it.</span><button class=\"ds-copy\" type=\"button\">Copy</button></div></div>",
-      "css": ".ds-ticket { position: relative; max-width: 40rem; border: 2px solid oklch(0.87 0.011 324.6); border-radius: 1rem; background: #fff; } .ds-ticket-b { padding: 2rem; } .ds-ticket-b h1 { margin: 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 700; font-size: 1.5rem; color: oklch(0.438 0.176 324.6); } .ds-ticket-b p { margin: 1rem 0 0; font-family: ui-monospace, monospace; font-weight: 700; font-size: 1.25rem; word-break: break-all; user-select: all; } .ds-ticket-f { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem 2rem; border-top: 2px dashed oklch(0.87 0.011 324.6); font-size: 0.875rem; color: oklch(0.46 0.016 324.6); } .ds-notch { position: absolute; top: -0.75rem; width: 1.5rem; height: 1.5rem; border-radius: 999px; background: oklch(0.985 0.004 324.6); border: 0 solid oklch(0.87 0.011 324.6); } .ds-l { left: -0.75rem; border-right-width: 2px; } .ds-r { right: -0.75rem; border-left-width: 2px; } .ds-copy { border: 1px solid oklch(0.7 0.014 324.6); border-radius: 0.25rem; padding: 2px 8px; font-size: 0.875rem; background: transparent; color: oklch(0.21 0.012 324.6); cursor: pointer; } .ds-copy:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+      "css": ".ds-ticket { position: relative; max-width: 40rem; border: 2px solid oklch(0.87 0.011 324.6); border-radius: 1rem; background: #fff; } .ds-ticket-b { padding: 2rem; } .ds-ticket-b h1 { margin: 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 700; font-size: 1.5rem; color: oklch(0.438 0.176 324.6); } .ds-ticket-b p { margin: 1rem 0 0; font-family: ui-monospace, monospace; font-weight: 700; font-size: 1.25rem; word-break: break-all; user-select: all; } .ds-ticket-f { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem 2rem; border-top: 2px dashed oklch(0.87 0.011 324.6); font-size: 0.875rem; color: oklch(0.46 0.016 324.6); } .ds-notch { position: absolute; top: -0.75rem; width: 1.5rem; height: 1.5rem; border-radius: 999px; background: oklch(0.985 0.004 324.6); border: 0 solid oklch(0.87 0.011 324.6); } .ds-l { left: -0.75rem; border-right-width: 2px; } .ds-r { right: -0.75rem; border-left-width: 2px; } .ds-copy { box-sizing: border-box; height: 2rem; padding: 0 0.75rem; border: 2px solid oklch(0.21 0.012 324.6); border-radius: 0.5rem; font-size: 0.875rem; background: transparent; color: oklch(0.21 0.012 324.6); cursor: pointer; } .ds-copy:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "cta-fill",
+      "description": "daisyUI badge-primary: 'New since your last visit'.",
+      "html": "<span class=\"ds-badge\">New since your last visit</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; height: 1.5rem; padding: 0 0.5rem; border: 2px solid oklch(0.438 0.176 324.6); border-radius: 0.25rem; background: oklch(0.438 0.176 324.6); color: #fff; font-size: 0.875rem; }"
     }
   ],
   "narrative": {
     "northStar": "The Line Diagram",
-    "overview": "The site is one person's hub drawn as a Beck-style transit diagram. One purple trunk runs down the home page; every section is a station hung off it as a ring; the three doors (Work, Writing, Contact) are lines that continue into a living WebGL map behind the hero. By day it is ink on paper; by night it is a glowing map on near-black. Light and dark are equal citizens, switched by the .dark class on html.\n\nThe type is signage: Archivo Variable set expanded and heavy for the name, a tight heavy title for each station, Public Sans Variable for everything read. Every neutral shares the brand hue (324.6), so no gray is dead. Color is rationed: purple owns the trunk, links, focus and the name; teal and amber each belong to exactly one branch.\n\nThe home page is the full expression of the world, and the interior pages inherit it. Projects, project pages, CMS pages and links are more stops on the same line: the page heading is the terminus, section headings are stations, and the page ends at a closing station that points onward. They use the same trunk, rings and type roles but drop the map. Errors and the SSH key page are the exceptions: the error page is a line that runs out, and the SSH key is a ticket.\n\nCMS content styling is keyed to semantic elements (h2, blockquote, hr, table, figcaption), so editors can rewrite pages freely without classes. The route strip, the list fold and the freshness badge are progressive enhancements: without scripts the content is complete and intact.",
+    "overview": "The site is one person's hub drawn as a Beck-style transit diagram. One purple trunk runs down the home page; every section is a station hung off it as a ring; the three doors (Work, Writing, Contact) are lines that continue into a living WebGL map behind the hero. By day it is ink on paper; by night it is a glowing map on near-black. Light and dark are equal citizens, switched by the .dark class on html (which also sets the matching daisyUI theme).\n\nThe type is signage: Archivo Variable set expanded and heavy for the name, a tight heavy title for each station, Public Sans Variable for everything read. Every neutral shares the brand hue (324.6), so no gray is dead. Color is rationed: purple owns the trunk, links, focus and the name; teal and amber each belong to exactly one branch.\n\nThe home page is the full expression of the world, and the interior pages inherit it. Projects, project pages, CMS pages and links are more stops on the same line: the page heading is the terminus, section headings are stations, and the page ends at a closing station that points onward. They use the same trunk, rings and type roles but drop the map. Errors and the SSH key page are the exceptions: the error page is a line that runs out, and the SSH key is a ticket.\n\nUI primitives come from daisyUI 5: buttons, the navbar and menus, badge, collapse, swap, toast, alert, skeleton and progress. They are themed by two custom themes, line (day) and line-night, which are derived from the site's own tokens, so a token change flows straight through to every primitive. The primitives are flat (depth 0, no noise), drawn with 2px borders and tight radii. The line-diagram pieces (trunk, stations, rings, terminus, the SSH ticket, the error line) stay bespoke and are not daisyUI.\n\nCMS content styling is keyed to semantic elements (h2, blockquote, hr, table, figcaption), so editors can rewrite pages freely without classes. The route strip, the list fold and the freshness badge are progressive enhancements: without scripts the content is complete and intact.",
     "keyCharacteristics": [
       "One vertical trunk, stations as ringed nodes, content indented to a fixed content column.",
       "Octilinear geometry only in the map: 45 and 90 degree routes.",
       "Brand purple plus two branch hues; tinted neutrals.",
+      "UI primitives are daisyUI, themed from the site's tokens; the line-diagram pieces are hand-drawn.",
       "Flat surfaces, no elevation system; depth comes from the lit trunk, rings and the map's bloom at night.",
       "Every motion has a still equivalent; the page is complete without WebGL2 or JavaScript.",
       "Interior pages ride the same line; CMS content is styled by its semantic elements, so editors can rewrite freely."
@@ -374,7 +409,12 @@
       },
       {
         "name": "The Underline Rule",
-        "body": "Links are brand-colored and always underlined; color is never the only cue.",
+        "body": "Links are brand-colored and always underlined; color is never the only cue. Links inside daisyUI buttons and menus are not repainted; the link rule skips them.",
+        "section": "colors"
+      },
+      {
+        "name": "The Derived Theme Rule",
+        "body": "daisyUI colours come from the tokens by reference (var(--color-brand-*), var(--color-gray-*), the line hues), never from a copied value, and the stock themes are off.",
         "section": "colors"
       },
       {
@@ -400,15 +440,19 @@
       "Do keep light and dark equal: override colors in the .dark class, not by media query.",
       "Do keep map fades behind type (data-calm regions go to about a tenth strength).",
       "Do open every interior page on a terminus ring and close it on an end station.",
-      "Do style CMS content through semantic elements (h2, blockquote, table, hr), never per-page classes, and keep scripted enhancements optional so the content reads whole without scripts."
+      "Do style CMS content through semantic elements (h2, blockquote, table, hr), never per-page classes, and keep scripted enhancements optional so the content reads whole without scripts.",
+      "Do reach for a daisyUI primitive before hand-rolling one, and theme it from the tokens.",
+      "Do keep the daisyUI include list tight: add a component to it only when the site uses it."
     ],
     "donts": [
       "Don't stack alternating colored bands, hero cards or grids of equal cards on the home page.",
       "Don't introduce neutrals without the brand hue.",
       "Don't wrap interior project or link items in cards; they are rows or image-plus-title on the line.",
       "Don't use heavy expanded Archivo for running text.",
-      "Don't add dependencies for an effect; the map is one shader.",
-      "Don't put the direction contract or surface brief into any browser-delivered file."
+      "Don't add dependencies for an effect; the map is one shader. UI primitives are the exception that is already made: daisyUI, and only daisyUI.",
+      "Don't put the direction contract or surface brief into any browser-delivered file.",
+      "Don't ship a stock daisyUI theme or data-theme; only line and line-night.",
+      "Don't build the trunk, rings, terminus, ticket or error line from daisyUI, and don't hand-roll pills, toggles, chevrons, badges or alerts that a primitive already covers."
     ]
   }
 }
