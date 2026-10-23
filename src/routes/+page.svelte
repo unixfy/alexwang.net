@@ -2,6 +2,7 @@
 	import Station from '#lib/Station.svelte';
 	import BlogLister from '#lib/BlogLister.svelte';
 	import BlogListerLoading from '#lib/BlogListerLoading.svelte';
+	import Network from '#lib/Network.svelte';
 	import { year, monthYear } from '#lib/date.js';
 
 	let { data } = $props();
@@ -39,62 +40,71 @@
 
 <div class="line-page bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
 	<span class="train" aria-hidden="true"></span>
-	<!-- Terminus: who this is -->
-	<header class="station station-start terminus pb-10 pr-6 md:pr-12">
-		<span class="station-ring" aria-hidden="true"></span>
-		<div class="grid md:grid-cols-[1fr_auto] gap-8 md:gap-16 items-start max-w-6xl">
-			<div>
-				<h1 class="t-display text-brand-600 dark:text-brand-300">Alex Wang</h1>
-				<p class="t-lede mt-6 max-w-xl">I’m obsessed with mobility, technology, and solutions.</p>
+	<Network>
+		<!-- Terminus: who this is -->
+		<header class="station station-start terminus pb-10 pr-6 md:pr-12">
+			<span class="station-ring" aria-hidden="true"></span>
+			<div class="grid md:grid-cols-[1fr_auto] gap-8 md:gap-16 items-start max-w-6xl">
+				<div data-calm>
+					<h1 class="t-display text-brand-600 dark:text-brand-300">Alex Wang</h1>
+					<p class="t-lede mt-6 max-w-xl">I’m obsessed with mobility, technology, and solutions.</p>
+				</div>
+				{#if hasPhoto}
+					<img
+						src="{cms}/{data.config.links_profile_picture}?format=webp&width=800"
+						alt="Alex Wang"
+						class="aspect-square w-40 sm:w-56 md:w-72 rounded-2xl object-cover bg-gray-200 dark:bg-gray-800 dark:brightness-90 md:order-last"
+					/>
+				{/if}
 			</div>
-			{#if hasPhoto}
-				<img
-					src="{cms}/{data.config.links_profile_picture}?format=webp&width=800"
-					alt="Alex Wang"
-					class="aspect-square w-40 sm:w-56 md:w-72 rounded-2xl object-cover bg-gray-200 dark:bg-gray-800 dark:brightness-90 md:order-last"
-				/>
-			{/if}
-		</div>
-	</header>
+		</header>
 
-	<!-- Junction: three doors, one branch each -->
-	<nav aria-label="Sections" class="pb-6">
-		<ol class="list-none">
-			{#each doors as door}
-				<li class="station pr-6 md:pr-12" style="--ring-top: 50%; --line: var(--line-{door.line})">
-					<span class="station-ring" aria-hidden="true"></span>
-					<a
-						href={door.href}
-						class="group flex flex-wrap items-baseline gap-x-6 gap-y-1 py-5 md:py-6 max-w-4xl no-underline text-gray-900 dark:text-white hover:text-gray-900 dark:hover:text-white"
+		<!-- Junction: three doors, one branch each -->
+		<nav aria-label="Sections" class="pb-24">
+			<ol class="list-none">
+				{#each doors as door}
+					<li
+						class="station pr-6 md:pr-12"
+						style="--ring-top: 50%; --line: var(--line-{door.line})"
 					>
-						<span
-							class="t-title group-hover:underline decoration-[var(--line)] decoration-4 underline-offset-8"
-							>{door.label}</span
+						<span class="station-ring" aria-hidden="true"></span>
+						<a
+							href={door.href}
+							class="group flex items-baseline gap-x-6 py-5 md:py-6 max-w-4xl no-underline text-gray-900 dark:text-white hover:text-gray-900 dark:hover:text-white"
 						>
-						<span class="text-gray-700 dark:text-gray-300 md:text-lg">
-							{#if door.line === 'work'}
-								{#if latest}Latest: {latest.title}, {year(latest.date)}{:else}Selected projects{/if}
-							{:else if door.line === 'writing'}
-								{#await data.posts}
-									Latest posts from the blog
-								{:then posts}
-									{#if posts[0]}Latest: {@html posts[0].title.rendered}{:else}Posts from the blog{/if}
-								{:catch}
-									Posts from the blog
-								{/await}
-							{:else}
-								Email, LinkedIn and elsewhere
-							{/if}
-						</span>
-						<i
-							class="fa-solid fa-arrow-down ml-auto text-gray-500 dark:text-gray-400 transition-transform motion-reduce:transition-none group-hover:translate-y-1"
-							aria-hidden="true"
-						></i>
-					</a>
-				</li>
-			{/each}
-		</ol>
-	</nav>
+							<span data-calm class="flex flex-wrap items-baseline gap-x-6 gap-y-1">
+								<span
+									class="t-title group-hover:underline decoration-[var(--line)] decoration-4 underline-offset-8"
+									>{door.label}</span
+								>
+								<span class="text-gray-700 dark:text-gray-300 md:text-lg">
+									{#if door.line === 'work'}
+										{#if latest}Latest: {latest.title}, {year(latest.date)}{:else}Selected projects{/if}
+									{:else if door.line === 'writing'}
+										{#await data.posts}
+											Latest posts from the blog
+										{:then posts}
+											{#if posts[0]}Latest: {@html posts[0].title.rendered}{:else}Posts from the
+												blog{/if}
+										{:catch}
+											Posts from the blog
+										{/await}
+									{:else}
+										Email, LinkedIn and elsewhere
+									{/if}
+								</span>
+							</span>
+							<i
+								data-route-start={door.line}
+								class="fa-solid fa-arrow-down ml-auto text-gray-500 dark:text-gray-400 transition-transform motion-reduce:transition-none group-hover:translate-y-1"
+								aria-hidden="true"
+							></i>
+						</a>
+					</li>
+				{/each}
+			</ol>
+		</nav>
+	</Network>
 
 	{#if data.config.homepage_welcome_text}
 		<Station id="about" title="About">

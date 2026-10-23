@@ -2,17 +2,31 @@
 
 @import 'tailwindcss';
 
-@import '@fontsource/ibm-plex-sans/latin-400.css';
-@import '@fontsource/ibm-plex-sans/latin-700.css';
+/* Latin subset only: the two variable files cover every weight and width the site uses */
+@font-face {
+	font-family: 'Archivo Variable';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 100 900;
+	font-stretch: 62% 125%;
+	src: url('@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2')
+		format('woff2-variations');
+}
 
-@import '@fontsource/space-grotesk/latin-400.css';
-@import '@fontsource/space-grotesk/latin-700.css';
+@font-face {
+	font-family: 'Public Sans Variable';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 100 900;
+	src: url('@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2')
+		format('woff2-variations');
+}
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-	--font-sans: 'IBM Plex Sans', sans-serif;
-	--font-display: 'Space Grotesk', sans-serif;
+	--font-sans: 'Public Sans Variable', ui-sans-serif, system-ui, sans-serif;
+	--font-display: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
 
 	/* Brand: #7E1F86 is brand-600. Hue is shared by every neutral, so nothing reads as dead gray. */
 	--color-brand-50: oklch(0.975 0.012 324.6);
@@ -161,9 +175,10 @@
 
 	.t-display {
 		font-size: var(--display-size);
-		font-weight: 700;
+		font-weight: 800;
+		font-stretch: 118%;
 		line-height: 1;
-		letter-spacing: -0.03em;
+		letter-spacing: -0.035em;
 	}
 
 	.t-title {
@@ -239,11 +254,19 @@
 	}
 
 	.line-page::before {
-		@apply bg-gray-300 dark:bg-gray-700;
+		@apply bg-gray-300;
 	}
 
 	.line-page::after {
-		@apply bg-brand-600 dark:bg-brand-300;
+		@apply bg-brand-600;
+	}
+
+	.dark .line-page::before {
+		@apply bg-gray-700;
+	}
+
+	.dark .line-page::after {
+		@apply bg-brand-300;
 	}
 
 	.station {
@@ -294,7 +317,12 @@
 		translate: -50% 0;
 		width: 1rem;
 		z-index: 1;
-		@apply bg-gray-50 dark:bg-gray-950;
+		@apply bg-gray-50;
+	}
+
+	.dark .station-start::before,
+	.dark .station-end::before {
+		@apply bg-gray-950;
 	}
 
 	.station-start::before {

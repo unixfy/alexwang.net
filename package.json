@@ -13,8 +13,6 @@
 	},
 	"devDependencies": {
 		"@directus/sdk": "^27.0.0",
-		"@fontsource/ibm-plex-sans": "^5.3.0",
-		"@fontsource/space-grotesk": "^5.3.0",
 		"@fortawesome/fontawesome-free": "^7.3.1",
 		"@sveltejs/adapter-cloudflare": "^8.0.1",
 		"@sveltejs/kit": "^3.1.0",
@@ -37,5 +35,9 @@
 	"imports": {
 		"#lib": "./src/lib",
 		"#lib/*": "./src/lib/*"
+	},
+	"dependencies": {
+		"@fontsource-variable/archivo": "^5.3.0",
+		"@fontsource-variable/public-sans": "^5.3.0"
 	}
 }
