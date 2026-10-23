@@ -6,8 +6,8 @@
 
 <div class="bg-gray-100 dark:bg-gray-800 dark:text-white text-center min-h-[33vh] flex">
 	<div class="m-auto p-16">
-		<h1 class="t-page mb-4">Portfolio</h1>
-		<h2 class="text-2xl">Some cool things I've done</h2>
+		<h1 class="t-page mb-4">Projects</h1>
+		<p class="t-lede">Some cool things I’ve done</p>
 	</div>
 </div>
 
@@ -16,32 +16,18 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each data.projects as project}
 				<div
-					class="transition-colors flex-none drop-shadow rounded-lg bg-white hover:bg-gray-100 text-black dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800"
+					class="transition-colors flex-none drop-shadow rounded-lg bg-white hover:bg-gray-100 text-black dark:text-white dark:bg-gray-900 dark:hover:bg-gray-800"
 				>
 					<a href="/project/{project.slug}">
-						<div class="flex flex-col">
-							<img
-								class="object-cover rounded-t-lg max-h-1/2 dark:brightness-75 aspect-video"
-								src="//cms.alexwang.net/assets/{project.image}?format=webp&width=1000"
-								alt="Image for project {project.title}"
-							/>
-							<div class="p-4">
-								<div
-									class="text-lg md:text-xl lg:text-2xl my-2 font-bold font-display text-center"
-								>
-									<p>{project.title}</p>
-								</div>
-								<div class="text-sm text-center italic">
-									<p>{year(project.date)}</p>
-								</div>
-								<!-- <div class="text-lg">
-									<p>
-										Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
-										corrupti vel quisquam id itaque nam
-									</p>
-								</div> -->
-								<!-- Note that I don't have descriptions in the page metadata so we aren't using this -->
-							</div>
+						<img
+							class="object-cover rounded-t-lg dark:brightness-75 aspect-video w-full"
+							src="//cms.alexwang.net/assets/{project.image}?format=webp&width=1000"
+							alt=""
+							loading="lazy"
+						/>
+						<div class="p-4 text-center">
+							<p class="t-item my-2">{project.title}</p>
+							<p class="t-meta tabular-nums">{year(project.date)}</p>
 						</div>
 					</a>
 				</div>

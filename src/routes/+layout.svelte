@@ -14,6 +14,8 @@
 
 	let { data, children } = $props();
 
+	const pageTitle = $derived(page.error ? 'Error' : page.data.title || 'Welcome');
+
 	const calm = browser && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 	onMount(async () => {
@@ -24,13 +26,11 @@
 				onRegistered(r) {
 					r &&
 						setInterval(() => {
-							console.log('Checking for sw update');
 							r.update();
 						}, 3600000);
-					console.log(`SW Registered: ${r}`);
 				},
 				onRegisterError(error) {
-					console.log('SW registration error', error);
+					console.error('SW registration error', error);
 				}
 			});
 		}
@@ -38,24 +38,17 @@
 </script>
 
 <svelte:head>
-	<title>{page.error ? 'Error' : page.data.title || 'Welcome'} | Alex Wang</title>
+	<title>{pageTitle} | Alex Wang</title>
 	<meta name="description" content="Alex Wang's portfolio site" />
 	<link rel="apple-touch-icon" href="/favicon.png" sizes="512x512" />
 	<meta name="theme-color" content="#7E1F86" />
 
-	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://alexwang.net/" />
-	<meta property="og:title" content="Alex Wang" />
+	<meta property="og:url" content="https://alexwang.net{page.url.pathname}" />
+	<meta property="og:title" content="{pageTitle} | Alex Wang" />
 	<meta property="og:description" content="Alex Wang's portfolio site" />
-	<meta property="og:image" content="/favicon.png" />
-
-	<!-- Twitter -->
-	<meta property="twitter:card" content="summary" />
-	<meta property="twitter:url" content="https://alexwang.net/" />
-	<meta property="twitter:title" content="Alex Wang" />
-	<meta property="twitter:description" content="Alex Wang's portfolio site" />
-	<meta property="twitter:image" content="/favicon.png" />
+	<meta property="og:image" content="https://alexwang.net/favicon.png" />
+	<meta name="twitter:card" content="summary" />
 
 	{#if !dev && browser}
 		<link rel="manifest" href="/manifest.webmanifest" />
@@ -63,9 +56,9 @@
 </svelte:head>
 
 {#if data.config.banner_enabled}
-	<div class="dark:bg-gray-700 dark:text-white bg-slate-300 p-6">
+	<div class="dark:bg-gray-700 dark:text-white bg-gray-300 p-6">
 		<div class="ct">
-			<p class="text-md">
+			<p>
 				{@html data.config.banner_content}
 			</p>
 		</div>
@@ -78,7 +71,7 @@
 	>Skip to content</a
 >
 
-<div class="min-h-screen dark:bg-gray-950">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-950">
 	<Navbar />
 
 	<main id="main">

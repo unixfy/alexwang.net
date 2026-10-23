@@ -8,7 +8,9 @@
 	<div class="m-auto p-16">
 		<h1 class="t-page my-4">Project: {data.project.title}</h1>
 		<p class="text-xl">
-			<a href="/projects"><i class="fas fa-arrow-left"></i> Return to all projects</a>
+			<a href="/projects"
+				><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all projects</a
+			>
 		</p>
 	</div>
 </div>
@@ -19,7 +21,7 @@
 			<div>
 				<img
 					src="//cms.alexwang.net/assets/{data.project.image}?format=webp"
-					alt="Image for project {data.project.title}"
+					alt=""
 					class="rounded-lg dark:brightness-75"
 				/>
 				{#if data.project.url}
@@ -34,9 +36,9 @@
 				{/if}
 			</div>
 			<div class="text-lg space-y-6">
-                <div class="page-content-container">
-                    {@html data.project.content_html}
-                </div>
+				<div class="page-content-container">
+					{@html data.project.content_html}
+				</div>
 				<hr class="my-4" />
 				<p class="text-sm italic">Published {fullDate(data.project.date)}</p>
 			</div>

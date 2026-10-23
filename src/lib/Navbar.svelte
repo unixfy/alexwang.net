@@ -14,7 +14,9 @@
 	];
 
 	const current = (/** @type {string} */ href) =>
-		(href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(href)) ? 'page' : undefined;
+		(href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(href))
+			? 'page'
+			: undefined;
 
 	const toggleDarkMode = () => {
 		const flip = () => ($darkmode = !$darkmode);
@@ -40,7 +42,7 @@
 			{#each links as { href, label }}
 				<a {href} aria-current={current(href)} class="group no-underline">
 					<span
-						class="bg-gray-200 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white group-aria-[current=page]:bg-brand-600 group-aria-[current=page]:text-white dark:group-aria-[current=page]:bg-brand-300 dark:group-aria-[current=page]:text-gray-950 rounded py-2 px-6"
+						class="bg-gray-200 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white group-aria-[current=page]:bg-brand-600 group-aria-[current=page]:text-white dark:group-aria-[current=page]:bg-brand-300 dark:group-aria-[current=page]:text-gray-950 rounded py-2 px-6"
 						>{label}</span
 					>
 				</a>
@@ -49,28 +51,43 @@
 				type="button"
 				aria-label="Dark mode"
 				aria-pressed={$darkmode}
-				class="bg-gray-200 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white rounded py-2 px-4 hover:cursor-pointer"
+				class="bg-gray-200 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white rounded py-2 px-4 hover:cursor-pointer"
 				onclick={toggleDarkMode}><i class="fa-solid {$darkmode ? 'fa-sun' : 'fa-moon'}"></i></button
 			>
 		</div>
 	</div>
-	<div class="block md:hidden w-screen bg-gray-200 dark:bg-slate-700 dark:text-white py-3 px-6">
+	<div class="block md:hidden w-full bg-gray-200 dark:bg-gray-700 dark:text-white py-3 px-6">
 		<div class="flex justify-between h-full w-full">
 			<button
 				type="button"
 				aria-label="Toggle menu"
+				class="p-2 -m-2"
 				aria-expanded={mobilemenu}
 				onclick={toggleMobileMenu}
 			>
 				<i class="fa-solid {mobilemenu ? 'fa-xmark' : 'fa-bars'} fa-2x"></i>
 			</button>
-			<button type="button" aria-label="Dark mode" aria-pressed={$darkmode} onclick={toggleDarkMode}>
+			<button
+				type="button"
+				aria-label="Dark mode"
+				aria-pressed={$darkmode}
+				class="p-2 -m-2"
+				onclick={toggleDarkMode}
+			>
 				<i class="fa-solid {$darkmode ? 'fa-sun' : 'fa-moon'} fa-2x"></i>
 			</button>
 		</div>
-		<div class:hidden={!mobilemenu} class="mobile-menu bg-gray-200 dark:bg-slate-700 dark:text-white pt-2">
+		<div
+			class:hidden={!mobilemenu}
+			class="mobile-menu bg-gray-200 dark:bg-gray-700 dark:text-white pt-2"
+		>
 			{#each links as { href, label }}
-				<a {href} aria-current={current(href)} class="block py-3 aria-[current=page]:font-bold" onclick={toggleMobileMenu}>{label}</a>
+				<a
+					{href}
+					aria-current={current(href)}
+					class="block py-3 aria-[current=page]:font-bold"
+					onclick={toggleMobileMenu}>{label}</a
+				>
 			{/each}
 		</div>
 	</div>

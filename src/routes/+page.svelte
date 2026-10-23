@@ -40,20 +40,12 @@
 <div class="line-page bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
 	<span class="train" aria-hidden="true"></span>
 	<!-- Terminus: who this is -->
-	<header
-		class="station station-start terminus pb-10 pr-6 md:pr-12"
-	>
+	<header class="station station-start terminus pb-10 pr-6 md:pr-12">
 		<span class="station-ring" aria-hidden="true"></span>
 		<div class="grid md:grid-cols-[1fr_auto] gap-8 md:gap-16 items-start max-w-6xl">
 			<div>
-				<h1
-					class="t-display text-brand-600 dark:text-brand-300"
-				>
-					Alex Wang
-				</h1>
-				<p class="t-lede mt-6 max-w-xl">
-					I’m obsessed with mobility, technology, and solutions.
-				</p>
+				<h1 class="t-display text-brand-600 dark:text-brand-300">Alex Wang</h1>
+				<p class="t-lede mt-6 max-w-xl">I’m obsessed with mobility, technology, and solutions.</p>
 			</div>
 			{#if hasPhoto}
 				<img
@@ -105,13 +97,11 @@
 	</nav>
 
 	{#if data.config.homepage_welcome_text}
-	<Station id="about" title="About">
-		<div
-			class="t-prose space-y-5 [&_strong]:font-bold"
-		>
-			{@html data.config.homepage_welcome_text}
-		</div>
-	</Station>
+		<Station id="about" title="About">
+			<div class="t-prose space-y-5 [&_strong]:font-bold">
+				{@html data.config.homepage_welcome_text}
+			</div>
+		</Station>
 	{/if}
 
 	<Station id="work" title="Work">
@@ -119,7 +109,9 @@
 			{#each data.projects as project}
 				<li>
 					<a href="/project/{project.slug}" class={row}>
-						<span class="w-14 shrink-0 tabular-nums text-gray-600 dark:text-gray-300">{year(project.date)}</span>
+						<span class="w-14 shrink-0 tabular-nums text-gray-600 dark:text-gray-300"
+							>{year(project.date)}</span
+						>
 						<span class="flex-1 t-item group-hover:underline underline-offset-4"
 							>{project.title}</span
 						>
@@ -147,46 +139,46 @@
 		</ol>
 
 		{#if data.certifications.length}
-		<h3 class="t-group mt-16 mb-6">Certifications</h3>
-		<ul class="list-none grid sm:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
-			{#each data.certifications as certification}
-				<li class="flex gap-4 items-center">
-					<img
-						src="{cms}/{certification.image}?format=webp&width=160"
-						alt=""
-						loading="lazy"
-						class="w-14 aspect-square shrink-0 dark:brightness-90"
-					/>
-					<div>
-						<p class="font-bold">{certification.name}</p>
-						<p class="t-meta">
-							{certification.reference}, {monthYear(certification.date)}
-						</p>
-					</div>
-				</li>
-			{/each}
-		</ul>
+			<h3 class="t-group mt-16 mb-6">Certifications</h3>
+			<ul class="list-none grid sm:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
+				{#each data.certifications as certification}
+					<li class="flex gap-4 items-center">
+						<img
+							src="{cms}/{certification.image}?format=webp&width=160"
+							alt=""
+							loading="lazy"
+							class="w-14 aspect-square shrink-0 dark:brightness-90"
+						/>
+						<div>
+							<p class="font-bold">{certification.name}</p>
+							<p class="t-meta">
+								{certification.reference}, {monthYear(certification.date)}
+							</p>
+						</div>
+					</li>
+				{/each}
+			</ul>
 		{/if}
 
 		{#if data.recognitions.length}
-		<h3 class="t-group mt-16 mb-6">Recognition</h3>
-		<ul class="list-none grid md:grid-cols-2 gap-x-10 gap-y-8 max-w-4xl">
-			{#each data.recognitions as recognition}
-				<li class="flex gap-4">
-					<img
-						src="{cms}/{recognition.image}?format=webp&width=120"
-						alt=""
-						loading="lazy"
-						class="w-12 h-12 shrink-0 object-contain rounded bg-white p-1 dark:brightness-90"
-					/>
-					<div>
-						<p class="font-bold">{recognition.name}</p>
-						<p class="t-meta">{monthYear(recognition.date)}</p>
-						<p class="mt-1 text-gray-700 dark:text-gray-300">{recognition.description}</p>
-					</div>
-				</li>
-			{/each}
-		</ul>
+			<h3 class="t-group mt-16 mb-6">Recognition</h3>
+			<ul class="list-none grid md:grid-cols-2 gap-x-10 gap-y-8 max-w-4xl">
+				{#each data.recognitions as recognition}
+					<li class="flex gap-4">
+						<img
+							src="{cms}/{recognition.image}?format=webp&width=120"
+							alt=""
+							loading="lazy"
+							class="w-12 h-12 shrink-0 object-contain rounded bg-white p-1 dark:brightness-90"
+						/>
+						<div>
+							<p class="font-bold">{recognition.name}</p>
+							<p class="t-meta">{monthYear(recognition.date)}</p>
+							<p class="mt-1 text-gray-700 dark:text-gray-300">{recognition.description}</p>
+						</div>
+					</li>
+				{/each}
+			</ul>
 		{/if}
 	</Station>
 
@@ -202,7 +194,8 @@
 		{:catch}
 			<p class="text-lg">
 				The latest posts aren’t loading right now.
-				<a href="https://blog.alexwang.net" target="_blank" rel="noopener">Read them on the blog</a>.
+				<a href="https://blog.alexwang.net" target="_blank" rel="noopener">Read them on the blog</a
+				>.
 			</p>
 		{/await}
 		<p class="mt-6 text-lg">
@@ -216,18 +209,16 @@
 		<ul class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
 			<li>
 				<a href="/now" class={row}>
-					<span class="t-item group-hover:underline underline-offset-4"
-						>Now</span
-					>
+					<span class="t-item group-hover:underline underline-offset-4">Now</span>
 					<span class="text-gray-700 dark:text-gray-300">What I’m up to right now</span>
 				</a>
 			</li>
 			<li>
 				<a href="/i-like" class={row}>
-					<span class="t-item group-hover:underline underline-offset-4"
-						>What I like</span
+					<span class="t-item group-hover:underline underline-offset-4">What I like</span>
+					<span class="text-gray-700 dark:text-gray-300"
+						>I like too many things, so they’re all here</span
 					>
-					<span class="text-gray-700 dark:text-gray-300">I like too many things, so they’re all here</span>
 				</a>
 			</li>
 		</ul>
