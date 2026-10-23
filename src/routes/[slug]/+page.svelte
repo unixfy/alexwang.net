@@ -43,13 +43,36 @@
 		const onScroll = () => (frame ||= requestAnimationFrame(update));
 		addEventListener('scroll', onScroll, { passive: true });
 		update();
+
+		// The line ends at the page's last station: its last heading, or the title's ring when there are
+		// none. The page has no closing station to cut the trunk off, so it says where the trunk stops.
+		const line = content.closest('.line-page');
+		const measure = () => {
+			if (!(line instanceof HTMLElement) || !content) return;
+			const last = [...content.querySelectorAll(':scope > h2')]
+				.filter((h) => h.textContent?.trim())
+				.at(-1);
+			const ring = line.querySelector('.station-ring')?.getBoundingClientRect();
+			const y = last
+				? last.getBoundingClientRect().top + parseFloat(getComputedStyle(last, '::before').top)
+				: ring
+					? ring.top + ring.height / 2
+					: line.getBoundingClientRect().bottom;
+			line.style.setProperty(
+				'--trunk-end',
+				`${Math.max(0, line.getBoundingClientRect().bottom - y)}px`
+			);
+		};
+		const watch = new ResizeObserver(measure);
+		if (line) watch.observe(line);
+		measure();
+
 		return () => {
 			removeEventListener('scroll', onScroll);
 			cancelAnimationFrame(frame);
+			watch.disconnect();
 		};
 	});
-
-	const next = $derived(data.next ?? { slug: 'projects', title: 'Projects' });
 </script>
 
 <div class="line-page">
