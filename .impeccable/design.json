@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-23T00:00:00Z",
+  "title": "Design System: alexwang.net",
+  "extensions": {
+    "colorMeta": {
+      "brand-600": { "role": "primary", "displayName": "Trunk Purple", "canonical": "oklch(0.438 0.176 324.6)", "tonalRamp": ["oklch(0.18 0.06 324.6)", "oklch(0.24 0.09 324.6)", "oklch(0.3 0.12 324.6)", "oklch(0.37 0.15 324.6)", "oklch(0.438 0.176 324.6)", "oklch(0.55 0.18 324.6)", "oklch(0.7 0.15 324.6)", "oklch(0.82 0.1 324.6)"] },
+      "brand-300": { "role": "primary", "displayName": "Night Lilac", "canonical": "oklch(0.82 0.1 324.6)", "tonalRamp": ["oklch(0.3 0.12 324.6)", "oklch(0.55 0.18 324.6)", "oklch(0.7 0.15 324.6)", "oklch(0.82 0.1 324.6)", "oklch(0.9 0.06 324.6)", "oklch(0.95 0.03 324.6)", "oklch(0.975 0.012 324.6)"] },
+      "line-writing-day": { "role": "secondary", "displayName": "Writing Teal (day)", "canonical": "oklch(0.52 0.09 200)", "tonalRamp": ["oklch(0.52 0.09 200)", "oklch(0.78 0.09 200)"] },
+      "line-contact-day": { "role": "secondary", "displayName": "Contact Amber (day)", "canonical": "oklch(0.62 0.14 65)", "tonalRamp": ["oklch(0.62 0.14 65)", "oklch(0.8 0.14 75)"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "oklch(0.985 0.004 324.6)", "tonalRamp": ["oklch(0.145 0.01 324.6)", "oklch(0.21 0.012 324.6)", "oklch(0.27 0.014 324.6)", "oklch(0.37 0.016 324.6)", "oklch(0.55 0.016 324.6)", "oklch(0.7 0.014 324.6)", "oklch(0.87 0.011 324.6)", "oklch(0.985 0.004 324.6)"] },
+      "night": { "role": "neutral", "displayName": "Night", "canonical": "oklch(0.145 0.01 324.6)", "tonalRamp": ["oklch(0.145 0.01 324.6)", "oklch(0.21 0.012 324.6)", "oklch(0.27 0.014 324.6)", "oklch(0.37 0.016 324.6)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The name on the home terminus only; Archivo at weight 800, width 118%." },
+      "title": { "displayName": "Title", "purpose": "Station headings and door labels; ring position derives from its size." },
+      "page": { "displayName": "Page", "purpose": "Interior page h1." },
+      "group": { "displayName": "Group", "purpose": "Sub-heads inside a station." },
+      "item": { "displayName": "Item", "purpose": "List titles for projects, posts and destinations." },
+      "lede": { "displayName": "Lede", "purpose": "The tagline under the name." },
+      "prose": { "displayName": "Prose", "purpose": "Long reading, 65ch max; opened up at night." },
+      "meta": { "displayName": "Meta", "purpose": "Dates and references." }
+    },
+    "shadows": [
+      { "name": "none", "value": "none", "purpose": "The line-diagram surfaces are flat. Night depth comes from shader bloom on pulsing routes (0.35 strength at 7px sigma), not box-shadow." },
+      { "name": "legacy-card-drop", "value": "drop-shadow (Tailwind default)", "purpose": "Interior /projects cards only; carried by the build, not part of the line-diagram system." }
+    ],
+    "motion": [
+      { "name": "trunk-lit", "value": "clip-path inset from (0 0 calc(100% - 50vh) 0) to 0, linear, animation-timeline: scroll(root)", "purpose": "The lit trunk starts lit to mid-screen and the edge travels with the reader. Needs animation-timeline support and no-preference motion; otherwise the whole line is lit." },
+      { "name": "train-ride", "value": "top from 50vh to 100%, linear, scroll(root)", "purpose": "The vehicle rides the lit edge on the same scroll range as the trunk. display:none unless supported and motion allowed." },
+      { "name": "signature-wipe", "value": "clip-path inset(0 100% 0 0) to inset(0), linear, view() range entry 0% to entry 100%", "purpose": "Signature written left to right on entry; shown whole when motion is off." },
+      { "name": "ring-light", "value": "background-color 0.2s ease-out", "purpose": "A door lights its ring with the branch color on hover or focus-within; transition none under reduced motion." },
+      { "name": "arrow-nudge", "value": "transform translate 4px on group hover (down on doors, right on lists)", "purpose": "Affordance on rows; motion-reduce disables the transition." },
+      { "name": "theme-dissolve", "value": "view-transition root, 0.4s", "purpose": "Theme switch crossfades; skipped under reduced motion or without startViewTransition." },
+      { "name": "page-fade", "value": "svelte fade 200ms cubicOut, 0 under reduced motion", "purpose": "Route change." },
+      { "name": "smooth-scroll", "value": "html scroll-behavior: smooth (no-preference only)", "purpose": "Door jumps." },
+      { "name": "network-draw-in", "value": "2.4s, easeOutCubic (1-(1-x)^3); station rings appear staggered 0.05 per index", "purpose": "The WebGL map draws itself in on load; reduced motion starts at 1 (finished)." },
+      { "name": "network-pulses", "value": "two comet pulses per route, speeds 100 to 210 px/s, tail 70px, head 6px; bright core mixes toward white 75% at night, base*0.55 by day", "purpose": "Light travels the routes; uPulse is 0 under reduced motion." },
+      { "name": "network-lens", "value": "gaussian radius 150px, pull 0.38; stations grow up to 35% within 130px; parallax up to 7px x, 5px y; smoothing 0.18 / 0.08 / 0.06", "purpose": "Cursor bends nearby lines and enlarges stations. Disabled for coarse pointers and reduced motion." }
+    ],
+    "breakpoints": [
+      { "name": "md / trunk offset", "value": "48rem" },
+      { "name": "map narrow geometry", "value": "700px (canvas width)" },
+      { "name": "sm", "value": "640px" }
+    ],
+    "webgl": {
+      "api": "WebGL2, one fragment shader, fullscreen triangle, no library; premultiplied alpha, antialias off, powerPreference low-power",
+      "routes": "6 (3 door lines purple/teal/amber at 3.5px half-width, alpha 0.95; 3 quiet routes at 2.25px, alpha 0.5/0.42/0.42), max 64 segments and 40 stations",
+      "geometry": "octilinear, grid g = clamp(w/44, 24, 34)px (14px under 700px); door routes start at the data-route-start arrows",
+      "calm": "up to 4 data-calm boxes fade the map to 0.1 within 110px; map also dissolves into the page over the last 140px",
+      "pixelBudget": "dpr capped at 1.5 (1.25 coarse), area budget 1.4e6 px (0.9e6 coarse); frame time EMA over 26ms after 45 samples drops quality x0.8 down to 0.55",
+      "pause": "IntersectionObserver stops it off screen; visibilitychange stops it when the tab is hidden; context loss hides the canvas",
+      "reducedMotion": "single finished still frame, redrawn on resize and theme change; no pulses, lens or parallax",
+      "theme": "reads --line-*, brand-300/400 and gray ramp from computed styles; MutationObserver on html class re-themes live",
+      "fallback": "returns null without WebGL2 and the page simply has no map"
+    },
+    "focus": {
+      "ring": ":focus-visible { outline: 2px solid brand-500; outline-offset: 2px } and brand-300 under .dark",
+      "skipLink": "sr-only until focus, then fixed top-left, brand-600 fill, white text"
+    },
+    "darkMode": "html.dark class set by a pre-paint inline script in app.html from localStorage 'darkmode', falling back to prefers-color-scheme; Tailwind custom variant dark = .dark"
+  },
+  "components": [
+    {
+      "name": "Station",
+      "kind": "custom",
+      "refersTo": "station-ring",
+      "description": "A ring on the trunk with a stub of the line color and a Title-role heading.",
+      "html": "<div class=\"ds-station\"><span class=\"ds-ring\"></span><h2 class=\"ds-title\">Writing</h2></div>",
+      "css": ".ds-station { position: relative; padding: 3.5rem 0 3.5rem 3.5rem; --line: oklch(0.52 0.09 200); } .ds-station::before { content: ''; position: absolute; left: 1.5rem; top: 0; bottom: 0; width: 0.375rem; translate: -50% 0; border-radius: 999px; background: oklch(0.87 0.011 324.6); } .ds-ring { position: absolute; left: 1.5rem; top: 4.5rem; translate: -50% -50%; width: 1.5rem; height: 1.5rem; border-radius: 999px; border: 0.3125rem solid var(--line); background: oklch(0.985 0.004 324.6); z-index: 1; } .ds-ring::after { content: ''; position: absolute; left: 100%; top: 50%; translate: 0 -50%; height: 0.3125rem; width: 1.25rem; background: var(--line); } .ds-title { margin: 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 700; font-size: 2.5rem; line-height: 1; letter-spacing: -0.02em; color: oklch(0.21 0.012 324.6); }"
+    },
+    {
+      "name": "Door row",
+      "kind": "nav",
+      "refersTo": "door-title",
+      "description": "A door to a section: Title label, live Latest line, arrow where the map route begins.",
+      "html": "<a class=\"ds-door\" href=\"#work\"><span class=\"ds-door-t\">Work</span><span class=\"ds-door-s\">Latest: Project, 2025</span><span class=\"ds-door-a\">&darr;</span></a>",
+      "css": ".ds-door { display: flex; align-items: baseline; gap: 1.5rem; padding: 1.5rem 0; text-decoration: none; color: oklch(0.21 0.012 324.6); --line: oklch(0.438 0.176 324.6); } .ds-door-t { font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 700; font-size: 2.5rem; line-height: 1; letter-spacing: -0.02em; } .ds-door:hover .ds-door-t, .ds-door:focus-visible .ds-door-t { text-decoration: underline; text-decoration-color: var(--line); text-decoration-thickness: 4px; text-underline-offset: 8px; } .ds-door-s { font-family: 'Public Sans Variable', system-ui, sans-serif; color: oklch(0.37 0.016 324.6); } .ds-door-a { margin-left: auto; color: oklch(0.55 0.016 324.6); transition: transform 0.2s; } .ds-door:hover .ds-door-a { transform: translateY(4px); } .ds-door:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Name plate",
+      "kind": "custom",
+      "refersTo": "name-plate",
+      "description": "The display-size name at the terminus.",
+      "html": "<h1 class=\"ds-name\">Alex Wang</h1>",
+      "css": ".ds-name { margin: 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 800; font-stretch: 118%; font-size: 4.5rem; line-height: 1; letter-spacing: -0.035em; color: oklch(0.438 0.176 324.6); }"
+    },
+    {
+      "name": "List row",
+      "kind": "custom",
+      "refersTo": "door-title",
+      "description": "Divider-separated row with year, Item-role title and hover underline.",
+      "html": "<a class=\"ds-row\" href=\"#\"><span class=\"ds-row-y\">2025</span><span class=\"ds-row-t\">Project title</span></a>",
+      "css": ".ds-row { display: flex; align-items: baseline; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid oklch(0.87 0.011 324.6); text-decoration: none; color: oklch(0.21 0.012 324.6); } .ds-row-y { width: 3.5rem; font-variant-numeric: tabular-nums; color: oklch(0.46 0.016 324.6); } .ds-row-t { font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 700; font-size: 1.375rem; line-height: 1.25; } .ds-row:hover .ds-row-t { text-decoration: underline; text-underline-offset: 4px; } .ds-row:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Nav pill",
+      "kind": "nav",
+      "refersTo": "nav-pill",
+      "description": "Top-right navigation pill; current page is filled brand purple.",
+      "html": "<a class=\"ds-pill\" href=\"#\">Projects</a> <a class=\"ds-pill ds-pill-cur\" href=\"#\" aria-current=\"page\">Home</a>",
+      "css": ".ds-pill { display: inline-block; padding: 8px 24px; border-radius: 0.25rem; background: #e5e7eb; color: oklch(0.21 0.012 324.6); font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 1.25rem; text-decoration: none; } .ds-pill:hover { background: #f3f4f6; } .ds-pill-cur { background: oklch(0.438 0.176 324.6); color: #fff; } .ds-pill:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Copy button",
+      "kind": "button",
+      "refersTo": "copy-button",
+      "description": "Small outlined button beside the email address.",
+      "html": "<button class=\"ds-copy\" type=\"button\">Copy</button>",
+      "css": ".ds-copy { border: 1px solid oklch(0.7 0.014 324.6); border-radius: 0.25rem; padding: 2px 8px; font-size: 0.875rem; background: transparent; color: oklch(0.21 0.012 324.6); cursor: pointer; } .ds-copy:hover { background: oklch(0.92 0.009 324.6); } .ds-copy:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Fill button",
+      "kind": "button",
+      "refersTo": "cta-fill",
+      "description": "Brand-filled call to action on interior pages (project link).",
+      "html": "<a class=\"ds-cta\" href=\"#\">Visit project</a>",
+      "css": ".ds-cta { display: block; text-align: center; padding: 16px; font-size: 1.25rem; border-radius: 0.5rem; background: oklch(0.438 0.176 324.6); color: #fff; text-decoration: none; transition: background-color 0.15s; } .ds-cta:hover { background: oklch(0.37 0.15 324.6); } .ds-cta:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Line Diagram",
+    "overview": "The site is one person's hub drawn as a Beck-style transit diagram. One purple trunk runs down the home page; every section is a station hung off it as a ring; the three doors (Work, Writing, Contact) are lines that continue into a living WebGL map behind the hero. By day it is ink on paper; by night it is a glowing map on near-black. Light and dark are equal citizens, switched by the .dark class on html.\n\nThe type is signage: Archivo Variable set expanded and heavy for the name, a tight heavy title for each station, Public Sans Variable for everything read. Every neutral shares the brand hue (324.6), so no gray is dead. Color is rationed: purple owns the trunk, links, focus and the name; teal and amber each belong to exactly one branch.\n\nThe home page is the full expression of the world. Interior pages share the tokens and type roles but are quieter, ordinary page layouts.",
+    "keyCharacteristics": [
+      "One vertical trunk, stations as ringed nodes, content indented to a fixed content column.",
+      "Octilinear geometry only in the map: 45 and 90 degree routes.",
+      "Brand purple plus two branch hues; tinted neutrals.",
+      "Flat surfaces, no elevation system; depth comes from the lit trunk, rings and the map's bloom at night.",
+      "Every motion has a still equivalent; the page is complete without WebGL2 or JavaScript."
+    ],
+    "rules": [
+      { "name": "The Hue Rule", "body": "Every gray carries hue 324.6 at chroma 0.004 to 0.016. A neutral with no hue does not belong.", "section": "colors" },
+      { "name": "The One Line, One Color Rule", "body": "Teal means Writing and amber means Contact, everywhere. Branch hues are never used decoratively, and no fourth line color is added without a fourth door.", "section": "colors" },
+      { "name": "The Underline Rule", "body": "Links are brand-colored and always underlined; color is never the only cue.", "section": "colors" },
+      { "name": "The Signage Rule", "body": "Only Archivo carries wide, heavy, tight-tracked setting; and only the name uses the 118% width. Text never goes heavy-expanded.", "section": "typography" },
+      { "name": "The Role Rule", "body": "New text takes one of the named roles. Heading balance and prose pretty wrapping are on globally.", "section": "typography" },
+      { "name": "The Flat Line Rule", "body": "On the line-diagram surfaces, stations and rings are drawn with borders and fills, never shadows.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do let brand-600 (brand-300 at night) own the trunk, links, name and focus.",
+      "Do give any new branch a line color via --line and keep the ring, stub and underline in that color.",
+      "Do give every effect a still equivalent: whole lit trunk, finished map frame, whole signature.",
+      "Do keep light and dark equal: override colors in the .dark class, not by media query.",
+      "Do keep map fades behind type (data-calm regions go to about a tenth strength)."
+    ],
+    "donts": [
+      "Don't stack alternating colored bands, hero cards or grids of equal cards on the home page.",
+      "Don't introduce neutrals without the brand hue.",
+      "Don't use heavy expanded Archivo for running text.",
+      "Don't add dependencies for an effect; the map is one shader.",
+      "Don't put the direction contract or surface brief into any browser-delivered file."
+    ]
+  }
+}

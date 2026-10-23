@@ -27,14 +27,16 @@ It is one person's own hub rather than a template portfolio: content is authored
 
 ## Capabilities and Constraints
 
-- Stack: SvelteKit 3, Svelte 5, Tailwind CSS 4, Directus SDK; keep dependencies and extra code to a minimum.
+- Stack: SvelteKit 3, Svelte 5, Tailwind CSS 4, Directus SDK. Dependencies stay few: heavy visual effects are hand-written (the home page's WebGL2 map is a single shader with no library) or lazily loaded, never a framework added for one effect.
+- Ambitious visuals are welcome (WebGL, scroll-driven and generative motion) provided every effect degrades: the page must be complete without WebGL2 and without JavaScript, respect `prefers-reduced-motion`, pause when off screen, and hold up on integrated and budget mobile GPUs.
 - Content sources (Directus, WordPress) stay as they are.
 - Light and dark mode must both be supported, with the choice persisted.
 
 ## Brand Commitments
 
 - Brand purple `#7E1F86` (theme color, project section) and the hand-written signature mark are part of the identity.
-- Fonts in use: IBM Plex Sans (body) and Space Grotesk (display).
+- Typography is a working choice, not a fixed commitment. Currently Archivo Variable (display, expanded and heavy like station signage) and Public Sans Variable (text), both Latin-subset variable files. The owner has said the fonts may be changed freely.
+- The site's visual world is a transit line diagram: one purple trunk, stations as rings, branch lines in teal (Writing) and amber (Contact).
 
 ## Evidence on Hand
 
@@ -44,7 +46,7 @@ Real projects, certifications, recognitions, social links and blog posts exist i
 
 1. One hub, many entry points: every audience should reach their destination within a click or two.
 2. Content belongs in the CMS; the front end presents it and stays lean.
-3. Fewer dependencies and less code beat cleverness.
+3. Fewer dependencies and less code beat cleverness, unless the extra code is the distinctive thing and it degrades gracefully.
 4. Light and dark are equal citizens.
 
 ## Accessibility & Inclusion
