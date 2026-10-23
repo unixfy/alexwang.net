@@ -254,7 +254,6 @@
 
 	.line-page::after {
 		@apply bg-brand-600 dark:bg-brand-300;
-		transform-origin: top;
 	}
 
 	.station {
@@ -330,7 +329,8 @@
 	}
 }
 
-/* The lit part of the trunk follows scroll; without support or with reduced motion the whole line is lit */
+/* The trunk starts lit to mid-screen and the lit edge travels with the reader.
+   Without scroll-driven animation, or with reduced motion, the whole line is simply lit. */
 @supports (animation-timeline: scroll()) {
 	@media (prefers-reduced-motion: no-preference) {
 		.line-page::after {
@@ -342,9 +342,37 @@
 
 @keyframes trunk-lit {
 	from {
-		scale: 1 0;
+		clip-path: inset(0 0 calc(100% - 50vh) 0);
 	}
 	to {
-		scale: 1 1;
+		clip-path: inset(0 0 0 0);
+	}
+}
+
+/* Smooth jumps from the three doors */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
+/* A door lights its station: the ring fills with the branch colour on hover or keyboard focus */
+.station-ring {
+	transition: background-color 0.2s ease-out;
+}
+
+nav li.station:focus-within .station-ring {
+	background-color: var(--line);
+}
+
+@media (hover: hover) {
+	nav li.station:hover .station-ring {
+		background-color: var(--line);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.station-ring {
+		transition: none;
 	}
 }

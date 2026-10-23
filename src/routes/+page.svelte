@@ -82,7 +82,10 @@
 								Email, LinkedIn and elsewhere
 							{/if}
 						</span>
-						<i class="fa-solid fa-arrow-down ml-auto text-gray-500 dark:text-gray-400" aria-hidden="true"></i>
+						<i
+							class="fa-solid fa-arrow-down ml-auto text-gray-500 dark:text-gray-400 transition-transform motion-reduce:transition-none group-hover:translate-y-1"
+							aria-hidden="true"
+						></i>
 					</a>
 				</li>
 			{/each}
@@ -121,7 +124,11 @@
 				<a href="/projects" class={row}>
 					<span class="w-14 shrink-0" aria-hidden="true"></span>
 					<span class="t-item group-hover:underline underline-offset-4">
-						All projects <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+						All projects
+						<i
+							class="fa-solid fa-arrow-right inline-block transition-transform motion-reduce:transition-none group-hover:translate-x-1"
+							aria-hidden="true"
+						></i>
 					</span>
 				</a>
 			</li>

@@ -5,6 +5,7 @@
 	import Navbar from '#lib/Navbar.svelte';
 
 	import { fade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
 
 	import { browser, dev } from '$app/env';
 	import { onMount } from 'svelte';
@@ -12,6 +13,8 @@
 	import { pwaInfo } from 'virtual:pwa-info';
 
 	let { data, children } = $props();
+
+	const calm = browser && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 	onMount(async () => {
 		if (pwaInfo) {
@@ -80,7 +83,7 @@
 
 	<main id="main">
 		{#key page.url.pathname}
-			<div in:fade={{ duration: 300 }}>
+			<div in:fade={{ duration: calm ? 0 : 200, easing: cubicOut }}>
 				{@render children()}
 			</div>
 		{/key}
