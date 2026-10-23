@@ -8,8 +8,6 @@
 @import '@fontsource/space-grotesk/latin-400.css';
 @import '@fontsource/space-grotesk/latin-700.css';
 
-@custom-variant hover (&:hover);
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -160,6 +158,15 @@
 	.t-lede,
 	.t-page {
 		font-family: var(--font-display);
+	}
+
+	.t-title,
+	.t-group,
+	.t-item,
+	.t-lede,
+	.t-prose,
+	.page-content-container {
+		overflow-wrap: break-word;
 	}
 
 	.t-display {

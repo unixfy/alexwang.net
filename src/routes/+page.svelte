@@ -8,6 +8,7 @@
 
 	const cms = 'https://cms.alexwang.net/assets';
 	const latest = $derived(data.projects[0]);
+	const hasPhoto = $derived(Boolean(data.config.links_profile_picture));
 
 	// Assembled client-side so the address isn't sitting in the served HTML
 	let email = $state('');
@@ -42,11 +43,13 @@
 					I’m obsessed with mobility, technology, and solutions.
 				</p>
 			</div>
-			<img
-				src="{cms}/{data.config.links_profile_picture}?format=webp&width=800"
-				alt="Alex Wang"
-				class="aspect-square w-40 sm:w-56 md:w-72 rounded-2xl object-cover bg-gray-200 dark:bg-gray-800 dark:brightness-90 md:order-last"
-			/>
+			{#if hasPhoto}
+				<img
+					src="{cms}/{data.config.links_profile_picture}?format=webp&width=800"
+					alt="Alex Wang"
+					class="aspect-square w-40 sm:w-56 md:w-72 rounded-2xl object-cover bg-gray-200 dark:bg-gray-800 dark:brightness-90 md:order-last"
+				/>
+			{/if}
 		</div>
 	</header>
 
@@ -66,12 +69,12 @@
 						>
 						<span class="text-gray-700 dark:text-gray-300 md:text-lg">
 							{#if door.line === 'work'}
-								Latest: {latest.title}, {year(latest.date)}
+								{#if latest}Latest: {latest.title}, {year(latest.date)}{:else}Selected projects{/if}
 							{:else if door.line === 'writing'}
 								{#await data.posts}
 									Latest posts from the blog
 								{:then posts}
-									Latest: {@html posts[0]?.title.rendered}
+									{#if posts[0]}Latest: {@html posts[0].title.rendered}{:else}Posts from the blog{/if}
 								{:catch}
 									Posts from the blog
 								{/await}
@@ -86,6 +89,7 @@
 		</ol>
 	</nav>
 
+	{#if data.config.homepage_welcome_text}
 	<Station id="about" title="About">
 		<div
 			class="t-prose space-y-5 [&_strong]:font-bold"
@@ -93,6 +97,7 @@
 			{@html data.config.homepage_welcome_text}
 		</div>
 	</Station>
+	{/if}
 
 	<Station id="work" title="Work">
 		<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
@@ -122,6 +127,7 @@
 			</li>
 		</ol>
 
+		{#if data.certifications.length}
 		<h3 class="t-group mt-16 mb-6">Certifications</h3>
 		<ul class="list-none grid sm:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
 			{#each data.certifications as certification}
@@ -141,7 +147,9 @@
 				</li>
 			{/each}
 		</ul>
+		{/if}
 
+		{#if data.recognitions.length}
 		<h3 class="t-group mt-16 mb-6">Recognition</h3>
 		<ul class="list-none grid md:grid-cols-2 gap-x-10 gap-y-8 max-w-4xl">
 			{#each data.recognitions as recognition}
@@ -160,13 +168,18 @@
 				</li>
 			{/each}
 		</ul>
+		{/if}
 	</Station>
 
 	<Station id="writing" title="Writing" line="writing">
 		{#await data.posts}
 			<BlogListerLoading />
 		{:then posts}
-			<BlogLister {posts} />
+			{#if posts.length}
+				<BlogLister {posts} />
+			{:else}
+				<p class="text-lg">No posts yet.</p>
+			{/if}
 		{:catch}
 			<p class="text-lg">
 				The latest posts aren’t loading right now.

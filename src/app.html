@@ -4,6 +4,21 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="color-scheme" content="light dark" />
+		<script>
+			try {
+				var saved = localStorage.getItem('darkmode');
+				if (saved === null ? matchMedia('(prefers-color-scheme: dark)').matches : saved === 'true')
+					document.documentElement.classList.add('dark');
+			} catch (e) {}
+		</script>
+		<noscript
+			><style>
+				.mobile-menu {
+					display: block !important;
+				}
+			</style></noscript
+		>
 		%sveltekit.head%
 	</head>
 

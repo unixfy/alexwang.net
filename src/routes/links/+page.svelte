@@ -4,7 +4,7 @@
 </script>
 
 <div class="bg-gray-950 text-white p-8 pt-20 flex flex-col">
-	<img src="//cms.alexwang.net/assets/{data.config.links_profile_picture}?format=webp&width=200" class="h-32 w-32 rounded-full m-auto" alt="Account profile photo" />
+	<img src="//cms.alexwang.net/assets/{data.config.links_profile_picture}?format=webp&width=200" class="h-32 w-32 rounded-full m-auto" alt="Alex Wang" />
 	<h1 class="font-display text-2xl sm:text-3xl mt-4 m-auto">@alex.wang.64</h1>
 </div>
 

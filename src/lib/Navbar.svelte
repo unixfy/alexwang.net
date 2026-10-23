@@ -16,8 +16,13 @@
 		(href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(href)) ? 'page' : undefined;
 
 	const toggleDarkMode = () => ($darkmode = !$darkmode);
+	const closeOnEscape = (/** @type {KeyboardEvent} */ e) => {
+		if (e.key === 'Escape') mobilemenu = false;
+	};
 	const toggleMobileMenu = () => (mobilemenu = !mobilemenu);
 </script>
+
+<svelte:window onkeydown={closeOnEscape} />
 
 <nav aria-label="Main" class="md:absolute top-0 right-0 z-10">
 	<div class="hidden md:flex flex-row-reverse">
@@ -32,9 +37,10 @@
 			{/each}
 			<button
 				type="button"
-				aria-label="Toggle dark mode"
+				aria-label="Dark mode"
+				aria-pressed={$darkmode}
 				class="bg-gray-200 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white rounded py-2 px-4 hover:cursor-pointer"
-				onclick={toggleDarkMode}><i class="fa-solid fa-sun"></i></button
+				onclick={toggleDarkMode}><i class="fa-solid {$darkmode ? 'fa-sun' : 'fa-moon'}"></i></button
 			>
 		</div>
 	</div>
@@ -48,11 +54,11 @@
 			>
 				<i class="fa-solid {mobilemenu ? 'fa-xmark' : 'fa-bars'} fa-2x"></i>
 			</button>
-			<button type="button" aria-label="Toggle dark mode" onclick={toggleDarkMode}>
-				<i class="fa-solid fa-sun fa-2x"></i>
+			<button type="button" aria-label="Dark mode" aria-pressed={$darkmode} onclick={toggleDarkMode}>
+				<i class="fa-solid {$darkmode ? 'fa-sun' : 'fa-moon'} fa-2x"></i>
 			</button>
 		</div>
-		<div class:hidden={!mobilemenu} class="bg-gray-200 dark:bg-slate-700 dark:text-white pt-2">
+		<div class:hidden={!mobilemenu} class="mobile-menu bg-gray-200 dark:bg-slate-700 dark:text-white pt-2">
 			{#each links as { href, label }}
 				<a {href} aria-current={current(href)} class="block py-3 aria-[current=page]:font-bold" onclick={toggleMobileMenu}>{label}</a>
 			{/each}

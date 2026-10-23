@@ -26,6 +26,7 @@
 					<a
 						href={data.project.url}
 						target="_blank"
+						rel="noopener"
 						class="mt-4 bg-brand-600 hover:bg-brand-700 text-white dark:bg-brand-300 dark:hover:bg-brand-200 dark:text-gray-950 transition-colors p-2 sm:p-4 text-center rounded-lg text-xl w-full block"
 					>
 						View project
