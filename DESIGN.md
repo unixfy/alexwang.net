@@ -228,6 +228,8 @@ The home page is a single column offset by the trunk. `.line-page` is a relative
 
 CMS content (`.page-content-container`) gets an even 1rem vertical rhythm between blocks (0.35rem between list items), empty blocks are hidden, and links are brand-coloured and underlined. Each `h2` inside a `.ride` container becomes a station: ring and stub hang left of the content column in the cycling line colour.
 
+On xl and wider the home page also carries the signal tower rail in the right gutter (`w-60`, 1.5rem from the right edge, sticky 7rem from the top, height min(34rem, 100vh - 9rem)); the pointer passes through everything but the links.
+
 The trunk is hidden above the first station and below the last by ground-colored covers (`station-start`, `station-end`), so the line has real termini. The map is a canvas filling the hero and doors host; it is decorative and absolute behind the type. Below 700px the map's geometry changes: the door lines turn back into the free space beside the portrait instead of running right.
 
 Spacing rhythm is Tailwind's 4px scale; lists are dividers, not cards.
@@ -252,7 +254,11 @@ A station is a block with the ring on the trunk at `--ring-top` and a short stub
 
 ### Train
 
-A small pill (0.875rem by 1.75rem, ground-colored 3px border) riding the lit edge of the trunk. Shown only where scroll-driven animation is supported and motion is allowed.
+A small pill (0.875rem by 1.75rem, ground-colored 3px border) riding the lit edge of the trunk. Shown only where scroll-driven animation is supported and motion is allowed. Its ride ends at `calc(100% - 2rem)`, just short of the page end.
+
+### Signal tower
+
+From xl (1280px) the home page's right-hand gutter holds a sticky rail of section shortcuts (About when the welcome text exists, Work, Writing, Beyond work, Contact) drawn as a small 3D copy of the line: a bespoke line-diagram piece, not daisyUI. Behind the links, three.js draws a tilted orthographic spine with a lit part running from the top to a train capsule that follows the reader, pulses falling to the train, and per station a ring, a platform slab with a line-colour front edge, a post with a signal lamp and a soft glow. Colours are the site's tokens (line colours per station, hairline track, gray slabs) and repaint on theme change. The current section's ring is larger and glows; hovering or focusing a link lights its station and leans the tower. Labels are Item-role links, one per stop, and the canvas is decorative. Without WebGL, or below xl, the rail stays as a plain CSS spine with a ring dot at every link.
 
 ### Door row
 
@@ -330,6 +336,7 @@ The hand-written signature SVG closes the page and is written left to right as i
 - **Do** open every interior page on a terminus ring and close it on an end station.
 - **Do** style CMS content through semantic elements (`h2`, `blockquote`, `table`, `hr`), never per-page classes, and keep scripted enhancements optional so the content reads whole without scripts.
 
+- **Do** keep the signal tower's shortcuts as real links with the 3D layer purely decorative, and measure station positions from the links in the DOM so labels and drawing never drift.
 - **Do** reach for a daisyUI primitive before hand-rolling one, and theme it from the tokens.
 - **Do** keep the daisyUI include list tight: add a component to it only when the site uses it.
 
@@ -339,7 +346,8 @@ The hand-written signature SVG closes the page and is written left to right as i
 - **Don't** introduce neutrals without the brand hue.
 - **Don't** wrap interior project or link items in cards; they are rows or image-plus-title on the line.
 - **Don't** use heavy expanded Archivo for running text.
-- **Don't** add dependencies for an effect; the map is one shader. UI primitives are the exception that is already made: daisyUI, and only daisyUI.
+- **Don't** add dependencies for an effect; the map is one shader. The exceptions already made: daisyUI for UI primitives, and three.js for the signal tower only.
+- **Don't** load three.js on narrow screens or eagerly (it stays a dynamic import behind a min-width 80rem check), and don't put anything interactive on the canvas.
 - **Don't** ship a stock daisyUI theme or data-theme; only `line` and `line-night`.
 - **Don't** build the trunk, rings, terminus, ticket or error line from daisyUI, and don't hand-roll pills, toggles, chevrons, badges or alerts that a primitive already covers.
 - **Don't** put the direction contract or surface brief into any browser-delivered file.

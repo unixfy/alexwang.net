@@ -199,6 +199,16 @@
         "name": "copy-toast",
         "value": "svelte fade 150ms on a daisyUI toast (toast-end toast-bottom, alert-success); Copied state lasts 1800ms",
         "purpose": "Confirms a copy visibly; aria-hidden, the separate status region announces it."
+      },
+      {
+        "name": "signal-tower",
+        "value": "three.js orthographic scene: yaw 0.55 + sin(t*0.4)*0.07 + (overall-0.5)*0.5 + lean; train eases toward the reading line (exp 9/s); active ring scale 1.45, hot ring 1.2 (both 1.74); pulses fall at 0.9 units/s and vanish 0.15 above the train",
+        "purpose": "The home-page rail mirrors scroll position as a lit spine and train. Reduced motion: no ambient sine, no pulses, eased values snap, redrawn on demand."
+      },
+      {
+        "name": "train-ride-end",
+        "value": "left-hand .train top from 50vh to calc(100% - 2rem)",
+        "purpose": "The marker ends its ride just short of the page end."
       }
     ],
     "breakpoints": [
@@ -221,6 +231,10 @@
       {
         "name": "lg (project image and text split)",
         "value": "1024px"
+      },
+      {
+        "name": "xl (signal tower rail on the home page; three.js loaded via min-width 80rem)",
+        "value": "1280px"
       }
     ],
     "webgl": {
@@ -287,6 +301,19 @@
       "sizes": "btn-sm 2rem, btn-md 2.5rem, btn-lg 3rem (48px) from size-field 0.25rem",
       "dataThemeMechanism": "See darkMode: .dark and data-theme change together in the pre-paint script and in the store.",
       "noscript": "app.html forces .mobile-menu to display:flex under noscript so phone navigation stays reachable."
+    },
+    "signalTower": {
+      "role": "Bespoke line-diagram piece, not daisyUI. Home page only, xl and up. Files: src/lib/Tower.svelte (DOM, links, state), src/lib/tower.js (three.js drawing), src/lib/color.js (oklch token reader).",
+      "placement": "aside.pointer-events-none.absolute.inset-y-0.right-6.z-10.w-60, hidden below xl; inner div pointer-events-auto sticky top-28 mt-40, height min(34rem, 100vh - 9rem).",
+      "stops": "About (only when the welcome text exists, work line), Work (work), Writing (writing), Beyond work (work), Contact (contact). nav aria-label 'Jump to a section', ol of a[href=#id][data-stop] in the t-item role.",
+      "geometry": "Orthographic camera, 64 css px per world unit, tilt 0.5 rad, spine 42px from the rail's left edge. Track cylinder radius 0.05, lit spine 0.075 (runs from the top to the train). Train: capsule radius 0.13 with a ground-coloured back-face outline at 1.28x. Three pulse spheres (0.06). Per station: torus ring (0.22 / 0.055), platform slab 1.7 wide with a line-colour front edge, the 'shelf' placed 0.64 units below its label, a post with a signal lamp, and a glow plane 1.25. Station heights come from the links' measured centres (divided by scale and cos tilt), re-measured on resize and when fonts load.",
+      "palette": "Read from computed styles via color.js: ring, edge, lamp and glow use --line-work / --line-writing / --line-contact per stop; lit spine --line-work; track gray-300 (gray-700 night); slab and post gray-200 (gray-800 night); train --line-work by day, white at night; train outline gray-50 / gray-950 (the ground). Night glow is additive, day glow normal blending at 0.55 strength. A MutationObserver on the html class re-reads the palette on theme change.",
+      "state": "active: the last section whose top is above the reading line (45% of viewport height); ring scale 1.45, glow 0.85, lamp 1.35; the link gets aria-current=location and darker text. hot: pointer enter or focus on a link; ring 1.2, glow 0.55, lamp 1.35. lean: +0.12 rad of yaw while any link is hot, eased. Yaw = 0.55 + slow sine (0.07) + scroll progress (-0.25 to +0.25) + lean.",
+      "loading": "three.js (named imports) is reached only through a dynamic import('./tower.js') in Tower.svelte onMount, only when (min-width: 80rem) matches, as its own chunk (about 533 kB, 132 kB gzip). Never in the main bundle.",
+      "performance": "IntersectionObserver (thresholds 0 and 0.3) pauses drawing below 30% visible; a hidden document pauses; pixel budget 0.9e6 px, dpr capped at 2; low-power context; destroy() disposes geometries, materials, textures and the renderer and forces context loss.",
+      "reducedMotion": "Renders on demand (scroll, resize, theme change, hover change); no ambient sine, no pulses, eased values jump to their targets.",
+      "accessibility": "The shortcut links are the only interactive part; the canvas is aria-hidden and pointer-events-none. Links are real anchors in page order; keyboard focus lights the station like hover; the current stop carries aria-current=location. Label text is gray-700 / gray-300, ink / white when current or hovered. Hover underlines in the stop's line colour (3px, offset 6px).",
+      "fallback": "Without WebGL, or narrower than xl (never loaded), the rail is a plain list: a 6px CSS spine in the hairline colour 42px from the left and a 22px ground-filled ring dot (5px border in the stop's line colour) at each link. The class 'ready', set when the 3D layer is up, hides the CSS spine and dots."
     }
   },
   "components": [
@@ -377,6 +404,14 @@
       "description": "daisyUI badge-primary: 'New since your last visit'.",
       "html": "<span class=\"ds-badge\">New since your last visit</span>",
       "css": ".ds-badge { display: inline-flex; align-items: center; height: 1.5rem; padding: 0 0.5rem; border: 2px solid oklch(0.438 0.176 324.6); border-radius: 0.25rem; background: oklch(0.438 0.176 324.6); color: #fff; font-size: 0.875rem; }"
+    },
+    {
+      "name": "Stop link",
+      "kind": "nav",
+      "refersTo": "station-ring",
+      "description": "A shortcut on the home page's signal tower rail: Item-role label with a ring dot on the spine (hidden once the 3D layer is up); hover underlines in the stop's line colour, the current stop (aria-current=location) is darker.",
+      "html": "<ol class=\"ds-tower\"><li><a class=\"ds-sl\" href=\"#work\"><span class=\"ds-dot\"></span>Work</a></li> <li><a class=\"ds-sl ds-sl-cur\" href=\"#writing\" aria-current=\"location\" style=\"--line: oklch(0.52 0.09 200)\"><span class=\"ds-dot\"></span>Writing</a></li></ol>",
+      "css": ".ds-tower { position: relative; margin: 0; padding: 0; list-style: none; } .ds-tower::before { content: ''; position: absolute; left: 39px; top: 1.5rem; bottom: 1.5rem; width: 6px; border-radius: 999px; background: oklch(0.87 0.011 324.6); } .ds-sl { --line: oklch(0.438 0.176 324.6); position: relative; display: flex; align-items: center; min-height: 2.75rem; padding-left: 4.7rem; font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 700; font-size: 1.25rem; line-height: 1.25; text-decoration: none; color: oklch(0.37 0.016 324.6); } .ds-sl:hover { color: oklch(0.21 0.012 324.6); text-decoration: underline; text-decoration-color: var(--line); text-decoration-thickness: 3px; text-underline-offset: 6px; } .ds-sl-cur { color: oklch(0.21 0.012 324.6); } .ds-dot { position: absolute; left: 31px; top: 50%; translate: 0 -50%; width: 22px; height: 22px; border-radius: 999px; border: 5px solid var(--line); background: oklch(0.985 0.004 324.6); } .ds-sl:focus-visible { outline: 2px solid oklch(0.55 0.18 324.6); outline-offset: 2px; }"
     }
   ],
   "narrative": {
@@ -441,6 +476,7 @@
       "Do keep map fades behind type (data-calm regions go to about a tenth strength).",
       "Do open every interior page on a terminus ring and close it on an end station.",
       "Do style CMS content through semantic elements (h2, blockquote, table, hr), never per-page classes, and keep scripted enhancements optional so the content reads whole without scripts.",
+      "Do keep the signal tower's shortcuts as real links with the 3D layer purely decorative, and measure station positions from the links in the DOM so labels and drawing never drift.",
       "Do reach for a daisyUI primitive before hand-rolling one, and theme it from the tokens.",
       "Do keep the daisyUI include list tight: add a component to it only when the site uses it."
     ],
@@ -449,7 +485,8 @@
       "Don't introduce neutrals without the brand hue.",
       "Don't wrap interior project or link items in cards; they are rows or image-plus-title on the line.",
       "Don't use heavy expanded Archivo for running text.",
-      "Don't add dependencies for an effect; the map is one shader. UI primitives are the exception that is already made: daisyUI, and only daisyUI.",
+      "Don't add dependencies for an effect; the map is one shader. The exceptions already made: daisyUI for UI primitives, and three.js for the signal tower only.",
+      "Don't load three.js on narrow screens or eagerly (it stays a dynamic import behind a min-width 80rem check), and don't put anything interactive on the canvas.",
       "Don't put the direction contract or surface brief into any browser-delivered file.",
       "Don't ship a stock daisyUI theme or data-theme; only line and line-night.",
       "Don't build the trunk, rings, terminus, ticket or error line from daisyUI, and don't hand-roll pills, toggles, chevrons, badges or alerts that a primitive already covers."
