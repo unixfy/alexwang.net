@@ -15,7 +15,7 @@
 	<canvas
 		bind:this={canvas}
 		aria-hidden="true"
-		class="pointer-events-none absolute inset-0 size-full"
+		class="pointer-events-none absolute inset-0 size-full md:[mask-image:linear-gradient(to_bottom,transparent_2rem,black_7rem)]"
 	></canvas>
 	{@render children()}
 </div>

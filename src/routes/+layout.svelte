@@ -72,12 +72,14 @@
 </svelte:head>
 
 {#if data.config.banner_enabled}
-	<div class="dark:bg-gray-700 dark:text-white bg-gray-300 p-6">
-		<div class="ct">
-			<p>
-				{@html data.config.banner_content}
-			</p>
-		</div>
+	<!-- a notice from the CMS: a bar above the page, in the brand colour; the page and its nav start below it -->
+	<div
+		role="status"
+		class="bg-brand-600 px-6 py-3 text-white md:px-12 dark:bg-brand-300 dark:text-gray-950 [&_a]:text-inherit [&_a]:hover:text-inherit"
+	>
+		<p class="max-w-4xl">
+			{@html data.config.banner_content}
+		</p>
 	</div>
 {/if}
 
@@ -87,7 +89,7 @@
 	>Skip to content</a
 >
 
-<div class="min-h-screen bg-gray-50 dark:bg-gray-950">
+<div class="relative min-h-screen bg-gray-50 dark:bg-gray-950">
 	<Navbar />
 
 	<main id="main">
