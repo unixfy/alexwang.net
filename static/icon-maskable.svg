@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<title>Alex Wang</title>
+	<!-- Heavier cut for small sizes: thicker route, larger stops. -->
+	<!-- Full-bleed square with the mark inside the maskable safe zone, for app icons the OS crops itself. -->
+	<defs>
+		<mask id="stops" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+			<rect width="64" height="64" fill="#fff" />
+			<circle cx="18" cy="52" r="7.2" />
+			<circle cx="32" cy="22" r="7.2" />
+			<circle cx="46" cy="52" r="7.2" />
+		</mask>
+	</defs>
+	<rect width="64" height="64" fill="#7e1f86" />
+	<g transform="translate(32 32) scale(0.62) translate(-32 -34.5)">
+		<path
+			d="M5 12 18 52 32 22 46 52 59 12"
+			fill="none"
+			stroke="#fff"
+			stroke-width="8"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			mask="url(#stops)"
+		/>
+		<g fill="none" stroke-width="4.4">
+			<circle cx="18" cy="52" r="7.2" stroke="#e5aee8" />
+			<circle cx="32" cy="22" r="7.2" stroke="#6ac9ce" />
+			<circle cx="46" cy="52" r="7.2" stroke="#f2af48" />
+		</g>
+	</g>
+</svg>

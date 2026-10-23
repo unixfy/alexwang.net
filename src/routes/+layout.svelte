@@ -54,15 +54,17 @@
 <svelte:head>
 	<title>{pageTitle} | Alex Wang</title>
 	<meta name="description" content="Alex Wang's portfolio site" />
-	<link rel="apple-touch-icon" href="/favicon.png" sizes="512x512" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 	<meta name="theme-color" content="#7E1F86" />
 
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://alexwang.net{page.url.pathname}" />
 	<meta property="og:title" content="{pageTitle} | Alex Wang" />
 	<meta property="og:description" content="Alex Wang's portfolio site" />
-	<meta property="og:image" content="https://alexwang.net/favicon.png" />
-	<meta name="twitter:card" content="summary" />
+	<meta property="og:image" content="https://alexwang.net/og.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta name="twitter:card" content="summary_large_image" />
 
 	{#if !dev && browser}
 		<link rel="manifest" href="/manifest.webmanifest" />

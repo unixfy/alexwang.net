@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="t">
+	<title id="t">Alex Wang</title>
+	<!-- A W drawn as a transit route. Its three stops are the three doors: Work, Writing, Contact. -->
+	<defs>
+		<mask id="stops" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+			<rect width="64" height="64" fill="#fff" />
+			<circle cx="18" cy="52" r="6.5" />
+			<circle cx="32" cy="22" r="6.5" />
+			<circle cx="46" cy="52" r="6.5" />
+		</mask>
+	</defs>
+	<path
+		d="M5 12 18 52 32 22 46 52 59 12"
+		fill="none"
+		stroke="#7e1f86"
+		stroke-width="6.4"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		mask="url(#stops)"
+	/>
+	<g fill="none" stroke-width="3.6">
+		<circle cx="18" cy="52" r="6.5" stroke="#7e1f86" />
+		<circle cx="32" cy="22" r="6.5" stroke="#00787d" />
+		<circle cx="46" cy="52" r="6.5" stroke="#be7100" />
+	</g>
+</svg>

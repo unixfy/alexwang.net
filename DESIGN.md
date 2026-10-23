@@ -246,6 +246,10 @@ Flat. Surfaces are not lifted; there are no shadows on the home page. The daisyU
 
 Rings are circles (1.5rem, 0.3125rem border in the line color, center filled with the page ground). Lines are pills (999px caps). Photography is softly rounded (rounded 4px for thumbnails, 1rem for the portrait, 0.5rem for project images, a full circle for the links avatar). daisyUI shapes come from the themes: buttons and fields 0.5rem, badges and swaps 0.25rem, boxes (alert, collapse) 0.75rem, all with a 2px border. Interior CTA buttons are 0.5rem; social link buttons are full pills. The missing stop on a 404 is a dashed ring; the SSH ticket is 1rem rounded with circular notches (1.5rem) at the ends of its dashed divider. The map is strictly octilinear: routes turn only at multiples of 45 degrees. Its station rings, interchanges included, are filled with the page ground colour (gray-50 / gray-950), not white.
 
+## Brand Mark
+
+A W drawn as a route: one round-capped line, three interior stops cut out as rings in the three door colours (Work purple, Writing teal, Contact amber). The rings are masked out of the line, so the mark is transparent and sits on any ground. Files in `static/`: `mark.svg` (day), `mark-night.svg` (dark grounds), `mark-mono.svg` (`currentColor`), `favicon.svg` and `icon-maskable.svg` (heavier stroke and larger stops for small sizes, white W with night-tint rings on a brand-purple tile), plus PNG exports and the 1200x630 `og.png` share card (Archivo heavy at wdth 118 on brand purple). Use the tile versions wherever the host crops or backgrounds the icon; use the bare mark on the site's own surfaces. Never recolour a ring or change their order.
+
 ## Components
 
 ### Trunk, station and ring (signature)
