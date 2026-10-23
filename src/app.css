@@ -505,7 +505,7 @@ nav li.station:focus-within .station-ring {
 		top: 50vh;
 	}
 	to {
-		top: 100%;
+		top: calc(100% - 2rem);
 	}
 }
 

@@ -4,6 +4,7 @@
 	import BlogListerLoading from '#lib/BlogListerLoading.svelte';
 	import Network from '#lib/Network.svelte';
 	import CopyButton from '#lib/CopyButton.svelte';
+	import Tower from '#lib/Tower.svelte';
 	import { year, monthYear } from '#lib/date.js';
 
 	let { data } = $props();
@@ -19,6 +20,17 @@
 	$effect(() => {
 		email = ['alex', 'alexwang.net'].join('@');
 	});
+
+	// shortcuts for the rail on the right; the same sections the page is made of
+	const stops = $derived(
+		/** @type {{ id: string; label: string; line: 'work' | 'writing' | 'contact' }[]} */ ([
+			...(data.config.homepage_welcome_text ? [{ id: 'about', label: 'About', line: 'work' }] : []),
+			{ id: 'work', label: 'Work', line: 'work' },
+			{ id: 'writing', label: 'Writing', line: 'writing' },
+			{ id: 'beyond', label: 'Beyond work', line: 'work' },
+			{ id: 'contact', label: 'Contact', line: 'contact' }
+		])
+	);
 
 	const doors = [
 		{ href: '#work', label: 'Work', line: 'work' },
@@ -98,160 +110,169 @@
 		</nav>
 	</Network>
 
-	{#if data.config.homepage_welcome_text}
-		<Station id="about" title="About">
-			<div class="t-prose space-y-5 [&_strong]:font-bold">
-				{@html data.config.homepage_welcome_text}
+	<div class="relative">
+		<!-- the right-hand gutter: a sticky signal tower of shortcuts, wide screens only -->
+		<aside class="pointer-events-none absolute inset-y-0 right-6 z-10 hidden w-60 xl:block">
+			<div class="pointer-events-auto sticky top-28 mt-40 h-[min(34rem,calc(100vh-9rem))]">
+				<Tower {stops} />
 			</div>
-		</Station>
-	{/if}
+		</aside>
 
-	<Station id="work" title="Work">
-		<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
-			{#each data.projects as project}
+		{#if data.config.homepage_welcome_text}
+			<Station id="about" title="About">
+				<div class="t-prose space-y-5 [&_strong]:font-bold">
+					{@html data.config.homepage_welcome_text}
+				</div>
+			</Station>
+		{/if}
+
+		<Station id="work" title="Work">
+			<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
+				{#each data.projects as project}
+					<li>
+						<a href="/project/{project.slug}" class={row}>
+							<span class="w-14 shrink-0 tabular-nums text-gray-600 dark:text-gray-300"
+								>{year(project.date)}</span
+							>
+							<span class="flex-1 t-item group-hover:underline underline-offset-4"
+								>{project.title}</span
+							>
+							{#if project.image}
+								<img
+									src="{cms}/{project.image}?format=webp&width=400"
+									alt=""
+									loading="lazy"
+									style="view-transition-name: p-{project.slug}"
+									class="hidden sm:block w-32 aspect-video object-cover rounded dark:brightness-90 self-center"
+								/>
+							{/if}
+						</a>
+					</li>
+				{/each}
 				<li>
-					<a href="/project/{project.slug}" class={row}>
-						<span class="w-14 shrink-0 tabular-nums text-gray-600 dark:text-gray-300"
-							>{year(project.date)}</span
-						>
-						<span class="flex-1 t-item group-hover:underline underline-offset-4"
-							>{project.title}</span
-						>
-						{#if project.image}
-							<img
-								src="{cms}/{project.image}?format=webp&width=400"
-								alt=""
-								loading="lazy"
-								style="view-transition-name: p-{project.slug}"
-								class="hidden sm:block w-32 aspect-video object-cover rounded dark:brightness-90 self-center"
-							/>
-						{/if}
+					<a href="/projects" class={row}>
+						<span class="w-14 shrink-0" aria-hidden="true"></span>
+						<span class="t-item group-hover:underline underline-offset-4">
+							All projects
+							<i
+								class="fa-solid fa-arrow-right inline-block transition-transform motion-reduce:transition-none group-hover:translate-x-1"
+								aria-hidden="true"
+							></i>
+						</span>
 					</a>
 				</li>
-			{/each}
-			<li>
-				<a href="/projects" class={row}>
-					<span class="w-14 shrink-0" aria-hidden="true"></span>
-					<span class="t-item group-hover:underline underline-offset-4">
-						All projects
-						<i
-							class="fa-solid fa-arrow-right inline-block transition-transform motion-reduce:transition-none group-hover:translate-x-1"
-							aria-hidden="true"
-						></i>
-					</span>
-				</a>
-			</li>
-		</ol>
+			</ol>
 
-		{#if data.certifications.length}
-			<h3 class="t-group mt-16 mb-6">Certifications</h3>
-			<ul class="list-none grid sm:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
-				{#each data.certifications as certification}
-					<li class="flex gap-4 items-center">
-						<img
-							src="{cms}/{certification.image}?format=webp&width=160"
-							alt=""
-							loading="lazy"
-							class="w-14 aspect-square shrink-0 dark:brightness-90"
-						/>
-						<div>
-							<p class="font-bold">{certification.name}</p>
-							<p class="t-meta">
-								{certification.reference}, {monthYear(certification.date)}
-							</p>
-						</div>
-					</li>
-				{/each}
-			</ul>
-		{/if}
-
-		{#if data.recognitions.length}
-			<h3 class="t-group mt-16 mb-6">Recognition</h3>
-			<ul class="list-none grid md:grid-cols-2 gap-x-10 gap-y-8 max-w-4xl">
-				{#each data.recognitions as recognition}
-					<li class="flex gap-4">
-						<img
-							src="{cms}/{recognition.image}?format=webp&width=120"
-							alt=""
-							loading="lazy"
-							class="w-12 h-12 shrink-0 object-contain rounded bg-white p-1 dark:brightness-90"
-						/>
-						<div>
-							<p class="font-bold">{recognition.name}</p>
-							<p class="t-meta">{monthYear(recognition.date)}</p>
-							<p class="mt-1 text-gray-700 dark:text-gray-300">{recognition.description}</p>
-						</div>
-					</li>
-				{/each}
-			</ul>
-		{/if}
-	</Station>
-
-	<Station id="writing" title="Writing" line="writing">
-		{#await data.posts}
-			<BlogListerLoading />
-		{:then posts}
-			{#if posts.length}
-				<BlogLister {posts} />
-			{:else}
-				<p class="text-lg">No posts yet.</p>
+			{#if data.certifications.length}
+				<h3 class="t-group mt-16 mb-6">Certifications</h3>
+				<ul class="list-none grid sm:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
+					{#each data.certifications as certification}
+						<li class="flex gap-4 items-center">
+							<img
+								src="{cms}/{certification.image}?format=webp&width=160"
+								alt=""
+								loading="lazy"
+								class="w-14 aspect-square shrink-0 dark:brightness-90"
+							/>
+							<div>
+								<p class="font-bold">{certification.name}</p>
+								<p class="t-meta">
+									{certification.reference}, {monthYear(certification.date)}
+								</p>
+							</div>
+						</li>
+					{/each}
+				</ul>
 			{/if}
-		{:catch}
-			<div role="status" class="alert alert-soft max-w-4xl">
-				<span>The latest posts aren’t loading right now.</span>
-				<a
-					href="https://blog.alexwang.net"
-					target="_blank"
-					rel="noopener"
-					class="btn btn-sm no-underline">Read them on the blog</a
-				>
-			</div>
-		{/await}
-		<p class="mt-6 text-lg">
-			<a href="https://blog.alexwang.net" target="_blank" rel="noopener">
-				More on the blog <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-			</a>
-		</p>
-	</Station>
 
-	<Station id="beyond" title="Beyond work">
-		<ul class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
-			<li>
-				<a href="/now" class={row}>
-					<span class="t-item group-hover:underline underline-offset-4">Now</span>
-					<span class="text-gray-700 dark:text-gray-300">What I’m up to right now</span>
-				</a>
-			</li>
-			<li>
-				<a href="/i-like" class={row}>
-					<span class="t-item group-hover:underline underline-offset-4">What I like</span>
-					<span class="text-gray-700 dark:text-gray-300"
-						>I like too many things, so they’re all here</span
-					>
-				</a>
-			</li>
-		</ul>
-	</Station>
+			{#if data.recognitions.length}
+				<h3 class="t-group mt-16 mb-6">Recognition</h3>
+				<ul class="list-none grid md:grid-cols-2 gap-x-10 gap-y-8 max-w-4xl">
+					{#each data.recognitions as recognition}
+						<li class="flex gap-4">
+							<img
+								src="{cms}/{recognition.image}?format=webp&width=120"
+								alt=""
+								loading="lazy"
+								class="w-12 h-12 shrink-0 object-contain rounded bg-white p-1 dark:brightness-90"
+							/>
+							<div>
+								<p class="font-bold">{recognition.name}</p>
+								<p class="t-meta">{monthYear(recognition.date)}</p>
+								<p class="mt-1 text-gray-700 dark:text-gray-300">{recognition.description}</p>
+							</div>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</Station>
 
-	<!-- End of the line -->
-	<Station id="contact" title="Contact" line="contact" end>
-		<ul class="list-none space-y-3 text-lg md:text-xl max-w-4xl">
-			<li>
-				<i class="fa-solid fa-envelope w-8" aria-hidden="true"></i>
-				{#if email}
-					<a href="mailto:{email}">{email}</a>
-					<CopyButton text={email} what="email address" class="ml-3 align-middle" />
+		<Station id="writing" title="Writing" line="writing">
+			{#await data.posts}
+				<BlogListerLoading />
+			{:then posts}
+				{#if posts.length}
+					<BlogLister {posts} />
 				{:else}
-					alex [at] alexwang.net
+					<p class="text-lg">No posts yet.</p>
 				{/if}
-			</li>
-			{#each data.socials as social}
+			{:catch}
+				<div role="status" class="alert alert-soft max-w-4xl">
+					<span>The latest posts aren’t loading right now.</span>
+					<a
+						href="https://blog.alexwang.net"
+						target="_blank"
+						rel="noopener"
+						class="btn btn-sm no-underline">Read them on the blog</a
+					>
+				</div>
+			{/await}
+			<p class="mt-6 text-lg">
+				<a href="https://blog.alexwang.net" target="_blank" rel="noopener">
+					More on the blog <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+				</a>
+			</p>
+		</Station>
+
+		<Station id="beyond" title="Beyond work">
+			<ul class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
 				<li>
-					<i class="fa-brands {social.icon} w-8" aria-hidden="true"></i>
-					<a href={social.url} target="_blank" rel="noopener">{social.name}</a>
+					<a href="/now" class={row}>
+						<span class="t-item group-hover:underline underline-offset-4">Now</span>
+						<span class="text-gray-700 dark:text-gray-300">What I’m up to right now</span>
+					</a>
 				</li>
-			{/each}
-		</ul>
-		<p class="t-meta mt-10">End of the line.</p>
-	</Station>
+				<li>
+					<a href="/i-like" class={row}>
+						<span class="t-item group-hover:underline underline-offset-4">What I like</span>
+						<span class="text-gray-700 dark:text-gray-300"
+							>I like too many things, so they’re all here</span
+						>
+					</a>
+				</li>
+			</ul>
+		</Station>
+
+		<!-- End of the line -->
+		<Station id="contact" title="Contact" line="contact" end>
+			<ul class="list-none space-y-3 text-lg md:text-xl max-w-4xl">
+				<li>
+					<i class="fa-solid fa-envelope w-8" aria-hidden="true"></i>
+					{#if email}
+						<a href="mailto:{email}">{email}</a>
+						<CopyButton text={email} what="email address" class="ml-3 align-middle" />
+					{:else}
+						alex [at] alexwang.net
+					{/if}
+				</li>
+				{#each data.socials as social}
+					<li>
+						<i class="fa-brands {social.icon} w-8" aria-hidden="true"></i>
+						<a href={social.url} target="_blank" rel="noopener">{social.name}</a>
+					</li>
+				{/each}
+			</ul>
+			<p class="t-meta mt-10">End of the line.</p>
+		</Station>
+	</div>
 </div>

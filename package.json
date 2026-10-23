@@ -13,16 +13,21 @@
 	},
 	"devDependencies": {
 		"@directus/sdk": "^27.0.0",
+		"@fontsource-variable/archivo": "^5.3.0",
+		"@fontsource-variable/public-sans": "^5.3.0",
 		"@fortawesome/fontawesome-free": "^7.3.1",
 		"@sveltejs/adapter-cloudflare": "^8.0.1",
 		"@sveltejs/kit": "^3.1.0",
 		"@tailwindcss/vite": "^4.3.3",
+		"@types/three": "^0.186.0",
 		"@vite-pwa/sveltekit": "^1.1.0",
+		"daisyui": "^5.7.50",
 		"prettier": "^3.9.10",
 		"prettier-plugin-svelte": "^4.1.1",
 		"svelte": "^5.57.2",
 		"svelte-check": "^4.7.7",
 		"tailwindcss": "^4.3.3",
+		"three": "^0.186.1",
 		"typescript": "^6.0.3",
 		"vite": "^8.3.5"
 	},
@@ -35,10 +40,5 @@
 	"imports": {
 		"#lib": "./src/lib",
 		"#lib/*": "./src/lib/*"
-	},
-	"dependencies": {
-		"@fontsource-variable/archivo": "^5.3.0",
-		"@fontsource-variable/public-sans": "^5.3.0",
-		"daisyui": "^5.7.50"
 	}
 }
