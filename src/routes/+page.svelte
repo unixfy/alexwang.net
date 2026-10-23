@@ -16,6 +16,17 @@
 		email = ['alex', 'alexwang.net'].join('@');
 	});
 
+	let copied = $state(false);
+	async function copyEmail() {
+		try {
+			await navigator.clipboard.writeText(email);
+			copied = true;
+			setTimeout(() => (copied = false), 1800);
+		} catch {
+			// clipboard unavailable (insecure context or denied); the mailto link still works
+		}
+	}
+
 	const doors = [
 		{ href: '#work', label: 'Work', line: 'work' },
 		{ href: '#writing', label: 'Writing', line: 'writing' },
@@ -27,6 +38,7 @@
 </script>
 
 <div class="line-page bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
+	<span class="train" aria-hidden="true"></span>
 	<!-- Terminus: who this is -->
 	<header
 		class="station station-start terminus pb-10 pr-6 md:pr-12"
@@ -228,6 +240,14 @@
 				<i class="fa-solid fa-envelope w-8" aria-hidden="true"></i>
 				{#if email}
 					<a href="mailto:{email}">{email}</a>
+					<button
+						type="button"
+						onclick={copyEmail}
+						class="ml-3 align-middle rounded border border-gray-400 dark:border-gray-500 px-2 py-0.5 text-sm hover:bg-gray-200 dark:hover:bg-gray-800"
+					>
+						{copied ? 'Copied' : 'Copy'}<span class="sr-only"> email address</span>
+					</button>
+					<span class="sr-only" role="status">{copied ? 'Email address copied' : ''}</span>
 				{:else}
 					alex [at] alexwang.net
 				{/if}

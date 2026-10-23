@@ -1,6 +1,7 @@
 <script>
 	import { darkmode } from '../stores';
 	import { page } from '$app/state';
+	import { tick } from 'svelte';
 
 	let mobilemenu = $state(false);
 
@@ -15,7 +16,16 @@
 	const current = (/** @type {string} */ href) =>
 		(href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(href)) ? 'page' : undefined;
 
-	const toggleDarkMode = () => ($darkmode = !$darkmode);
+	const toggleDarkMode = () => {
+		const flip = () => ($darkmode = !$darkmode);
+		if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			return flip();
+		}
+		document.startViewTransition(async () => {
+			flip();
+			await tick();
+		});
+	};
 	const closeOnEscape = (/** @type {KeyboardEvent} */ e) => {
 		if (e.key === 'Escape') mobilemenu = false;
 	};

@@ -376,3 +376,65 @@ nav li.station:focus-within .station-ring {
 		transition: none;
 	}
 }
+
+/* A small vehicle rides the lit edge of the line and slips behind the last station on arrival.
+   It shares the trunk's scroll range, so edge and marker always agree. */
+.train {
+	display: none;
+	position: absolute;
+	left: var(--trunk-x);
+	top: 50vh;
+	z-index: 1;
+	translate: -50% -50%;
+	width: 0.875rem;
+	height: 1.75rem;
+	border-radius: 999px;
+	border: 3px solid;
+	background: var(--line-work);
+	@apply border-gray-50 dark:border-gray-950;
+}
+
+@supports (animation-timeline: scroll()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.train {
+			display: block;
+			animation: train-ride linear both;
+			animation-timeline: scroll(root);
+		}
+	}
+}
+
+@keyframes train-ride {
+	from {
+		top: 50vh;
+	}
+	to {
+		top: 100%;
+	}
+}
+
+/* The signature is written left to right as it comes into view; shown whole when motion is off */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.signature-wipe {
+			animation: sign linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 100%;
+		}
+	}
+}
+
+@keyframes sign {
+	from {
+		clip-path: inset(0 100% 0 0);
+	}
+	to {
+		clip-path: inset(0);
+	}
+}
+
+/* Switching theme dissolves instead of flashing */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 0.4s;
+}
