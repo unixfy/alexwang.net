@@ -1,9 +1,7 @@
 <script>
-	import dayjs from 'dayjs/esm';
-	import utc from 'dayjs/esm/plugin/utc';
-	dayjs.extend(utc);
+	import { year } from '#lib/date.js';
 
-	export let data;
+	let { data } = $props();
 </script>
 
 <div class="bg-gray-100 dark:bg-gray-800 dark:text-white text-center min-h-[33vh] flex">
@@ -34,7 +32,7 @@
 									<p>{project.title}</p>
 								</div>
 								<div class="text-sm text-center italic">
-									<p>{dayjs(project.date).utc().format('YYYY')}</p>
+									<p>{year(project.date)}</p>
 								</div>
 								<!-- <div class="text-lg">
 									<p>

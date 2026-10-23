@@ -3,12 +3,9 @@
 	import BlogLister from '#lib/BlogLister.svelte';
 	import BlogListerLoading from '#lib/BlogListerLoading.svelte';
 	import Error from '#lib/Error.svelte';
-	import dayjs from 'dayjs/esm';
-	import utc from 'dayjs/esm/plugin/utc';
+	import { year, monthYear } from '#lib/date.js';
 
-	dayjs.extend(utc);
-
-	export let data;
+	let { data } = $props();
 </script>
 
 <div class="dark:bg-slate-900 dark:text-white">
@@ -65,17 +62,12 @@
 <div class="p-8 dark:bg-slate-900 dark:text-white">
 	<div class="ct">
 		<h1 class="font-display text-3xl md:text-4xl font-bold text-center mb-8">Writing</h1>
-		<!--        is this a crappy way to handle the stream? -->
-		{#await data.streamed.blogPostsRequest}
+		{#await data.posts}
 			<BlogListerLoading />
-		{:then blogPostsReq}
-			{#await blogPostsReq.json()}
-				<BlogListerLoading />
-			{:then posts}
-				<BlogLister {posts} />
-			{/await}
+		{:then posts}
+			<BlogLister {posts} />
 		{:catch error}
-			<Error message={error} />
+			<Error message={error.message} />
 		{/await}
 
 		<p class="text-center mt-6 text-lg">
@@ -116,7 +108,7 @@
 										<p>{project.title}</p>
 									</div>
 									<div class="text-sm text-center italic">
-										<p>{dayjs(project.date).utc().format('YYYY')}</p>
+										<p>{year(project.date)}</p>
 									</div>
 									<!-- <div class="text-lg">
 									<p>
@@ -163,7 +155,7 @@
 					/>
 					<p class="font-bold font-display mb-2 text-center">{certification.name}</p>
 					<p class="text-xs justify-self-end text-center">
-						{certification.reference} - {dayjs(certification.date).utc().format('MMMM YYYY')}
+						{certification.reference} - {monthYear(certification.date)}
 					</p>
 				</div>
 			{/each}
@@ -180,7 +172,7 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each data.recognitions as recognition}
 				<div class="flex items-start border border-gray-400 dark:border-slate-500 rounded-lg p-4">
-					<div class="bg-white p-2 rounded-lg shadow-sm mr-4 flex-shrink-0 aspect-square">
+					<div class="bg-white p-2 rounded-lg shadow-sm mr-4 shrink-0 aspect-square">
 						<img
 							src="https://cms.alexwang.net/assets/{recognition.image}?format=webp&width=120"
 							alt="{recognition.name} logo or emblem"
@@ -190,7 +182,7 @@
 					<div>
 						<h3 class="font-display text-lg font-bold">{recognition.name}</h3>
 						<p class="text-base text-gray-500 dark:text-gray-400 mt-1 mb-3">
-							{dayjs(recognition.date).utc().format('MMMM YYYY')}
+							{monthYear(recognition.date)}
 						</p>
 						<p class="text-base text-gray-700 dark:text-gray-300">{recognition.description}</p>
 					</div>

@@ -1,6 +1,5 @@
 <script>
-	// import the color/icon/url data from socials.json
-	export let socials;
+	let { socials } = $props();
 </script>
 
 <div class="grid grid-cols-3">

@@ -1,5 +1,5 @@
 export async function load() {
-    return {
-        title: "SSH Key"
-    }
+	return {
+		title: 'SSH Key'
+	};
 }

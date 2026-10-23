@@ -1,5 +1,5 @@
 <script>
-    export let message;
+    let { message } = $props();
 </script>
 
 <div class="bg-red-500 text-white dark:bg-red-800 rounded-lg p-4">

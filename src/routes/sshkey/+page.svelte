@@ -1,5 +1,5 @@
 <script>
-	export let data;
+	let { data } = $props();
 </script>
 
 <div class="p-8 min-h-screen flex bg-gray-100">

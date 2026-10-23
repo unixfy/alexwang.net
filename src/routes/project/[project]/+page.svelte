@@ -1,16 +1,14 @@
 <script>
-	export let data;
-	import dayjs from 'dayjs/esm';
-	import utc from 'dayjs/esm/plugin/utc';
+	import { fullDate } from '#lib/date.js';
 
-	dayjs.extend(utc);
+	let { data } = $props();
 </script>
 
 <div class="bg-gray-100 dark:bg-gray-800 dark:text-white min-h-[33vh] flex text-center">
 	<div class="m-auto p-16">
 		<h1 class="text-2xl sm:text-3xl md:text-4xl font-display font-bold my-4">Project: {data.project.title}</h1>
 		<p class="text-xl">
-			<a href="/projects"><i class="fas fa-arrow-left" /> Return to all projects</a>
+			<a href="/projects"><i class="fas fa-arrow-left"></i> Return to all projects</a>
 		</p>
 	</div>
 </div>
@@ -39,7 +37,7 @@
                     {@html data.project.content_html}
                 </div>
 				<hr class="my-4" />
-				<p class="text-sm italic">Published {dayjs(data.project.date).utc().format('MMMM DD, YYYY')}</p>
+				<p class="text-sm italic">Published {fullDate(data.project.date)}</p>
 			</div>
 		</div>
 	</div>

@@ -1,7 +1,7 @@
 <script>
-	import dayjs from 'dayjs/esm';
+	import { fullDate } from '#lib/date.js';
 
-	export let data;
+	let { data } = $props();
 </script>
 
 <div class="bg-gray-100 dark:bg-gray-800 dark:text-white text-center min-h-[33vh] flex">
@@ -14,7 +14,7 @@
 			</h2>
 		{/if}
 
-		<p class="mt-2 italic">Last updated {dayjs(data.page.date_updated).format('MMMM DD, YYYY')}</p>
+		<p class="mt-2 italic">Last updated {fullDate(data.page.date_updated)}</p>
 	</div>
 </div>
 

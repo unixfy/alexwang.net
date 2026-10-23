@@ -1,5 +1,5 @@
 <script>
-    export let posts;
+    let { posts } = $props();
 </script>
 
 <div class="grid grid-cols-1 grid-rows-4 sm:grid-rows-2 sm:grid-cols-2 gap-8">
@@ -18,7 +18,7 @@
                         <p
                                 class="mb-2 text-lg md:text-xl lg:text-2xl font-bold font-display text-gray-900 dark:text-white capitalize"
                         >
-                            {@html post.title.rendered} <i class="fa-solid fa-arrow-right"/>
+                            {@html post.title.rendered} <i class="fa-solid fa-arrow-right"></i>
                         </p>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden">
                             {@html post.uagb_excerpt}
