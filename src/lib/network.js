@@ -146,7 +146,11 @@ void main() {
 	outColor = vec4(col * k, a * k);
 }`;
 
-/** oklch(L C H) from a computed CSS value to sRGB 0..1 */
+/**
+ * oklch(L C H) from a computed CSS value to sRGB 0..1
+ * @param {string} value
+ * @returns {number[] | null}
+ */
 function parseOklch(value) {
 	const m = /oklch\(\s*([\d.]+)(%?)\s+([\d.]+)\s+([\d.]+)/.exec(value);
 	if (!m) return null;
@@ -169,6 +173,11 @@ function parseOklch(value) {
 	});
 }
 
+/**
+ * @param {CSSStyleDeclaration} style
+ * @param {string} name
+ * @param {number[]} fallback
+ */
 function cssColor(style, name, fallback) {
 	return parseOklch(style.getPropertyValue(name)) ?? fallback;
 }
@@ -185,6 +194,12 @@ const DIRS = [
 	[1, 1]
 ];
 
+/**
+ * @param {number[]} start
+ * @param {number[][]} steps compass index and length in cells
+ * @param {number} g cell size, css px
+ * @returns {number[][]}
+ */
 function walk(start, steps, g) {
 	const pts = [start];
 	let [x, y] = start;
@@ -196,6 +211,14 @@ function walk(start, steps, g) {
 	return pts;
 }
 
+/**
+ * Crossing point of segments a-b and c-d, or null.
+ * @param {number[]} a
+ * @param {number[]} b
+ * @param {number[]} c
+ * @param {number[]} d
+ * @returns {number[] | null}
+ */
 function intersect(a, b, c, d) {
 	const r = [b[0] - a[0], b[1] - a[1]];
 	const s = [d[0] - c[0], d[1] - c[1]];
@@ -208,22 +231,30 @@ function intersect(a, b, c, d) {
 }
 
 /** Routes as text: compass step + length in grid cells ("NE6 E3"); no length means "off the canvas". */
+/** @type {Record<string, number>} */
 const COMPASS = { E: 0, NE: 1, N: 2, NW: 3, W: 4, SW: 5, S: 6, SE: 7 };
+/** @param {string} text */
 const route = (text) =>
 	text.split(' ').map((t) => {
-		const [, dir, n] = /^([A-Z]+)(\d*)$/.exec(t);
+		const [, dir, n] = /** @type {RegExpExecArray} */ (/^([A-Z]+)(\d*)$/.exec(t));
 		return [COMPASS[dir], n ? +n : 60];
 	});
 
-/** Build routes and stations for a canvas of w x h css px. starts: door line ends. */
+/**
+ * Build routes and stations for a canvas of w x h css px.
+ * @param {number} w
+ * @param {number} h
+ * @param {(number[] | null)[]} starts where each door line begins
+ */
 function build(w, h, starts) {
 	const narrow = w < 700;
 	const g = narrow ? 14 : Math.min(34, Math.max(24, w / 44));
-	const sx = (k) => starts[k]?.[0] ?? w * 0.7;
-	const sy = (k) => starts[k]?.[1] ?? h * (0.55 + 0.1 * k);
+	const sx = (/** @type {number} */ k) => starts[k]?.[0] ?? w * 0.7;
+	const sy = (/** @type {number} */ k) => starts[k]?.[1] ?? h * (0.55 + 0.1 * k);
 
 	// Wide: the door lines run out to the right. Narrow: there is no room to the right of the
 	// arrows, so they turn back into the free space beside the portrait and below the rows.
+	/** @type {[number[], string][]} */
 	const plan = narrow
 		? [
 				[[sx(0), sy(0)], 'N3 NW8 W'],
@@ -245,7 +276,9 @@ function build(w, h, starts) {
 			];
 	const routes = plan.map(([start, text]) => walk(start, route(text), g));
 
+	/** @type {{ a: number[]; b: number[]; r: number; start: number }[]} */
 	const segs = [];
+	/** @type {number[]} */
 	const routeLen = [];
 	routes.forEach((pts, r) => {
 		let len = 0;
@@ -276,8 +309,13 @@ function build(w, h, starts) {
 	return { segs: segs.slice(0, MAX_SEG), stations: stations.slice(0, MAX_ST), routeLen, g };
 }
 
+/**
+ * @param {WebGL2RenderingContext} gl
+ * @param {number} type
+ * @param {string} src
+ */
 function compile(gl, type, src) {
-	const sh = gl.createShader(type);
+	const sh = /** @type {WebGLShader} */ (gl.createShader(type));
 	gl.shaderSource(sh, src);
 	gl.compileShader(sh);
 	if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
@@ -290,14 +328,20 @@ function compile(gl, type, src) {
  * Start the network inside `host`, drawing on `canvas`.
  * Returns a cleanup function, or null when WebGL2 is unavailable (the page simply has no map).
  */
+/**
+ * @param {HTMLElement} host
+ * @param {HTMLCanvasElement} canvas
+ */
 export function startNetwork(host, canvas) {
-	const gl = canvas.getContext('webgl2', {
+	const context = canvas.getContext('webgl2', {
 		alpha: true,
 		premultipliedAlpha: true,
 		antialias: false,
 		powerPreference: 'low-power'
 	});
-	if (!gl) return null;
+	if (!context) return null;
+	// a plain constant, so the nested functions below keep the non-null type
+	const gl = context;
 
 	let prog;
 	try {
@@ -305,7 +349,8 @@ export function startNetwork(host, canvas) {
 		gl.attachShader(prog, compile(gl, gl.VERTEX_SHADER, VERT));
 		gl.attachShader(prog, compile(gl, gl.FRAGMENT_SHADER, FRAG));
 		gl.linkProgram(prog);
-		if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+		if (!gl.getProgramParameter(prog, gl.LINK_STATUS))
+			throw new Error(gl.getProgramInfoLog(prog) ?? 'program link failed');
 	} catch (err) {
 		console.error('Network shader unavailable', err);
 		return null;
@@ -313,8 +358,9 @@ export function startNetwork(host, canvas) {
 	gl.useProgram(prog);
 	gl.bindVertexArray(gl.createVertexArray());
 
+	/** @type {Record<string, WebGLUniformLocation | null>} */
 	const U = {};
-	const u = (name) => (U[name] ??= gl.getUniformLocation(prog, name));
+	const u = (/** @type {string} */ name) => (U[name] ??= gl.getUniformLocation(prog, name));
 
 	const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 	const coarse = matchMedia('(pointer: coarse)').matches;
@@ -328,8 +374,9 @@ export function startNetwork(host, canvas) {
 	let w = 0;
 	let h = 0;
 	let dpr = 1;
-	let net = null;
-	let colors = null;
+	/** @type {ReturnType<typeof build>} */
+	let net = { segs: [], stations: [], routeLen: [], g: 0 };
+	let colors = { cols: /** @type {number[][]} */ ([]), ground: [0, 0, 0], ink: [0, 0, 0] };
 	let dark = 0;
 	let running = false;
 	let raf = 0;
@@ -408,7 +455,8 @@ export function startNetwork(host, canvas) {
 		gl.uniform1i(u('uStN'), net.stations.length);
 		gl.uniform4fv(u('uSt'), stData);
 
-		const pad = (a, n, v) => Array.from({ length: n }, (_, i) => a[i] ?? v);
+		const pad = (/** @type {number[]} */ a, /** @type {number} */ n, /** @type {number} */ v) =>
+			Array.from({ length: n }, (_, i) => a[i] ?? v);
 		gl.uniform1fv(u('uLen'), pad(net.routeLen, ROUTES, 1));
 		gl.uniform1fv(u('uHalf'), [3.5, 3.5, 3.5, 2.25, 2.25, 2.25]);
 		gl.uniform1fv(
@@ -434,6 +482,7 @@ export function startNetwork(host, canvas) {
 		);
 	}
 
+	/** @param {number} now */
 	function frame(now) {
 		raf = 0;
 		if (lost) return;
@@ -452,7 +501,7 @@ export function startNetwork(host, canvas) {
 			ema = 16;
 			measure();
 		}
-		const ease = (x) => 1 - (1 - Math.min(1, x)) ** 3;
+		const ease = (/** @type {number} */ x) => 1 - (1 - Math.min(1, x)) ** 3;
 		const draw = reduced ? 1 : ease(t / 2.4);
 
 		// smooth the cursor and the parallax toward their targets
@@ -492,6 +541,7 @@ export function startNetwork(host, canvas) {
 		if (!raf && !lost) raf = requestAnimationFrame((n) => ((running = false), frame(n)));
 	}
 
+	/** @param {PointerEvent} e */
 	function onMove(e) {
 		if (e.pointerType === 'touch') return;
 		const r = host.getBoundingClientRect();
@@ -509,6 +559,7 @@ export function startNetwork(host, canvas) {
 		mouse.target = 0;
 		parallax.tx = parallax.ty = 0;
 	}
+	/** @param {Event} e */
 	function onLost(e) {
 		e.preventDefault();
 		lost = true;
