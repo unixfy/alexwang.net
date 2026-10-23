@@ -8,10 +8,8 @@
 	import { cubicOut } from 'svelte/easing';
 
 	import { browser, dev } from '$app/env';
-	import { onMount } from 'svelte';
 	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
-	import { pwaInfo } from 'virtual:pwa-info';
 
 	let { data, children } = $props();
 
@@ -30,24 +28,6 @@
 				await navigation.complete;
 			});
 		});
-	});
-
-	onMount(async () => {
-		if (pwaInfo) {
-			const { registerSW } = await import('virtual:pwa-register');
-			registerSW({
-				immediate: true,
-				onRegistered(r) {
-					r &&
-						setInterval(() => {
-							r.update();
-						}, 3600000);
-				},
-				onRegisterError(error) {
-					console.error('SW registration error', error);
-				}
-			});
-		}
 	});
 </script>
 
