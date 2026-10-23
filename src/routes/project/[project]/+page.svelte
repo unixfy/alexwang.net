@@ -14,9 +14,18 @@
 	<header class="station station-start terminus-page pb-8 pr-6 md:pr-12">
 		<span class="station-ring" aria-hidden="true"></span>
 		<h1 class="t-page max-w-4xl text-brand-600 dark:text-brand-300">{data.project.title}</h1>
-		<p class="t-meta mt-3">
-			{#if data.index >= 0}Stop {data.index + 1} of {data.total} ·{/if}
-			{year(data.project.date)} · <a href="/projects">All projects</a>
+		<p class="t-meta mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+			{#if data.index >= 0}
+				<span>Stop {data.index + 1} of {data.total}</span>
+				<progress
+					class="progress progress-primary w-28"
+					value={data.index + 1}
+					max={data.total}
+					aria-hidden="true"
+				></progress>
+			{/if}
+			<span>{year(data.project.date)}</span>
+			<a href="/projects">All projects</a>
 		</p>
 	</header>
 
@@ -36,10 +45,10 @@
 						href={data.project.url}
 						target="_blank"
 						rel="noopener"
-						class="mt-4 block w-full rounded-lg bg-brand-600 p-2 text-center text-xl text-white no-underline transition-colors hover:bg-brand-700 hover:text-white dark:bg-brand-300 dark:text-gray-950 dark:hover:bg-brand-200 dark:hover:text-gray-950 sm:p-4"
+						class="btn btn-primary btn-lg btn-block mt-4 no-underline"
 					>
 						View project
-						<i class="fa-solid fa-arrow-up-right-from-square ml-1 text-base" aria-hidden="true"></i>
+						<i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
 					</a>
 				{/if}
 			</div>

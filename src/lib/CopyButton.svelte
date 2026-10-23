@@ -1,4 +1,6 @@
 <script>
+	import { fade } from 'svelte/transition';
+
 	/** @type {{ text: string, what?: string, label?: string, class?: string }} */
 	let { text, what = 'text', label = 'Copy', class: cls = '' } = $props();
 
@@ -18,8 +20,17 @@
 <button
 	type="button"
 	onclick={copy}
-	class="min-h-8 rounded border border-gray-400 px-2 py-0.5 text-sm hover:bg-gray-200 dark:border-gray-500 dark:hover:bg-gray-800 {cls}"
+	class="btn btn-outline btn-sm {copied ? 'btn-success' : ''} {cls}"
 >
 	{copied ? 'Copied' : label}<span class="sr-only">{` ${what}`}</span>
 </button>
+{#if copied}
+	<div
+		class="toast toast-end toast-bottom z-50"
+		aria-hidden="true"
+		transition:fade={{ duration: 150 }}
+	>
+		<div class="alert alert-success"><span>{what} copied</span></div>
+	</div>
+{/if}
 <span class="sr-only" role="status">{copied ? `${what} copied` : ''}</span>

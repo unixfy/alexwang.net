@@ -27,9 +27,9 @@
 				? 'That page doesn’t exist. The link may be old or mistyped.'
 				: 'Something went wrong on my end. Try refreshing in a moment.'}
 		</p>
-		<p class="mt-8 space-x-6 text-lg">
-			<a href="/">Back to the start</a>
-			<a href="/projects">Projects</a>
+		<p class="mt-8 flex flex-wrap justify-center gap-3">
+			<a href="/" class="btn btn-primary no-underline">Back to the start</a>
+			<a href="/projects" class="btn btn-ghost no-underline">Projects</a>
 		</p>
 	</div>
 </div>

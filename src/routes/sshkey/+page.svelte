@@ -20,7 +20,9 @@
 					{data.config.sshkey}
 				</p>
 			{:else}
-				<p class="mt-4 text-lg">The key isn’t available right now. Try again in a moment.</p>
+				<div role="alert" class="alert alert-warning mt-4">
+					<span>The key isn’t available right now. Try again in a moment.</span>
+				</div>
 			{/if}
 		</div>
 		{#if data.config.sshkey}

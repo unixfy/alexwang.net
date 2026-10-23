@@ -197,11 +197,15 @@
 				<p class="text-lg">No posts yet.</p>
 			{/if}
 		{:catch}
-			<p class="text-lg">
-				The latest posts aren’t loading right now.
-				<a href="https://blog.alexwang.net" target="_blank" rel="noopener">Read them on the blog</a
-				>.
-			</p>
+			<div role="status" class="alert alert-soft max-w-4xl">
+				<span>The latest posts aren’t loading right now.</span>
+				<a
+					href="https://blog.alexwang.net"
+					target="_blank"
+					rel="noopener"
+					class="btn btn-sm no-underline">Read them on the blog</a
+				>
+			</div>
 		{/await}
 		<p class="mt-6 text-lg">
 			<a href="https://blog.alexwang.net" target="_blank" rel="noopener">

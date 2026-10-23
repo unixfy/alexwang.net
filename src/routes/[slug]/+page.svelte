@@ -32,17 +32,24 @@
 		stops = heads.map((h) => ({ id: h.id, text: h.textContent?.trim() ?? '' }));
 		foldLists(content);
 
-		const io = new IntersectionObserver(
-			(entries) => entries.forEach((e) => e.isIntersecting && (current = e.target.id)),
-			{ rootMargin: '-35% 0px -60% 0px' }
-		);
-		heads.forEach((h) => io.observe(h));
-		return () => io.disconnect();
+		// scroll-spy: the current stop is the last heading above the reading line (the first, until then)
+		let frame = 0;
+		const update = () => {
+			frame = 0;
+			let id = heads[0]?.id ?? '';
+			for (const h of heads) if (h.getBoundingClientRect().top <= innerHeight * 0.45) id = h.id;
+			current = id;
+		};
+		const onScroll = () => (frame ||= requestAnimationFrame(update));
+		addEventListener('scroll', onScroll, { passive: true });
+		update();
+		return () => {
+			removeEventListener('scroll', onScroll);
+			cancelAnimationFrame(frame);
+		};
 	});
 
 	const next = $derived(data.next ?? { slug: 'projects', title: 'Projects' });
-	const stopLink =
-		'relative block py-1 no-underline text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white aria-[current=location]:font-bold aria-[current=location]:text-gray-900 dark:aria-[current=location]:text-white pl-5 before:absolute before:left-0 before:top-[0.6rem] before:block before:size-2.5 before:rounded-full before:border-2 before:border-brand-600 dark:before:border-brand-300 aria-[current=location]:before:bg-brand-600 dark:aria-[current=location]:before:bg-brand-300';
 </script>
 
 <div class="line-page">
@@ -59,10 +66,7 @@
 		<p class="t-meta mt-4">
 			Updated {fullDate(data.page.date_updated)}
 			{#if fresh}
-				<span
-					class="ml-3 rounded-full bg-brand-600 px-3 py-0.5 text-white dark:bg-brand-300 dark:text-gray-950"
-					>New since your last visit</span
-				>
+				<span class="badge badge-primary ml-3">New since your last visit</span>
 			{/if}
 		</p>
 	</header>
@@ -71,19 +75,15 @@
 		<div class="xl:grid xl:grid-cols-[minmax(0,70ch)_15rem] xl:gap-14">
 			<div>
 				{#if stops.length > 3}
-					<details class="group mb-8 xl:hidden">
-						<summary class="flex min-h-11 cursor-pointer items-center font-semibold">
-							Stops on this page
-							<i
-								class="fa-solid fa-chevron-down ml-2 text-sm transition-transform group-open:rotate-180 motion-reduce:transition-none"
-								aria-hidden="true"
-							></i>
-						</summary>
-						<ol class="mt-2 list-none">
-							{#each stops as stop}
-								<li><a href="#{stop.id}" class={stopLink}>{stop.text}</a></li>
-							{/each}
-						</ol>
+					<details class="collapse collapse-arrow mb-8 bg-base-200 xl:hidden">
+						<summary class="collapse-title font-semibold">Stops on this page</summary>
+						<div class="collapse-content">
+							<ul class="menu menu-md w-full px-0">
+								{#each stops as stop}
+									<li><a href="#{stop.id}">{stop.text}</a></li>
+								{/each}
+							</ul>
+						</div>
 					</details>
 				{/if}
 				<div bind:this={content} class="ride text-lg page-content-container">
@@ -95,17 +95,15 @@
 			{#if stops.length > 3}
 				<aside class="hidden xl:block">
 					<nav aria-label="Stops on this page" class="sticky top-8">
-						<ol class="list-none">
+						<ul class="menu menu-lg w-full p-0">
 							{#each stops as stop}
 								<li>
-									<a
-										href="#{stop.id}"
-										aria-current={current === stop.id ? 'location' : undefined}
-										class={stopLink}>{stop.text}</a
+									<a href="#{stop.id}" aria-current={current === stop.id ? 'location' : undefined}
+										>{stop.text}</a
 									>
 								</li>
 							{/each}
-						</ol>
+						</ul>
 					</nav>
 				</aside>
 			{/if}

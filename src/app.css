@@ -24,7 +24,85 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
+/* UI primitives (buttons, navbar, menu, badge, collapse, swap, toast, alert, skeleton, progress) come
+   from daisyUI. Only the parts the site uses are included, and both themes are built from the site's
+   own tokens, so every component wears the line-diagram world: flat, crisp, brand purple. */
+@plugin 'daisyui' {
+	themes: false;
+	logs: false;
+	include:
+		properties, svg, scrollbar, rootcolor, button, navbar, menu, badge, collapse, swap, toast,
+		alert, skeleton, progress;
+}
+
+@plugin 'daisyui/theme' {
+	name: 'line';
+	default: true;
+	color-scheme: light;
+	--color-base-100: var(--color-gray-50);
+	--color-base-200: var(--color-gray-100);
+	--color-base-300: var(--color-gray-200);
+	--color-base-content: var(--color-gray-900);
+	--color-primary: var(--color-brand-600);
+	--color-primary-content: oklch(1 0 0);
+	--color-secondary: oklch(0.52 0.09 200);
+	--color-secondary-content: oklch(1 0 0);
+	--color-accent: oklch(0.62 0.14 65);
+	--color-accent-content: var(--color-gray-950);
+	--color-neutral: var(--color-gray-900);
+	--color-neutral-content: var(--color-gray-50);
+	--color-info: var(--color-brand-500);
+	--color-info-content: oklch(1 0 0);
+	--color-success: oklch(0.52 0.09 200);
+	--color-success-content: oklch(1 0 0);
+	--color-warning: oklch(0.62 0.14 65);
+	--color-warning-content: var(--color-gray-950);
+	--color-error: oklch(0.5 0.2 27);
+	--color-error-content: oklch(1 0 0);
+	--radius-selector: 0.25rem;
+	--radius-field: 0.5rem;
+	--radius-box: 0.75rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 2px;
+	--depth: 0;
+	--noise: 0;
+}
+
+@plugin 'daisyui/theme' {
+	name: 'line-night';
+	color-scheme: dark;
+	--color-base-100: var(--color-gray-950);
+	--color-base-200: var(--color-gray-900);
+	--color-base-300: var(--color-gray-800);
+	--color-base-content: oklch(1 0 0);
+	--color-primary: var(--color-brand-300);
+	--color-primary-content: var(--color-gray-950);
+	--color-secondary: oklch(0.78 0.09 200);
+	--color-secondary-content: var(--color-gray-950);
+	--color-accent: oklch(0.8 0.14 75);
+	--color-accent-content: var(--color-gray-950);
+	--color-neutral: var(--color-gray-100);
+	--color-neutral-content: var(--color-gray-950);
+	--color-info: var(--color-brand-400);
+	--color-info-content: var(--color-gray-950);
+	--color-success: oklch(0.78 0.09 200);
+	--color-success-content: var(--color-gray-950);
+	--color-warning: oklch(0.8 0.14 75);
+	--color-warning-content: var(--color-gray-950);
+	--color-error: oklch(0.7 0.17 25);
+	--color-error-content: var(--color-gray-950);
+	--radius-selector: 0.25rem;
+	--radius-field: 0.5rem;
+	--radius-box: 0.75rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 2px;
+	--depth: 0;
+	--noise: 0;
+}
+
+@theme static {
 	--font-sans: 'Public Sans Variable', ui-sans-serif, system-ui, sans-serif;
 	--font-display: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
 
@@ -131,7 +209,7 @@
 	/* Brand-coloured links; underlined so colour is never the only cue */
 	.link,
 	p > a,
-	li > a,
+	:where(li:not(.menu li)) > a,
 	.page-content-container a {
 		@apply text-brand-600 dark:text-brand-300 hover:text-brand-800 dark:hover:text-brand-200 underline underline-offset-4 decoration-1 transition-colors;
 	}
@@ -580,21 +658,16 @@ nav li.station:focus-within .station-ring {
 	.dark .page-content-container figcaption {
 		@apply text-gray-300;
 	}
-
-	/* "Show 22 more" on long lists */
-	.fold-toggle {
-		min-height: 2.75rem;
-		font-weight: 600;
-		@apply text-brand-600 underline underline-offset-4;
-	}
-
-	.dark .fold-toggle {
-		@apply text-brand-300;
-	}
 }
 
 /* Pages morph into each other: a project image travels from the card to the page */
 ::view-transition-group(*) {
 	animation-duration: 0.5s;
 	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* daisyUI marks the current menu item with the theme's neutral colour; on this site it is the brand */
+.menu {
+	--menu-active-bg: var(--color-primary);
+	--menu-active-fg: var(--color-primary-content);
 }

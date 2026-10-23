@@ -8,14 +8,18 @@
 		<script>
 			try {
 				var saved = localStorage.getItem('darkmode');
-				if (saved === null ? matchMedia('(prefers-color-scheme: dark)').matches : saved === 'true')
+				if (
+					saved === null ? matchMedia('(prefers-color-scheme: dark)').matches : saved === 'true'
+				) {
 					document.documentElement.classList.add('dark');
+					document.documentElement.dataset.theme = 'line-night';
+				}
 			} catch (e) {}
 		</script>
 		<noscript
 			><style>
 				.mobile-menu {
-					display: block !important;
+					display: flex !important;
 				}
 			</style></noscript
 		>

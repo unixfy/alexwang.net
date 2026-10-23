@@ -16,7 +16,7 @@ export function foldLists(root, { keep = 8, over = 12 } = {}) {
 
 		const button = document.createElement('button');
 		button.type = 'button';
-		button.className = 'fold-toggle';
+		button.className = 'btn btn-link btn-sm';
 		button.setAttribute('aria-expanded', 'false');
 		const label = (/** @type {boolean} */ open) =>
 			open ? 'Show fewer' : `Show ${extra.length} more`;

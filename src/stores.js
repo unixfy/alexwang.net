@@ -1,4 +1,5 @@
-// Whether dark mode is enabled. Persists to localStorage and toggles the `dark` class on <html>.
+// Whether dark mode is enabled. Persists to localStorage and sets the `dark` class and the daisyUI
+// `data-theme` (line / line-night) on <html>.
 // Defaults to the system color scheme when the user hasn't chosen yet.
 
 import { writable } from 'svelte/store';
@@ -20,6 +21,7 @@ function createDarkmode() {
 
 	store.subscribe((value) => {
 		document.documentElement.classList.toggle('dark', value);
+		document.documentElement.dataset.theme = value ? 'line-night' : 'line';
 		try {
 			localStorage.setItem('darkmode', String(value));
 		} catch {

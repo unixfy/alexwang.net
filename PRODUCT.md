@@ -27,7 +27,7 @@ It is one person's own hub rather than a template portfolio: content is authored
 
 ## Capabilities and Constraints
 
-- Stack: SvelteKit 3, Svelte 5, Tailwind CSS 4, Directus SDK. Dependencies stay few: heavy visual effects are hand-written (the home page's WebGL2 map is a single shader with no library) or lazily loaded, never a framework added for one effect.
+- Stack: SvelteKit 3, Svelte 5, Tailwind CSS 4, daisyUI 5 (the owner's chosen UI primitive library: navbar, menu, buttons, badge, collapse, swap, toast, alert, skeleton, progress; themed from the site's own tokens, never stock themes), Directus SDK. Dependencies stay few: heavy visual effects are hand-written (the home page's WebGL2 map is a single shader with no library) or lazily loaded, never a framework added for one effect.
 - Ambitious visuals are welcome (WebGL, scroll-driven and generative motion) provided every effect degrades: the page must be complete without WebGL2 and without JavaScript, respect `prefers-reduced-motion`, pause when off screen, and hold up on integrated and budget mobile GPUs.
 - Content sources (Directus, WordPress) stay as they are.
 - Light and dark mode must both be supported, with the choice persisted.

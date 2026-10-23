@@ -57,7 +57,7 @@
 						href={social.url}
 						target="_blank"
 						rel="noopener"
-						class="inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-gray-300 px-4 no-underline text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:border-gray-600 dark:text-white dark:hover:bg-gray-800 dark:hover:text-white"
+						class="btn btn-soft btn-lg rounded-full no-underline"
 					>
 						<i class="fa-brands {social.icon}" aria-hidden="true"></i>
 						{social.name}
