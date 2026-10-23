@@ -1,41 +1,41 @@
 {
-  "name": "alexwang.net",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "preview": "vite preview",
-    "postinstall": "svelte-kit sync",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier --check .",
-    "format": "prettier --write ."
-  },
-  "devDependencies": {
-    "@directus/sdk": "^27.0.0",
-    "@fontsource/ibm-plex-sans": "^5.3.0",
-    "@fontsource/space-grotesk": "^5.3.0",
-    "@fortawesome/fontawesome-free": "^7.3.1",
-    "@sveltejs/adapter-cloudflare": "^8.0.1",
-    "@sveltejs/kit": "^3.1.0",
-    "@tailwindcss/vite": "^4.3.3",
-    "@vite-pwa/sveltekit": "^1.1.0",
-    "prettier": "^3.9.10",
-    "prettier-plugin-svelte": "^4.1.1",
-    "svelte": "^5.57.2",
-    "svelte-check": "^4.7.7",
-    "tailwindcss": "^4.3.3",
-    "typescript": "^6.0.3",
-    "vite": "^8.3.5"
-  },
-  "type": "module",
-  "overrides": {
-    "@vite-pwa/sveltekit": {
-      "@sveltejs/kit": "$@sveltejs/kit"
-    }
-  },
-  "imports": {
-    "#lib": "./src/lib",
-    "#lib/*": "./src/lib/*"
-  }
+	"name": "alexwang.net",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"postinstall": "svelte-kit sync",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@directus/sdk": "^27.0.0",
+		"@fontsource/ibm-plex-sans": "^5.3.0",
+		"@fontsource/space-grotesk": "^5.3.0",
+		"@fortawesome/fontawesome-free": "^7.3.1",
+		"@sveltejs/adapter-cloudflare": "^8.0.1",
+		"@sveltejs/kit": "^3.1.0",
+		"@tailwindcss/vite": "^4.3.3",
+		"@vite-pwa/sveltekit": "^1.1.0",
+		"prettier": "^3.9.10",
+		"prettier-plugin-svelte": "^4.1.1",
+		"svelte": "^5.57.2",
+		"svelte-check": "^4.7.7",
+		"tailwindcss": "^4.3.3",
+		"typescript": "^6.0.3",
+		"vite": "^8.3.5"
+	},
+	"type": "module",
+	"overrides": {
+		"@vite-pwa/sveltekit": {
+			"@sveltejs/kit": "$@sveltejs/kit"
+		}
+	},
+	"imports": {
+		"#lib": "./src/lib",
+		"#lib/*": "./src/lib/*"
+	}
 }
