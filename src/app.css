@@ -82,12 +82,17 @@
 	outline-color: var(--color-brand-300);
 }
 
-/* Brand-coloured links; underlined so colour is never the only cue */
-.link,
-p > a,
-li > a,
-.page-content-container a {
-	@apply text-brand-600 dark:text-brand-300 hover:text-brand-800 dark:hover:text-brand-200 underline underline-offset-4 decoration-1 transition-colors;
+/* Branch hues for the line diagram: the trunk is brand purple, each door gets one role colour */
+:root {
+	--line-work: var(--color-brand-600);
+	--line-writing: oklch(0.52 0.09 200);
+	--line-contact: oklch(0.62 0.14 65);
+}
+
+:root.dark {
+	--line-work: var(--color-brand-300);
+	--line-writing: oklch(0.78 0.09 200);
+	--line-contact: oklch(0.8 0.14 75);
 }
 
 /* Icon colour that stays legible on whatever colour the CMS gives a tile: white on dark, black on light */
@@ -95,18 +100,141 @@ li > a,
 	color: oklch(from var(--tile) clamp(0, calc((0.6 - l) * 1000), 1) 0 0);
 }
 
-.ct {
-	@apply max-w-[1920px] mx-auto container;
+@layer base {
+	h2 {
+		@apply text-2xl font-display;
+	}
+
+	ul {
+		@apply list-disc list-outside;
+	}
 }
 
-h2 {
-	@apply text-2xl font-display;
+@layer components {
+	/* Brand-coloured links; underlined so colour is never the only cue */
+	.link,
+	p > a,
+	li > a,
+	.page-content-container a {
+		@apply text-brand-600 dark:text-brand-300 hover:text-brand-800 dark:hover:text-brand-200 underline underline-offset-4 decoration-1 transition-colors;
+	}
+
+	.ct {
+		@apply max-w-[1920px] mx-auto container;
+	}
+
+	.page-content-container > h2 {
+		@apply text-3xl font-display pt-4;
+	}
+
+	/* The home page is one line: a vertical trunk with stations (rings) hung off it */
+	.line-page {
+		--trunk-x: 1.5rem;
+		--content-x: 3.5rem;
+		position: relative;
+	}
+
+	@media (min-width: 48rem) {
+		.line-page {
+			--trunk-x: 2.5rem;
+			--content-x: 6rem;
+		}
+	}
+
+	.line-page::before,
+	.line-page::after {
+		content: '';
+		position: absolute;
+		inset-block: 0;
+		left: var(--trunk-x);
+		width: 0.375rem;
+		translate: -50% 0;
+		border-radius: 999px;
+	}
+
+	.line-page::before {
+		@apply bg-gray-300 dark:bg-gray-700;
+	}
+
+	.line-page::after {
+		@apply bg-brand-600 dark:bg-brand-300;
+		transform-origin: top;
+	}
+
+	.station {
+		--ring-top: 4.44rem;
+		position: relative;
+		padding-left: var(--content-x);
+	}
+
+	@media (min-width: 48rem) {
+		.station {
+			--ring-top: 6.5rem;
+		}
+	}
+
+	.station-ring {
+		position: absolute;
+		left: var(--trunk-x);
+		top: var(--ring-top, 50%);
+		translate: -50% -50%;
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 999px;
+		z-index: 1;
+		border: 0.3125rem solid var(--line, var(--line-work));
+		@apply bg-gray-50 dark:bg-gray-950;
+	}
+
+	/* Hide the trunk above the first station and below the last, so the line has real termini */
+	.station-start::before,
+	.station-end::before {
+		content: '';
+		position: absolute;
+		left: var(--trunk-x);
+		translate: -50% 0;
+		width: 1rem;
+		z-index: 1;
+		@apply bg-gray-50 dark:bg-gray-950;
+	}
+
+	.station-start::before {
+		top: 0;
+		height: var(--ring-top);
+	}
+
+	.station-end::before {
+		top: var(--ring-top);
+		bottom: 0;
+	}
+
+	.station-ring::after {
+		content: '';
+		position: absolute;
+		left: 100%;
+		top: 50%;
+		translate: 0 -50%;
+		height: 0.3125rem;
+		width: calc(var(--content-x) - var(--trunk-x) - 1.25rem);
+		background: var(--line, var(--line-work));
+	}
 }
 
-ul {
-	@apply list-disc list-outside;
+/* The lit part of the trunk follows scroll; without support or with reduced motion the whole line is lit */
+@supports (animation-timeline: scroll()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.line-page::after {
+			animation: trunk-lit linear both;
+			animation-timeline: scroll(root);
+		}
+	}
 }
 
-.page-content-container > h2 {
-	@apply text-3xl font-display pt-4;
+@keyframes trunk-lit {
+	from {
+		scale: 1 0;
+	}
+	to {
+		scale: 1 1;
+	}
 }

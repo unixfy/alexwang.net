@@ -69,14 +69,22 @@
 	</div>
 {/if}
 
+<a
+	href="#main"
+	class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-brand-600 focus:text-white focus:px-4 focus:py-2"
+	>Skip to content</a
+>
+
 <div class="min-h-screen dark:bg-gray-950">
 	<Navbar />
 
-	{#key page.url.pathname}
-		<div in:fade={{ duration: 300 }}>
-			{@render children()}
-		</div>
-	{/key}
+	<main id="main">
+		{#key page.url.pathname}
+			<div in:fade={{ duration: 300 }}>
+				{@render children()}
+			</div>
+		{/key}
+	</main>
 
 	<Footer />
 </div>

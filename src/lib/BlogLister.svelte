@@ -1,31 +1,36 @@
 <script>
-    let { posts } = $props();
+	let { posts } = $props();
 </script>
 
-<div class="grid grid-cols-1 grid-rows-4 sm:grid-rows-2 sm:grid-cols-2 gap-8">
-    {#each posts as post}
-        <a href={post.link} target="_blank" rel="noopener">
-            <div class="flex justify-center h-full">
-                <div
-                        class="h-full flex flex-col lg:flex-row justify-start transition-all bg-gray-200 rounded-lg shadow-md lg:max-h-48 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-                >
-                    <img
-                            class="w-full max-h-36 object-cover lg:w-48 lg:max-h-full rounded-t-lg lg:rounded-none lg:rounded-l-lg dark:brightness-75 aspect-square"
-                            src={post.uagb_featured_image_src.medium[0]}
-                            alt=""
-                    />
-                    <div class="p-4 flex flex-col justify-start">
-                        <p
-                                class="mb-2 text-lg md:text-xl lg:text-2xl font-bold font-display text-gray-900 dark:text-white capitalize"
-                        >
-                            {@html post.title.rendered} <i class="fa-solid fa-arrow-right"></i>
-                        </p>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden">
-                            {@html post.uagb_excerpt}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </a>
-    {/each}
-</div>
+<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
+	{#each posts as post}
+		<li>
+			<a
+				href={post.link}
+				target="_blank"
+				rel="noopener"
+				class="group grid sm:grid-cols-[9rem_1fr] gap-x-6 gap-y-3 py-5 no-underline text-gray-900 dark:text-white hover:text-gray-900 dark:hover:text-white"
+			>
+				{#if post.uagb_featured_image_src?.medium?.[0]}
+					<img
+						src={post.uagb_featured_image_src.medium[0]}
+						alt=""
+						loading="lazy"
+						class="w-full sm:w-36 aspect-video object-cover rounded dark:brightness-90"
+					/>
+				{:else}
+					<span class="hidden sm:block"></span>
+				{/if}
+				<span>
+					<span class="block font-display text-xl md:text-2xl font-bold group-hover:underline underline-offset-4">
+						{@html post.title.rendered}
+						<i class="fa-solid fa-arrow-right text-base" aria-hidden="true"></i>
+					</span>
+					<span class="block mt-1 text-gray-700 dark:text-gray-300 line-clamp-2">
+						{@html post.uagb_excerpt}
+					</span>
+				</span>
+			</a>
+		</li>
+	{/each}
+</ol>

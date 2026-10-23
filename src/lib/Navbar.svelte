@@ -1,5 +1,6 @@
 <script>
 	import { darkmode } from '../stores';
+	import { page } from '$app/state';
 
 	let mobilemenu = $state(false);
 
@@ -11,17 +12,20 @@
 		{ href: '/linkedin', label: 'LinkedIn' }
 	];
 
+	const current = (/** @type {string} */ href) =>
+		(href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(href)) ? 'page' : undefined;
+
 	const toggleDarkMode = () => ($darkmode = !$darkmode);
 	const toggleMobileMenu = () => (mobilemenu = !mobilemenu);
 </script>
 
-<div class="md:absolute top-0 right-0 z-10">
+<nav aria-label="Main" class="md:absolute top-0 right-0 z-10">
 	<div class="hidden md:flex flex-row-reverse">
 		<div class="text-xl font-display font-light my-6 mx-8 space-x-2">
 			{#each links as { href, label }}
-				<a {href}>
+				<a {href} aria-current={current(href)} class="group no-underline">
 					<span
-						class="bg-gray-200 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white rounded py-2 px-6"
+						class="bg-gray-200 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white group-aria-[current=page]:bg-brand-600 group-aria-[current=page]:text-white dark:group-aria-[current=page]:bg-brand-300 dark:group-aria-[current=page]:text-gray-950 rounded py-2 px-6"
 						>{label}</span
 					>
 				</a>
@@ -50,8 +54,8 @@
 		</div>
 		<div class:hidden={!mobilemenu} class="bg-gray-200 dark:bg-slate-700 dark:text-white pt-2">
 			{#each links as { href, label }}
-				<a {href} class="block py-3" onclick={toggleMobileMenu}>{label}</a>
+				<a {href} aria-current={current(href)} class="block py-3 aria-[current=page]:font-bold" onclick={toggleMobileMenu}>{label}</a>
 			{/each}
 		</div>
 	</div>
-</div>
+</nav>

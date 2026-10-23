@@ -1,240 +1,223 @@
 <script>
-	import SocialGrid from '#lib/SocialGrid.svelte';
+	import Station from '#lib/Station.svelte';
 	import BlogLister from '#lib/BlogLister.svelte';
 	import BlogListerLoading from '#lib/BlogListerLoading.svelte';
-	import Error from '#lib/Error.svelte';
 	import { year, monthYear } from '#lib/date.js';
 
 	let { data } = $props();
+
+	const cms = 'https://cms.alexwang.net/assets';
+	const latest = $derived(data.projects[0]);
+
+	// Assembled client-side so the address isn't sitting in the served HTML
+	let email = $state('');
+	$effect(() => {
+		email = ['alex', 'alexwang.net'].join('@');
+	});
+
+	const doors = [
+		{ href: '#work', label: 'Work', line: 'work' },
+		{ href: '#writing', label: 'Writing', line: 'writing' },
+		{ href: '#contact', label: 'Contact', line: 'contact' }
+	];
+
+	const row =
+		'group flex items-baseline gap-4 py-4 no-underline text-gray-900 dark:text-white hover:text-gray-900 dark:hover:text-white';
 </script>
 
-<div class="dark:bg-slate-900 dark:text-white">
-	<div class="ct">
-		<div class="min-h-screen px-8 z-0 relative">
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-screen">
-				<!-- the size of this thing should be ~56.25% of the size of the "hello" image -->
-				<img
-					src="/curvy_things.svg"
-					alt="Curvy things"
-					class="absolute top-0 left-0 h-40 md:h-52 lg:h-72 dark:brightness-90 dark:invert aspect-square"
-				/>
-				<div class="flex flex-col">
-					<div class="md:m-auto md:ml-16 text-center md:text-left">
-						<p class="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-lg">
-							👋 Hey there. I'm
-						</p>
-						<h1
-							class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-brand-600 dark:text-brand-300 font-bold drop-shadow-lg my-2 md:my-8 py-2 hover:scale-105 transition-all leading-tight tracking-tight"
-						>
-							Alex Wang
-						</h1>
-						<p class="font-display text-xl md:text-2xl sm:text-3xl">
-							I'm obsessed with mobility, technology, and solutions.
-						</p>
-					</div>
-				</div>
-				<div class="flex order-first md:order-last">
-					<img
-						src="//cms.alexwang.net/assets/{data.config.links_profile_picture}?format=webp&width=1200"
-						alt="Picture of Alex"
-						class="md:m-auto mt-auto mx-auto dark:brightness-90 aspect-square h-56 sm:h-72 md:h-96 lg:h-128 rounded-2xl shadow-xl hover:scale-105 transition-all bg-gray-200 bg-pulse"
-					/>
-				</div>
+<div class="line-page bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
+	<!-- Terminus: who this is -->
+	<header
+		class="station station-start pt-24 md:pt-32 pb-10 pr-6 md:pr-12 [--ring-top:7.9rem] md:[--ring-top:10.25rem] lg:[--ring-top:12rem]"
+	>
+		<span class="station-ring" aria-hidden="true"></span>
+		<div class="grid md:grid-cols-[1fr_auto] gap-8 md:gap-16 items-start max-w-6xl">
+			<div>
+				<h1
+					class="font-display font-bold tracking-tight leading-none text-6xl sm:text-7xl lg:text-9xl text-brand-600 dark:text-brand-300"
+				>
+					Alex Wang
+				</h1>
+				<p class="font-display text-xl sm:text-2xl md:text-3xl mt-6 max-w-xl">
+					I'm obsessed with mobility, technology, and solutions.
+				</p>
 			</div>
+			<img
+				src="{cms}/{data.config.links_profile_picture}?format=webp&width=800"
+				alt="Alex Wang"
+				class="aspect-square w-40 sm:w-56 md:w-72 rounded-2xl object-cover bg-gray-200 dark:bg-gray-800 dark:brightness-90 md:order-last"
+			/>
 		</div>
-	</div>
-</div>
+	</header>
 
-<div class="bg-gray-200 p-8 md:p-12 dark:bg-slate-700 dark:text-white">
-	<div class="flex">
-		<div class="text-2xl md:text-3xl m-auto font-display md:leading-relaxed max-w-4xl space-y-8">
+	<!-- Junction: three doors, one branch each -->
+	<nav aria-label="Sections" class="pb-6">
+		<ol class="list-none">
+			{#each doors as door}
+				<li class="station pr-6 md:pr-12" style="--ring-top: 50%; --line: var(--line-{door.line})">
+					<span class="station-ring" aria-hidden="true"></span>
+					<a
+						href={door.href}
+						class="group flex flex-wrap items-baseline gap-x-6 gap-y-1 py-5 md:py-6 max-w-4xl no-underline text-gray-900 dark:text-white hover:text-gray-900 dark:hover:text-white"
+					>
+						<span
+							class="font-display text-3xl md:text-5xl font-bold tracking-tight group-hover:underline decoration-[var(--line)] decoration-4 underline-offset-8"
+							>{door.label}</span
+						>
+						<span class="text-gray-700 dark:text-gray-300 md:text-lg">
+							{#if door.line === 'work'}
+								Latest: {latest.title}, {year(latest.date)}
+							{:else if door.line === 'writing'}
+								{#await data.posts}
+									Latest posts from the blog
+								{:then posts}
+									Latest: {@html posts[0]?.title.rendered}
+								{:catch}
+									Posts from the blog
+								{/await}
+							{:else}
+								Email, LinkedIn and elsewhere
+							{/if}
+						</span>
+						<i class="fa-solid fa-arrow-down ml-auto text-gray-500 dark:text-gray-400" aria-hidden="true"></i>
+					</a>
+				</li>
+			{/each}
+		</ol>
+	</nav>
+
+	<Station id="about" title="About">
+		<div
+			class="max-w-prose text-lg md:text-xl leading-relaxed space-y-5 [&_strong]:font-semibold"
+		>
 			{@html data.config.homepage_welcome_text}
 		</div>
-	</div>
-</div>
+	</Station>
 
-<!-- <div class="py-12 px-8 bg-[#7E1F86] flex">
-	<p class="text-3xl italic text-white m-auto font-light">
-		If passion drives you, let reason hold the reins.
-	</p>
-</div> -->
+	<Station id="work" title="Work">
+		<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
+			{#each data.projects as project}
+				<li>
+					<a href="/project/{project.slug}" class={row}>
+						<span class="w-14 shrink-0 tabular-nums text-gray-600 dark:text-gray-300">{year(project.date)}</span>
+						<span class="flex-1 font-display text-xl md:text-2xl font-bold group-hover:underline underline-offset-4"
+							>{project.title}</span
+						>
+						<img
+							src="{cms}/{project.image}?format=webp&width=400"
+							alt=""
+							loading="lazy"
+							class="hidden sm:block w-32 aspect-video object-cover rounded dark:brightness-90 self-center"
+						/>
+					</a>
+				</li>
+			{/each}
+			<li>
+				<a href="/projects" class={row}>
+					<span class="w-14 shrink-0" aria-hidden="true"></span>
+					<span class="font-display text-xl font-bold group-hover:underline underline-offset-4">
+						All projects <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+					</span>
+				</a>
+			</li>
+		</ol>
 
-<div class="p-8 dark:bg-slate-900 dark:text-white">
-	<div class="ct">
-		<h1 class="font-display text-3xl md:text-4xl font-bold text-center mb-8">Writing</h1>
+		<h3 class="font-display text-2xl font-bold mt-16 mb-6">Certifications</h3>
+		<ul class="list-none grid sm:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
+			{#each data.certifications as certification}
+				<li class="flex gap-4 items-center">
+					<img
+						src="{cms}/{certification.image}?format=webp&width=160"
+						alt=""
+						loading="lazy"
+						class="w-14 aspect-square shrink-0 dark:brightness-90"
+					/>
+					<div>
+						<p class="font-bold">{certification.name}</p>
+						<p class="text-sm text-gray-600 dark:text-gray-300">
+							{certification.reference}, {monthYear(certification.date)}
+						</p>
+					</div>
+				</li>
+			{/each}
+		</ul>
+
+		<h3 class="font-display text-2xl font-bold mt-16 mb-6">Recognition</h3>
+		<ul class="list-none grid md:grid-cols-2 gap-x-10 gap-y-8 max-w-4xl">
+			{#each data.recognitions as recognition}
+				<li class="flex gap-4">
+					<img
+						src="{cms}/{recognition.image}?format=webp&width=120"
+						alt=""
+						loading="lazy"
+						class="w-12 h-12 shrink-0 object-contain rounded bg-white p-1 dark:brightness-90"
+					/>
+					<div>
+						<p class="font-bold">{recognition.name}</p>
+						<p class="text-sm text-gray-600 dark:text-gray-300">{monthYear(recognition.date)}</p>
+						<p class="mt-1 text-gray-700 dark:text-gray-300">{recognition.description}</p>
+					</div>
+				</li>
+			{/each}
+		</ul>
+	</Station>
+
+	<Station id="writing" title="Writing" line="writing">
 		{#await data.posts}
 			<BlogListerLoading />
 		{:then posts}
 			<BlogLister {posts} />
-		{:catch error}
-			<Error message={error.message} />
+		{:catch}
+			<p class="text-lg">
+				The latest posts aren't loading right now.
+				<a href="https://blog.alexwang.net" target="_blank" rel="noopener">Read them on the blog</a>.
+			</p>
 		{/await}
-
-		<p class="text-center mt-6 text-lg">
-			<a href="https://blog.alexwang.net" target="_blank" rel="noopener"
-				>View more <i class="fa-solid fa-arrow-right"></i></a
-			>
-		</p>
-	</div>
-</div>
-
-<div class="p-8 bg-brand-600 text-white">
-	<div class="ct">
-		<div class="flex flex-col md:flex-row">
-			<div class="flex">
-				<h1
-					class="font-display text-3xl md:text-4xl font-bold md:[writing-mode:vertical-lr] md:rotate-180 m-auto mb-8 md:mb-auto md:mr-8"
-				>
-					Things I've Worked On
-				</h1>
-			</div>
-
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-				{#each data.projects as project}
-					<div
-						class="transition-all flex-none drop-shadow rounded-lg bg-white hover:bg-gray-100 text-black dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800"
-					>
-						<a href="/project/{project.slug}">
-							<div class="flex flex-col">
-								<img
-									class="object-cover rounded-t-lg max-h-1/2 dark:brightness-75 aspect-video"
-									src="//cms.alexwang.net/assets/{project.image}?format=webp&width=1000"
-									alt="Image for project {project.title}"
-								/>
-								<div class="p-4">
-									<div
-										class="text-lg md:text-xl lg:text-2xl my-2 font-bold font-display text-center"
-									>
-										<p>{project.title}</p>
-									</div>
-									<div class="text-sm text-center italic">
-										<p>{year(project.date)}</p>
-									</div>
-									<!-- <div class="text-lg">
-									<p>
-										Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad recusandae, consequatur
-										corrupti vel quisquam id itaque nam
-									</p>
-								</div> -->
-									<!-- Note that I don't have descriptions in the page metadata so we aren't using this -->
-								</div>
-							</div>
-						</a>
-					</div>
-				{/each}
-			</div>
-
-			<a
-				href="/projects"
-				class="p-4 md:p-6 bg-white text-black flex rounded-lg mt-8 md:mt-0 md:ml-8 hover:bg-gray-100 dark:text-white dark:bg-slate-900 dark:hover:bg-slate-800 transition-all"
-				aria-label="View more projects"
-			>
-				<div class="m-auto text-center">
-					<p class="md:hidden text-xl">View all <i class="fa-solid fa-arrow-right"></i></p>
-					<!-- This bit only shows md or larger -->
-					<i class="hidden md:block fa-solid fa-arrow-right fa-3x m-auto"></i>
-				</div>
+		<p class="mt-6 text-lg">
+			<a href="https://blog.alexwang.net" target="_blank" rel="noopener">
+				More on the blog <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
 			</a>
-		</div>
-	</div>
-</div>
+		</p>
+	</Station>
 
-<div class="p-8 dark:bg-slate-900 dark:text-white">
-	<div class="ct">
-		<h1 class="font-display text-3xl md:text-4xl font-bold text-center mb-8">Certifications</h1>
-
-		<div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-8 lg:gap-16">
-			{#each data.certifications as certification}
-				<div
-					class="flex flex-col justify-between grayscale hover:grayscale-0 hover:scale-110 transition-all"
-				>
-					<img
-						src="https://cms.alexwang.net/assets/{certification.image}?format=webp"
-						alt="Shield for {certification.name}"
-						class="w-36 aspect-square justify-self-start self-center mb-4 dark:brightness-90"
-					/>
-					<p class="font-bold font-display mb-2 text-center">{certification.name}</p>
-					<p class="text-xs justify-self-end text-center">
-						{certification.reference} - {monthYear(certification.date)}
-					</p>
-				</div>
-			{/each}
-		</div>
-	</div>
-</div>
-
-<div class="p-8 bg-gray-200 dark:bg-slate-700 dark:text-white">
-	<div class="ct">
-		<h1 class="font-display text-3xl md:text-4xl font-bold text-center mb-6">
-			Selected Recognitions & Awards
-		</h1>
-
-		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-			{#each data.recognitions as recognition}
-				<div class="flex items-start border border-gray-400 dark:border-slate-500 rounded-lg p-4">
-					<div class="bg-white p-2 rounded-lg shadow-sm mr-4 shrink-0 aspect-square">
-						<img
-							src="https://cms.alexwang.net/assets/{recognition.image}?format=webp&width=120"
-							alt="{recognition.name} logo or emblem"
-							class="w-10 h-10 object-contain dark:brightness-90"
-						/>
-					</div>
-					<div>
-						<h3 class="font-display text-lg font-bold">{recognition.name}</h3>
-						<p class="text-base text-gray-600 dark:text-gray-300 mt-1 mb-3">
-							{monthYear(recognition.date)}
-						</p>
-						<p class="text-base text-gray-700 dark:text-gray-300">{recognition.description}</p>
-					</div>
-				</div>
-			{/each}
-		</div>
-	</div>
-</div>
-
-<div class="dark:bg-slate-900 dark:text-white bg-gray-100">
-	<div class="ct">
-		<div class="grid grid-cols-1 lg:grid-cols-2">
-			<SocialGrid socials={data.socials} />
-			<div class="p-8 flex">
-				<div class="m-auto">
-					<h1 class="text-3xl md:text-4xl font-display font-bold mb-8 text-center">
-						Let's get in touch!
-					</h1>
-					<div
-						class="bg-white dark:bg-slate-800 p-8 rounded-xl drop-shadow-lg hover:drop-shadow-2xl transition-all max-w-2xl mx-auto sm:aspect-[1.618/1] border border-gray-200 dark:border-slate-700 hover:-translate-y-2 hover:scale-105 duration-300 ease-out"
+	<Station id="beyond" title="Beyond work">
+		<ul class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
+			<li>
+				<a href="/now" class={row}>
+					<span class="font-display text-xl md:text-2xl font-bold group-hover:underline underline-offset-4"
+						>Now</span
 					>
-						<div class="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-8 h-full">
-							<div class="flex flex-col items-center gap-4">
-								<img
-									src="//cms.alexwang.net/assets/{data.config.links_profile_picture}?format=webp&width=200"
-									alt="Alex Wang"
-									class="w-32 h-32 rounded-full border-4 border-slate-400 dark:border-slate-600 dark:brightness-90"
-								/>
-								<h2 class="text-3xl font-display font-bold text-slate-800 dark:text-white">
-									Alex Wang
-								</h2>
-							</div>
-							<div class="flex flex-col justify-center">
-								<div class="space-y-4 font-medium text-slate-700 dark:text-slate-200">
-									<div class="flex items-center gap-4">
-										<i class="fa-solid fa-envelope w-6"></i>
-										<p>alex [at] alexwang.net</p>
-									</div>
-									<div class="flex items-center gap-4">
-										<i class="fa-brands fa-linkedin w-6"></i>
-										<p>/in/alex-y-wang</p>
-									</div>
-									<div class="flex items-center gap-4">
-										<i class="fa-solid fa-link w-6"></i>
-										<p>alexwang.net</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+					<span class="text-gray-700 dark:text-gray-300">What I'm up to right now</span>
+				</a>
+			</li>
+			<li>
+				<a href="/i-like" class={row}>
+					<span class="font-display text-xl md:text-2xl font-bold group-hover:underline underline-offset-4"
+						>What I like</span
+					>
+					<span class="text-gray-700 dark:text-gray-300">I like too many things, so they're all here</span>
+				</a>
+			</li>
+		</ul>
+	</Station>
+
+	<!-- End of the line -->
+	<Station id="contact" title="Contact" line="contact" end>
+		<ul class="list-none space-y-3 text-lg md:text-xl max-w-4xl">
+			<li>
+				<i class="fa-solid fa-envelope w-8" aria-hidden="true"></i>
+				{#if email}
+					<a href="mailto:{email}">{email}</a>
+				{:else}
+					alex [at] alexwang.net
+				{/if}
+			</li>
+			{#each data.socials as social}
+				<li>
+					<i class="fa-brands {social.icon} w-8" aria-hidden="true"></i>
+					<a href={social.url} target="_blank" rel="noopener">{social.name}</a>
+				</li>
+			{/each}
+		</ul>
+	</Station>
 </div>
