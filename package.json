@@ -20,7 +20,6 @@
 		"@sveltejs/kit": "^3.1.0",
 		"@tailwindcss/vite": "^4.3.3",
 		"@types/three": "^0.186.0",
-		"@vite-pwa/sveltekit": "^1.1.0",
 		"daisyui": "^5.7.50",
 		"prettier": "^3.9.10",
 		"prettier-plugin-svelte": "^4.1.1",
@@ -32,11 +31,6 @@
 		"vite": "^8.3.5"
 	},
 	"type": "module",
-	"overrides": {
-		"@vite-pwa/sveltekit": {
-			"@sveltejs/kit": "$@sveltejs/kit"
-		}
-	},
 	"imports": {
 		"#lib": "./src/lib",
 		"#lib/*": "./src/lib/*"
