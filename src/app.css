@@ -17,18 +17,82 @@
 @theme {
 	--font-sans: 'IBM Plex Sans', sans-serif;
 	--font-display: 'Space Grotesk', sans-serif;
+
+	/* Brand: #7E1F86 is brand-600. Hue is shared by every neutral, so nothing reads as dead gray. */
+	--color-brand-50: oklch(0.975 0.012 324.6);
+	--color-brand-100: oklch(0.95 0.03 324.6);
+	--color-brand-200: oklch(0.9 0.06 324.6);
+	--color-brand-300: oklch(0.82 0.1 324.6);
+	--color-brand-400: oklch(0.7 0.15 324.6);
+	--color-brand-500: oklch(0.55 0.18 324.6);
+	--color-brand-600: oklch(0.438 0.176 324.6);
+	--color-brand-700: oklch(0.37 0.15 324.6);
+	--color-brand-800: oklch(0.3 0.12 324.6);
+	--color-brand-900: oklch(0.24 0.09 324.6);
+	--color-brand-950: oklch(0.18 0.06 324.6);
+
+	--color-gray-50: oklch(0.985 0.004 324.6);
+	--color-gray-100: oklch(0.966 0.006 324.6);
+	--color-gray-200: oklch(0.92 0.009 324.6);
+	--color-gray-300: oklch(0.87 0.011 324.6);
+	--color-gray-400: oklch(0.7 0.014 324.6);
+	--color-gray-500: oklch(0.55 0.016 324.6);
+	--color-gray-600: oklch(0.46 0.016 324.6);
+	--color-gray-700: oklch(0.37 0.016 324.6);
+	--color-gray-800: oklch(0.27 0.014 324.6);
+	--color-gray-900: oklch(0.21 0.012 324.6);
+	--color-gray-950: oklch(0.145 0.01 324.6);
+
+	/* slate-* classes remain in use; they resolve to the same tinted ramp */
+	--color-slate-300: var(--color-gray-300);
+	--color-slate-500: var(--color-gray-500);
+	--color-slate-600: var(--color-gray-600);
+	--color-slate-700: var(--color-gray-700);
+	--color-slate-800: var(--color-gray-800);
+	--color-slate-900: var(--color-gray-900);
+	--color-slate-400: var(--color-gray-400);
+	--color-slate-200: var(--color-gray-200);
 }
 
-.link {
-	@apply text-blue-500 hover:text-blue-300 transition-all;
+:root {
+	accent-color: var(--color-brand-600);
 }
 
-p > a {
-	@apply text-blue-500 hover:text-blue-300 transition-all;
+:root.dark {
+	color-scheme: dark;
+	accent-color: var(--color-brand-300);
 }
 
-li > a {
-	@apply text-blue-500 hover:text-blue-300 transition-all;
+::selection {
+	background: var(--color-brand-200);
+	color: var(--color-gray-950);
+}
+
+.dark ::selection {
+	background: var(--color-brand-700);
+	color: white;
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-brand-500);
+	outline-offset: 2px;
+}
+
+.dark :focus-visible {
+	outline-color: var(--color-brand-300);
+}
+
+/* Brand-coloured links; underlined so colour is never the only cue */
+.link,
+p > a,
+li > a,
+.page-content-container a {
+	@apply text-brand-600 dark:text-brand-300 hover:text-brand-800 dark:hover:text-brand-200 underline underline-offset-4 decoration-1 transition-colors;
+}
+
+/* Icon colour that stays legible on whatever colour the CMS gives a tile: white on dark, black on light */
+.tile-icon {
+	color: oklch(from var(--tile) clamp(0, calc((0.6 - l) * 1000), 1) 0 0);
 }
 
 .ct {
@@ -45,8 +109,4 @@ ul {
 
 .page-content-container > h2 {
 	@apply text-3xl font-display pt-4;
-}
-
-.page-content-container a {
-	@apply text-blue-500 hover:text-blue-300 transition-all;
 }

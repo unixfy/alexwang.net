@@ -13,7 +13,7 @@
 	</div>
 </div>
 
-<div class="p-8 sm:p-16 bg-white dark:bg-black dark:text-white min-h-[50vh]">
+<div class="p-8 sm:p-16 bg-white dark:bg-gray-950 dark:text-white min-h-[50vh]">
 	<div class="ct">
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
 			<div>
@@ -26,7 +26,7 @@
 					<a
 						href={data.project.url}
 						target="_blank"
-						class="mt-4 bg-blue-500 hover:bg-blue-300 transition-all text-white p-2 sm:p-4 text-center rounded-lg text-xl w-full block"
+						class="mt-4 bg-brand-600 hover:bg-brand-700 text-white dark:bg-brand-300 dark:hover:bg-brand-200 dark:text-gray-950 transition-colors p-2 sm:p-4 text-center rounded-lg text-xl w-full block"
 					>
 						View project
 					</a>

@@ -60,7 +60,7 @@
 </svelte:head>
 
 {#if data.config.banner_enabled}
-	<div class="dark:bg-slate-500 dark:text-white bg-slate-300 p-6">
+	<div class="dark:bg-gray-700 dark:text-white bg-slate-300 p-6">
 		<div class="ct">
 			<p class="text-md">
 				{@html data.config.banner_content}
@@ -69,7 +69,7 @@
 	</div>
 {/if}
 
-<div class="min-h-screen dark:bg-black">
+<div class="min-h-screen dark:bg-gray-950">
 	<Navbar />
 
 	{#key page.url.pathname}

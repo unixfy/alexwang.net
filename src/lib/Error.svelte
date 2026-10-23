@@ -2,7 +2,7 @@
     let { message } = $props();
 </script>
 
-<div class="bg-red-500 text-white dark:bg-red-800 rounded-lg p-4">
+<div class="bg-red-700 text-white dark:bg-red-900 rounded-lg p-4">
     <p class="text-xl font-display font-bold">Oops, an error occurred!</p>
     <div class="font-mono my-4 mx-2">
         {message}

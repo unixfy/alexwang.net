@@ -24,7 +24,7 @@
 							👋 Hey there. I'm
 						</p>
 						<h1
-							class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl bg-linear-to-t from-[#7BC6CC] to-[#BE93C5] bg-clip-text text-transparent font-bold drop-shadow-lg my-2 md:my-8 py-2 hover:scale-105 transition-all leading-tight tracking-tight"
+							class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-brand-600 dark:text-brand-300 font-bold drop-shadow-lg my-2 md:my-8 py-2 hover:scale-105 transition-all leading-tight tracking-tight"
 						>
 							Alex Wang
 						</h1>
@@ -78,7 +78,7 @@
 	</div>
 </div>
 
-<div class="p-8 bg-[#7E1F86] text-white">
+<div class="p-8 bg-brand-600 text-white">
 	<div class="ct">
 		<div class="flex flex-col md:flex-row">
 			<div class="flex">
@@ -181,7 +181,7 @@
 					</div>
 					<div>
 						<h3 class="font-display text-lg font-bold">{recognition.name}</h3>
-						<p class="text-base text-gray-500 dark:text-gray-400 mt-1 mb-3">
+						<p class="text-base text-gray-600 dark:text-gray-300 mt-1 mb-3">
 							{monthYear(recognition.date)}
 						</p>
 						<p class="text-base text-gray-700 dark:text-gray-300">{recognition.description}</p>

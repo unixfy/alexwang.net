@@ -11,7 +11,7 @@
 	</div>
 </div>
 
-<div class="p-8 lg:p-16 bg-[#7E1F86]">
+<div class="p-8 lg:p-16 bg-brand-600">
 	<div class="ct">
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each data.projects as project}
