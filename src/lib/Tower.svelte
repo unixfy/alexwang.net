@@ -75,7 +75,9 @@
 		display: flex;
 		align-items: center;
 		min-height: 2.75rem;
-		padding-left: 4.7rem;
+		/* the drawing owns the first 5rem (spine at 42px, platforms 28px either side); text starts clear of it */
+		padding-left: 6rem;
+		white-space: nowrap;
 		text-decoration: none;
 		color: var(--color-gray-700);
 	}

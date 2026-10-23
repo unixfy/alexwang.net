@@ -112,7 +112,7 @@
 
 	<div class="relative">
 		<!-- the right-hand gutter: a sticky signal tower of shortcuts, wide screens only -->
-		<aside class="pointer-events-none absolute inset-y-0 right-6 z-10 hidden w-60 xl:block">
+		<aside class="pointer-events-none absolute inset-y-0 right-6 z-10 hidden w-64 xl:block">
 			<div class="pointer-events-auto sticky top-28 mt-40 h-[min(34rem,calc(100vh-9rem))]">
 				<Tower {stops} />
 			</div>

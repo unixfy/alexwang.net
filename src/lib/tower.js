@@ -1,17 +1,19 @@
 // The Signal Tower: the page's own route map, stood up in the right-hand gutter.
 //
-// One spine is the line. Each section is a station on it (a ring, a platform and a signal lamp),
-// the lit part of the spine runs down to a train that mirrors the reader's scroll position, and
-// pulses fall from the top of the line and vanish at the train. Orthographic, tilted toward the
-// viewer, and slowly turning as you read. The shortcuts themselves are ordinary links in the DOM:
-// this file only draws behind them, and measures them so every station sits exactly on its label.
+// One spine is the line. Each section is a station on it (a ring standing on a hexagonal
+// platform), the lit part of the spine runs down to a train that mirrors the reader's scroll
+// position, and pulses fall from the top of the line and vanish at the train. Orthographic, tilted
+// toward the viewer, and slowly turning as you read. The shortcuts themselves are ordinary links in
+// the DOM: this file only draws beside them, in a column of its own, and measures them so every
+// station sits exactly on its label's row. Nothing here reaches sideways into the label column:
+// the platforms are symmetric about the spine and the rings always face the camera.
 
 import {
 	AdditiveBlending,
 	BackSide,
-	BoxGeometry,
 	CanvasTexture,
 	CapsuleGeometry,
+	CircleGeometry,
 	Color,
 	CylinderGeometry,
 	Group,
@@ -31,7 +33,7 @@ import { cssColor } from './color.js';
 const SCALE = 64; // css px per world unit
 const TILT = 0.5; // radians toward the viewer
 const COS_TILT = Math.cos(TILT);
-const SHELF = -0.64; // how far below its label each platform sits (world units)
+const SHELF = -0.3; // how far below its ring each platform sits (world units)
 
 const lerp = (/** @type {number} */ a, /** @type {number} */ b, /** @type {number} */ t) =>
 	a + (b - a) * t;
@@ -92,8 +94,10 @@ export function startTower(host, canvas, ids, lines, onActive) {
 		track: new MeshBasicMaterial(),
 		lit: new MeshBasicMaterial(),
 		slab: new MeshBasicMaterial(),
-		train: new MeshBasicMaterial(),
-		trainEdge: new MeshBasicMaterial({ side: BackSide }),
+		side: new MeshBasicMaterial(),
+		ground: new MeshBasicMaterial({ depthTest: false }),
+		train: new MeshBasicMaterial({ depthTest: false }),
+		trainEdge: new MeshBasicMaterial({ side: BackSide, depthTest: false }),
 		pulse: new MeshBasicMaterial({ transparent: true, depthWrite: false })
 	};
 
@@ -103,10 +107,13 @@ export function startTower(host, canvas, ids, lines, onActive) {
 	lit.scale.x = lit.scale.z = 0.075;
 	tower.add(track, lit);
 
-	const trainGeo = new CapsuleGeometry(0.13, 0.26, 4, 12);
+	const trainGeo = new CapsuleGeometry(0.1, 0.2, 4, 12);
 	const train = new Mesh(trainGeo, mats.train);
 	const trainEdge = new Mesh(trainGeo, mats.trainEdge);
-	trainEdge.scale.setScalar(1.28);
+	trainEdge.scale.setScalar(1.3);
+	// the train rides in front of the rings, so it reads when it stops at a station
+	trainEdge.renderOrder = 4;
+	train.renderOrder = 5;
 	train.add(trainEdge);
 	tower.add(train);
 
@@ -117,26 +124,26 @@ export function startTower(host, canvas, ids, lines, onActive) {
 		return m;
 	});
 
-	const ringGeo = new TorusGeometry(0.22, 0.055, 10, 36);
-	const slabGeo = new BoxGeometry(1.7, 0.09, 1);
-	const edgeGeo = new BoxGeometry(1.7, 0.12, 0.07);
-	const postGeo = new CylinderGeometry(0.04, 0.04, 0.34, 8);
-	const lampGeo = new SphereGeometry(0.1, 12, 10);
-	const glowGeo = new PlaneGeometry(1.25, 1.25);
+	const ringGeo = new TorusGeometry(0.2, 0.05, 10, 40);
+	const fillGeo = new CircleGeometry(0.2, 40);
+	const padGeo = new CylinderGeometry(0.44, 0.44, 0.1, 6);
+	const glowGeo = new PlaneGeometry(1.1, 1.1);
 	const glowMap = glowTexture();
 
 	const stations = Array.from({ length: n }, (_, k) => {
-		const lineMat = new MeshBasicMaterial();
+		const lineMat = new MeshBasicMaterial({ depthTest: false });
+		// side, top, bottom: the top takes a tint of its line while its station is current
+		const top = new MeshBasicMaterial();
+		const pad = new Mesh(padGeo, [mats.side, top, mats.side]);
+		pad.position.y = SHELF;
+
+		// the ring and the glow always face the camera, so the ring stays a true circle at any yaw
+		const face = new Group();
 		const ring = new Mesh(ringGeo, lineMat);
-		ring.rotation.x = Math.PI / 2;
-		const slab = new Mesh(slabGeo, mats.slab);
-		slab.position.set(0.95, SHELF, 0);
-		const edge = new Mesh(edgeGeo, lineMat);
-		edge.position.set(0.95, SHELF + 0.01, 0.5);
-		const post = new Mesh(postGeo, mats.slab);
-		post.position.set(0.42, SHELF + 0.2, 0.3);
-		const lamp = new Mesh(lampGeo, lineMat);
-		lamp.position.set(0.42, SHELF + 0.44, 0.3);
+		ring.renderOrder = 3;
+		const fill = new Mesh(fillGeo, mats.ground);
+		fill.renderOrder = 2;
+		ring.position.z = fill.position.z = 0.06;
 		const glow = new Mesh(
 			glowGeo,
 			new MeshBasicMaterial({
@@ -147,11 +154,12 @@ export function startTower(host, canvas, ids, lines, onActive) {
 			})
 		);
 		glow.renderOrder = -1;
-		glow.position.set(0, 0, 0);
+		face.add(glow, fill, ring);
+
 		const g = new Group();
-		g.add(glow, slab, edge, post, lamp, ring);
+		g.add(pad, face);
 		tower.add(g);
-		return { g, ring, lamp, glow, lineMat, scale: 1, glowA: 0.12, k };
+		return { g, face, top, glow, lineMat, scale: 1, tint: 0, glowA: 0.12, k };
 	});
 
 	// ---------- state ----------
@@ -186,6 +194,10 @@ export function startTower(host, canvas, ids, lines, onActive) {
 		mats.slab.color = toColor(
 			cssColor(st, dark ? '--color-gray-800' : '--color-gray-200', [0.85, 0.85, 0.85])
 		);
+		mats.side.color = toColor(
+			cssColor(st, dark ? '--color-gray-600' : '--color-gray-400', [0.6, 0.6, 0.6])
+		);
+		mats.ground.color = toColor(ground);
 		mats.train.color = toColor(dark ? [1, 1, 1] : line.work);
 		mats.trainEdge.color = toColor(ground);
 		pulses.forEach((p) =>
@@ -264,7 +276,7 @@ export function startTower(host, canvas, ids, lines, onActive) {
 
 		const span = (ys[n - 1] ?? 0) - (ys[0] ?? 0) || 1;
 		const overall = clamp01((trainY - (ys[0] ?? 0)) / span);
-		const yaw = 0.55 + (reduced ? 0 : Math.sin(t * 0.4) * 0.07) + (overall - 0.5) * 0.5 + lean;
+		const yaw = 0.3 + (reduced ? 0 : Math.sin(t * 0.4) * 0.06) + (overall - 0.5) * 0.9 + lean;
 		tower.rotation.set(TILT, yaw, 0, 'XYZ');
 
 		const top = lit.userData.top ?? 0;
@@ -276,14 +288,15 @@ export function startTower(host, canvas, ids, lines, onActive) {
 		stations.forEach((s) => {
 			const isActive = s.k === active;
 			const isHot = s.k === hotIndex;
-			const targetScale = (isActive ? 1.45 : 1) * (isHot ? 1.2 : 1);
+			const targetScale = (isActive ? 1.3 : 1) * (isHot ? 1.12 : 1);
 			s.scale = lerp(s.scale, targetScale, ease * 0.9);
-			s.ring.scale.setScalar(s.scale);
-			s.lamp.scale.setScalar(isActive || isHot ? 1.35 : 1);
-			const target = (isActive ? 0.85 : isHot ? 0.55 : 0.1) * (dark ? 1 : 0.55);
+			s.face.scale.setScalar(s.scale);
+			s.face.quaternion.copy(tower.quaternion).invert();
+			s.tint = lerp(s.tint, isActive ? 0.5 : isHot ? 0.3 : 0, ease);
+			s.top.color.copy(mats.slab.color).lerp(s.lineMat.color, s.tint);
+			const target = (isActive ? 0.8 : isHot ? 0.5 : 0.06) * (dark ? 1 : 0.5);
 			s.glowA = lerp(s.glowA, target, ease);
 			/** @type {MeshBasicMaterial} */ (s.glow.material).opacity = s.glowA;
-			s.glow.quaternion.copy(tower.quaternion).invert();
 		});
 
 		// pulses fall from the top of the line and disappear at the train
@@ -368,13 +381,12 @@ export function startTower(host, canvas, ids, lines, onActive) {
 			mo.disconnect();
 			document.removeEventListener('visibilitychange', onVis);
 			removeEventListener('scroll', onScroll);
-			[unitCyl, trainGeo, pulseGeo, ringGeo, slabGeo, edgeGeo, postGeo, lampGeo, glowGeo].forEach(
-				(g) => g.dispose()
-			);
+			[unitCyl, trainGeo, pulseGeo, ringGeo, fillGeo, padGeo, glowGeo].forEach((g) => g.dispose());
 			glowMap.dispose();
 			Object.values(mats).forEach((m) => m.dispose());
 			stations.forEach((s) => {
 				s.lineMat.dispose();
+				s.top.dispose();
 				/** @type {MeshBasicMaterial} */ (s.glow.material).dispose();
 			});
 			pulses.forEach((p) => /** @type {MeshBasicMaterial} */ (p.material).dispose());
