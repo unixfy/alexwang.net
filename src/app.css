@@ -86,6 +86,7 @@
 :root {
 	--display-size: clamp(3.25rem, 1.5rem + 7vw, 6rem);
 	--title-size: clamp(1.875rem, 1.3rem + 2.2vw, 3rem);
+	--page-size: clamp(2rem, 1.5rem + 2vw, 3rem);
 }
 
 /* Branch hues for the line diagram: the trunk is brand purple, each door gets one role colour */
@@ -99,11 +100,6 @@
 	--line-work: var(--color-brand-300);
 	--line-writing: oklch(0.78 0.09 200);
 	--line-contact: oklch(0.8 0.14 75);
-}
-
-/* Icon colour that stays legible on whatever colour the CMS gives a tile: white on dark, black on light */
-.tile-icon {
-	color: oklch(from var(--tile) clamp(0, calc((0.6 - l) * 1000), 1) 0 0);
 }
 
 @layer base {
@@ -193,7 +189,7 @@
 	}
 
 	.t-page {
-		font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+		font-size: var(--page-size);
 		font-weight: 700;
 		line-height: 1.1;
 		letter-spacing: -0.02em;
@@ -459,4 +455,146 @@ nav li.station:focus-within .station-ring {
 ::view-transition-old(root),
 ::view-transition-new(root) {
 	animation-duration: 0.4s;
+}
+
+/* Interior pages are more stops on the same line, and CMS content rides it */
+@layer components {
+	/* page opener: the ring centres on the page heading */
+	.terminus-page {
+		--pt: 6.5rem;
+		--ring-top: calc(var(--pt) + var(--page-size) / 2);
+		padding-top: var(--pt);
+	}
+
+	@media (min-width: 48rem) {
+		.terminus-page {
+			--pt: 8rem;
+		}
+	}
+
+	/* CMS prose: even rhythm without per-page classes (paragraphs used to run together) */
+	.page-content-container > * + * {
+		margin-top: 1rem;
+	}
+
+	.page-content-container li + li {
+		margin-top: 0.35rem;
+	}
+
+	/* every h2 in CMS content is a station on the line; the three line colours repeat down the page */
+	.ride > h2 {
+		position: relative;
+		font-weight: 700;
+		letter-spacing: -0.01em;
+		--line: var(--line-work);
+	}
+
+	.ride > h2:nth-of-type(3n + 2) {
+		--line: var(--line-writing);
+	}
+
+	.ride > h2:nth-of-type(3n) {
+		--line: var(--line-contact);
+	}
+
+	.ride > h2::before,
+	.ride > h2::after {
+		content: '';
+		position: absolute;
+		top: calc(1rem + 0.6em);
+		translate: 0 -50%;
+	}
+
+	.ride > h2::before {
+		left: calc(var(--trunk-x) - var(--content-x));
+		translate: -50% -50%;
+		z-index: 1;
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 999px;
+		border: 0.3125rem solid var(--line);
+		@apply bg-gray-50;
+	}
+
+	.dark .ride > h2::before {
+		@apply bg-gray-950;
+	}
+
+	.ride > h2::after {
+		left: calc(var(--trunk-x) - var(--content-x) + 0.75rem);
+		width: calc(var(--content-x) - var(--trunk-x) - 1.25rem);
+		height: 0.3125rem;
+		background: var(--line);
+	}
+
+	/* content types the CMS may use later, drawn in the line's own language */
+	.page-content-container blockquote {
+		border-radius: 0.5rem;
+		border: 2px solid var(--color-brand-600);
+		padding: 0.9rem 1.2rem;
+		font-family: var(--font-display);
+		@apply bg-white;
+	}
+
+	.dark .page-content-container blockquote {
+		border-color: var(--color-brand-300);
+		@apply bg-gray-900;
+	}
+
+	.page-content-container hr {
+		border: 0;
+		border-top: 3px dashed var(--line-work);
+	}
+
+	.page-content-container table {
+		width: 100%;
+		border-collapse: collapse;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.page-content-container th {
+		text-align: left;
+		padding: 0.55rem 0.75rem;
+		color: white;
+		@apply bg-brand-600;
+	}
+
+	.dark .page-content-container th {
+		color: var(--color-gray-950);
+		@apply bg-brand-300;
+	}
+
+	.page-content-container td {
+		padding: 0.55rem 0.75rem;
+		@apply border-b border-gray-300;
+	}
+
+	.dark .page-content-container td {
+		@apply border-gray-700;
+	}
+
+	.page-content-container figcaption {
+		@apply text-sm text-gray-600;
+	}
+
+	.dark .page-content-container figcaption {
+		@apply text-gray-300;
+	}
+
+	/* "Show 22 more" on long lists */
+	.fold-toggle {
+		min-height: 2.75rem;
+		font-weight: 600;
+		@apply text-brand-600 underline underline-offset-4;
+	}
+
+	.dark .fold-toggle {
+		@apply text-brand-300;
+	}
+}
+
+/* Pages morph into each other: a project image travels from the card to the page */
+::view-transition-group(*) {
+	animation-duration: 0.5s;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }

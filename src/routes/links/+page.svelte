@@ -1,33 +1,69 @@
 <script>
-	import SocialGrid from '#lib/SocialGrid.svelte';
+	import Station from '#lib/Station.svelte';
+
 	let { data } = $props();
+
+	const lines = ['work', 'writing', 'contact'];
 </script>
 
-<div class="bg-gray-950 text-white p-8 pt-20 flex flex-col">
-	<img
-		src="//cms.alexwang.net/assets/{data.config.links_profile_picture}?format=webp&width=200"
-		class="h-32 w-32 rounded-full m-auto"
-		alt="Alex Wang"
-	/>
-	<h1 class="font-display text-2xl sm:text-3xl mt-4 m-auto">@alex.wang.64</h1>
-</div>
+<div class="line-page">
+	<span class="train" aria-hidden="true"></span>
 
-<div class="bg-gray-50 dark:bg-gray-800 dark:text-white sm:pb-8">
-	<div class="max-w-(--breakpoint-sm) mx-auto px-4 py-6 space-y-4 flex flex-col">
-		{#each data.links as link}
-			<a href={link.url} target="_blank" rel="noopener">
-				<div
-					class="text-center text-lg sm:text-xl bg-brand-600 text-white hover:bg-brand-700 dark:bg-brand-300 dark:text-gray-950 dark:hover:bg-brand-200 transition-colors rounded-full py-3"
-				>
-					{#if link.icon}
-						<i class="fa-solid {link.icon}"></i>
-					{/if}
-					{link.title}
-				</div>
-			</a>
-		{/each}
-	</div>
-	<div class="max-w-(--breakpoint-sm) mx-auto">
-		<SocialGrid socials={data.socials} />
-	</div>
+	<header
+		class="station station-start flex items-center gap-4 pb-8 pr-6 [--av:5rem] [--pt:3rem] [--ring-top:calc(var(--pt)+var(--av)/2)] pt-(--pt) sm:[--av:7rem] md:[--pt:7rem]"
+	>
+		<span class="station-ring" aria-hidden="true"></span>
+		{#if data.config.links_profile_picture}
+			<img
+				src="//cms.alexwang.net/assets/{data.config.links_profile_picture}?format=webp&width=200"
+				class="size-(--av) shrink-0 rounded-full object-cover dark:brightness-90"
+				alt="Alex Wang"
+			/>
+		{/if}
+		<h1 class="t-group min-w-0 text-brand-600 [overflow-wrap:anywhere] dark:text-brand-300">
+			@alex.wang.64
+		</h1>
+	</header>
+
+	<nav aria-label="Links">
+		<ol class="max-w-2xl list-none">
+			{#each data.links as link, i}
+				<li class="station pr-6" style="--ring-top: 50%; --line: var(--line-{lines[i % 3]})">
+					<span class="station-ring" aria-hidden="true"></span>
+					<a
+						href={link.url}
+						target="_blank"
+						rel="noopener"
+						class="group flex min-h-16 items-center justify-between gap-4 py-3 no-underline text-gray-900 hover:text-gray-900 dark:text-white dark:hover:text-white"
+					>
+						<span class="t-item underline-offset-4 decoration-2 group-hover:underline"
+							>{link.title}</span
+						>
+						{#if link.icon}
+							<i class="fa-solid {link.icon} text-gray-500 dark:text-gray-400" aria-hidden="true"
+							></i>
+						{/if}
+					</a>
+				</li>
+			{/each}
+		</ol>
+	</nav>
+
+	<Station id="elsewhere" title="Elsewhere" line="contact" end>
+		<ul class="flex max-w-2xl list-none flex-wrap gap-3">
+			{#each data.socials as social}
+				<li>
+					<a
+						href={social.url}
+						target="_blank"
+						rel="noopener"
+						class="inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-gray-300 px-4 no-underline text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:border-gray-600 dark:text-white dark:hover:bg-gray-800 dark:hover:text-white"
+					>
+						<i class="fa-brands {social.icon}" aria-hidden="true"></i>
+						{social.name}
+					</a>
+				</li>
+			{/each}
+		</ul>
+	</Station>
 </div>

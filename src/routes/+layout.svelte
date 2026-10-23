@@ -9,6 +9,7 @@
 
 	import { browser, dev } from '$app/env';
 	import { onMount } from 'svelte';
+	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import { pwaInfo } from 'virtual:pwa-info';
 
@@ -17,6 +18,19 @@
 	const pageTitle = $derived(page.error ? 'Error' : page.data.title || 'Welcome');
 
 	const calm = browser && matchMedia('(prefers-reduced-motion: reduce)').matches;
+	// Where the browser can, pages cross-fade and shared images (a project card to its page) morph;
+	// elsewhere the simple fade below applies. Neither runs under reduced motion.
+	const morph = browser && !calm && 'startViewTransition' in document;
+
+	onNavigate((navigation) => {
+		if (!morph) return;
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 
 	onMount(async () => {
 		if (pwaInfo) {
@@ -76,7 +90,7 @@
 
 	<main id="main">
 		{#key page.url.pathname}
-			<div in:fade={{ duration: calm ? 0 : 200, easing: cubicOut }}>
+			<div in:fade={{ duration: calm || morph ? 0 : 200, easing: cubicOut }}>
 				{@render children()}
 			</div>
 		{/key}

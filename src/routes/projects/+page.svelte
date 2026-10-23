@@ -1,37 +1,59 @@
 <script>
+	import Station from '#lib/Station.svelte';
 	import { year } from '#lib/date.js';
 
 	let { data } = $props();
+
+	const lines = /** @type {const} */ (['work', 'writing', 'contact']);
+
+	// newest first from the CMS, so the years come out newest first too
+	const years = $derived.by(() => {
+		/** @type {Map<string, typeof data.projects>} */
+		const byYear = new Map();
+		for (const p of data.projects) {
+			const y = year(p.date);
+			byYear.set(y, [...(byYear.get(y) ?? []), p]);
+		}
+		return [...byYear];
+	});
 </script>
 
-<div class="bg-gray-100 dark:bg-gray-800 dark:text-white text-center min-h-[33vh] flex">
-	<div class="m-auto p-16">
-		<h1 class="t-page mb-4">Projects</h1>
-		<p class="t-lede">Some cool things I’ve done</p>
-	</div>
-</div>
+<div class="line-page">
+	<span class="train" aria-hidden="true"></span>
 
-<div class="p-8 lg:p-16 bg-brand-600">
-	<div class="ct">
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-			{#each data.projects as project}
-				<div
-					class="transition-colors flex-none drop-shadow rounded-lg bg-white hover:bg-gray-100 text-black dark:text-white dark:bg-gray-900 dark:hover:bg-gray-800"
-				>
-					<a href="/project/{project.slug}">
-						<img
-							class="object-cover rounded-t-lg dark:brightness-75 aspect-video w-full"
-							src="//cms.alexwang.net/assets/{project.image}?format=webp&width=1000"
-							alt=""
-							loading="lazy"
-						/>
-						<div class="p-4 text-center">
-							<p class="t-item my-2">{project.title}</p>
-							<p class="t-meta tabular-nums">{year(project.date)}</p>
-						</div>
-					</a>
-				</div>
-			{/each}
-		</div>
-	</div>
+	<header class="station station-start terminus-page pb-6 pr-6 md:pr-12">
+		<span class="station-ring" aria-hidden="true"></span>
+		<h1 class="t-page text-brand-600 dark:text-brand-300">Projects</h1>
+		<p class="t-lede mt-3">Some cool things I’ve done</p>
+	</header>
+
+	{#each years as [yr, projects], i}
+		<Station id="y{yr}" title={yr} line={lines[i % 3]} end={i === years.length - 1}>
+			<ul class="grid max-w-6xl list-none gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
+				{#each projects as project}
+					<li>
+						<a
+							href="/project/{project.slug}"
+							class="group block no-underline text-gray-900 hover:text-gray-900 dark:text-white dark:hover:text-white"
+						>
+							{#if project.image}
+								<img
+									src="//cms.alexwang.net/assets/{project.image}?format=webp&width=1000"
+									alt=""
+									loading="lazy"
+									style="view-transition-name: p-{project.slug}"
+									class="aspect-video w-full rounded-lg object-cover transition-[filter] duration-200 group-hover:brightness-110 motion-reduce:transition-none dark:brightness-90"
+								/>
+							{:else}
+								<div class="aspect-video w-full rounded-lg bg-gray-200 dark:bg-gray-800"></div>
+							{/if}
+							<span class="t-item mt-3 block underline-offset-4 group-hover:underline">
+								{project.title}
+							</span>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</Station>
+	{/each}
 </div>

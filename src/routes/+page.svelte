@@ -3,6 +3,7 @@
 	import BlogLister from '#lib/BlogLister.svelte';
 	import BlogListerLoading from '#lib/BlogListerLoading.svelte';
 	import Network from '#lib/Network.svelte';
+	import CopyButton from '#lib/CopyButton.svelte';
 	import { year, monthYear } from '#lib/date.js';
 
 	let { data } = $props();
@@ -18,17 +19,6 @@
 	$effect(() => {
 		email = ['alex', 'alexwang.net'].join('@');
 	});
-
-	let copied = $state(false);
-	async function copyEmail() {
-		try {
-			await navigator.clipboard.writeText(email);
-			copied = true;
-			setTimeout(() => (copied = false), 1800);
-		} catch {
-			// clipboard unavailable (insecure context or denied); the mailto link still works
-		}
-	}
 
 	const doors = [
 		{ href: '#work', label: 'Work', line: 'work' },
@@ -127,12 +117,15 @@
 						<span class="flex-1 t-item group-hover:underline underline-offset-4"
 							>{project.title}</span
 						>
-						<img
-							src="{cms}/{project.image}?format=webp&width=400"
-							alt=""
-							loading="lazy"
-							class="hidden sm:block w-32 aspect-video object-cover rounded dark:brightness-90 self-center"
-						/>
+						{#if project.image}
+							<img
+								src="{cms}/{project.image}?format=webp&width=400"
+								alt=""
+								loading="lazy"
+								style="view-transition-name: p-{project.slug}"
+								class="hidden sm:block w-32 aspect-video object-cover rounded dark:brightness-90 self-center"
+							/>
+						{/if}
 					</a>
 				</li>
 			{/each}
@@ -243,14 +236,7 @@
 				<i class="fa-solid fa-envelope w-8" aria-hidden="true"></i>
 				{#if email}
 					<a href="mailto:{email}">{email}</a>
-					<button
-						type="button"
-						onclick={copyEmail}
-						class="ml-3 align-middle rounded border border-gray-400 dark:border-gray-500 px-2 py-0.5 text-sm hover:bg-gray-200 dark:hover:bg-gray-800"
-					>
-						{copied ? 'Copied' : 'Copy'}<span class="sr-only"> email address</span>
-					</button>
-					<span class="sr-only" role="status">{copied ? 'Email address copied' : ''}</span>
+					<CopyButton text={email} what="email address" class="ml-3 align-middle" />
 				{:else}
 					alex [at] alexwang.net
 				{/if}
