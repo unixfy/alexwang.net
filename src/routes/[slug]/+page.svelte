@@ -111,11 +111,4 @@
 			{/if}
 		</div>
 	</div>
-
-	<Station id="next" title="Next stop" line="contact" end>
-		<a href="/{next.slug}" class="t-item inline-flex items-center gap-3">
-			{next.title}
-			<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-		</a>
-	</Station>
 </div>
