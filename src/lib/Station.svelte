@@ -7,7 +7,7 @@
 	<span class="station-ring" aria-hidden="true"></span>
 	<h2
 		id="{id}-title"
-		class="font-display text-3xl md:text-5xl leading-none font-bold tracking-tight mb-8 md:mb-10 dark:text-white"
+		class="t-title mb-8 md:mb-10 dark:text-white"
 	>
 		{title}
 	</h2>

@@ -21,7 +21,7 @@
 
 <nav aria-label="Main" class="md:absolute top-0 right-0 z-10">
 	<div class="hidden md:flex flex-row-reverse">
-		<div class="text-xl font-display font-light my-6 mx-8 space-x-2">
+		<div class="text-xl font-display my-6 mx-8 space-x-2">
 			{#each links as { href, label }}
 				<a {href} aria-current={current(href)} class="group no-underline">
 					<span

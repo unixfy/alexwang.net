@@ -28,18 +28,18 @@
 <div class="line-page bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
 	<!-- Terminus: who this is -->
 	<header
-		class="station station-start pt-24 md:pt-32 pb-10 pr-6 md:pr-12 [--ring-top:7.9rem] md:[--ring-top:10.25rem] lg:[--ring-top:12rem]"
+		class="station station-start terminus pb-10 pr-6 md:pr-12"
 	>
 		<span class="station-ring" aria-hidden="true"></span>
 		<div class="grid md:grid-cols-[1fr_auto] gap-8 md:gap-16 items-start max-w-6xl">
 			<div>
 				<h1
-					class="font-display font-bold tracking-tight leading-none text-6xl sm:text-7xl lg:text-9xl text-brand-600 dark:text-brand-300"
+					class="t-display text-brand-600 dark:text-brand-300"
 				>
 					Alex Wang
 				</h1>
-				<p class="font-display text-xl sm:text-2xl md:text-3xl mt-6 max-w-xl">
-					I'm obsessed with mobility, technology, and solutions.
+				<p class="t-lede mt-6 max-w-xl">
+					I’m obsessed with mobility, technology, and solutions.
 				</p>
 			</div>
 			<img
@@ -61,7 +61,7 @@
 						class="group flex flex-wrap items-baseline gap-x-6 gap-y-1 py-5 md:py-6 max-w-4xl no-underline text-gray-900 dark:text-white hover:text-gray-900 dark:hover:text-white"
 					>
 						<span
-							class="font-display text-3xl md:text-5xl font-bold tracking-tight group-hover:underline decoration-[var(--line)] decoration-4 underline-offset-8"
+							class="t-title group-hover:underline decoration-[var(--line)] decoration-4 underline-offset-8"
 							>{door.label}</span
 						>
 						<span class="text-gray-700 dark:text-gray-300 md:text-lg">
@@ -88,7 +88,7 @@
 
 	<Station id="about" title="About">
 		<div
-			class="max-w-prose text-lg md:text-xl leading-relaxed space-y-5 [&_strong]:font-semibold"
+			class="t-prose space-y-5 [&_strong]:font-bold"
 		>
 			{@html data.config.homepage_welcome_text}
 		</div>
@@ -100,7 +100,7 @@
 				<li>
 					<a href="/project/{project.slug}" class={row}>
 						<span class="w-14 shrink-0 tabular-nums text-gray-600 dark:text-gray-300">{year(project.date)}</span>
-						<span class="flex-1 font-display text-xl md:text-2xl font-bold group-hover:underline underline-offset-4"
+						<span class="flex-1 t-item group-hover:underline underline-offset-4"
 							>{project.title}</span
 						>
 						<img
@@ -115,14 +115,14 @@
 			<li>
 				<a href="/projects" class={row}>
 					<span class="w-14 shrink-0" aria-hidden="true"></span>
-					<span class="font-display text-xl font-bold group-hover:underline underline-offset-4">
+					<span class="t-item group-hover:underline underline-offset-4">
 						All projects <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
 					</span>
 				</a>
 			</li>
 		</ol>
 
-		<h3 class="font-display text-2xl font-bold mt-16 mb-6">Certifications</h3>
+		<h3 class="t-group mt-16 mb-6">Certifications</h3>
 		<ul class="list-none grid sm:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
 			{#each data.certifications as certification}
 				<li class="flex gap-4 items-center">
@@ -134,7 +134,7 @@
 					/>
 					<div>
 						<p class="font-bold">{certification.name}</p>
-						<p class="text-sm text-gray-600 dark:text-gray-300">
+						<p class="t-meta">
 							{certification.reference}, {monthYear(certification.date)}
 						</p>
 					</div>
@@ -142,7 +142,7 @@
 			{/each}
 		</ul>
 
-		<h3 class="font-display text-2xl font-bold mt-16 mb-6">Recognition</h3>
+		<h3 class="t-group mt-16 mb-6">Recognition</h3>
 		<ul class="list-none grid md:grid-cols-2 gap-x-10 gap-y-8 max-w-4xl">
 			{#each data.recognitions as recognition}
 				<li class="flex gap-4">
@@ -154,7 +154,7 @@
 					/>
 					<div>
 						<p class="font-bold">{recognition.name}</p>
-						<p class="text-sm text-gray-600 dark:text-gray-300">{monthYear(recognition.date)}</p>
+						<p class="t-meta">{monthYear(recognition.date)}</p>
 						<p class="mt-1 text-gray-700 dark:text-gray-300">{recognition.description}</p>
 					</div>
 				</li>
@@ -169,7 +169,7 @@
 			<BlogLister {posts} />
 		{:catch}
 			<p class="text-lg">
-				The latest posts aren't loading right now.
+				The latest posts aren’t loading right now.
 				<a href="https://blog.alexwang.net" target="_blank" rel="noopener">Read them on the blog</a>.
 			</p>
 		{/await}
@@ -184,18 +184,18 @@
 		<ul class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
 			<li>
 				<a href="/now" class={row}>
-					<span class="font-display text-xl md:text-2xl font-bold group-hover:underline underline-offset-4"
+					<span class="t-item group-hover:underline underline-offset-4"
 						>Now</span
 					>
-					<span class="text-gray-700 dark:text-gray-300">What I'm up to right now</span>
+					<span class="text-gray-700 dark:text-gray-300">What I’m up to right now</span>
 				</a>
 			</li>
 			<li>
 				<a href="/i-like" class={row}>
-					<span class="font-display text-xl md:text-2xl font-bold group-hover:underline underline-offset-4"
+					<span class="t-item group-hover:underline underline-offset-4"
 						>What I like</span
 					>
-					<span class="text-gray-700 dark:text-gray-300">I like too many things, so they're all here</span>
+					<span class="text-gray-700 dark:text-gray-300">I like too many things, so they’re all here</span>
 				</a>
 			</li>
 		</ul>

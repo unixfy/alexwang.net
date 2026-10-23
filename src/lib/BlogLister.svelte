@@ -22,7 +22,7 @@
 					<span class="hidden sm:block"></span>
 				{/if}
 				<span>
-					<span class="block font-display text-xl md:text-2xl font-bold group-hover:underline underline-offset-4">
+					<span class="block t-item group-hover:underline underline-offset-4">
 						{@html post.title.rendered}
 						<i class="fa-solid fa-arrow-right text-base" aria-hidden="true"></i>
 					</span>

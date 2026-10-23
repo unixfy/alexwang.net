@@ -2,13 +2,11 @@
 
 @import 'tailwindcss';
 
-@import '@fontsource/ibm-plex-sans/300.css';
-@import '@fontsource/ibm-plex-sans/400.css';
-@import '@fontsource/ibm-plex-sans/500.css';
-@import '@fontsource/ibm-plex-sans/700.css';
+@import '@fontsource/ibm-plex-sans/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-700.css';
 
-@import '@fontsource/space-grotesk/400.css';
-@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/space-grotesk/latin-400.css';
+@import '@fontsource/space-grotesk/latin-700.css';
 
 @custom-variant hover (&:hover);
 
@@ -82,6 +80,12 @@
 	outline-color: var(--color-brand-300);
 }
 
+/* Type roles. Sizes are fluid; the ring positions below read the same variables. */
+:root {
+	--display-size: clamp(3.25rem, 1.5rem + 7vw, 6rem);
+	--title-size: clamp(1.875rem, 1.3rem + 2.2vw, 3rem);
+}
+
 /* Branch hues for the line diagram: the trunk is brand purple, each door gets one role colour */
 :root {
 	--line-work: var(--color-brand-600);
@@ -101,6 +105,17 @@
 }
 
 @layer base {
+	h1,
+	h2,
+	h3 {
+		text-wrap: balance;
+	}
+
+	p,
+	li {
+		text-wrap: pretty;
+	}
+
 	h2 {
 		@apply text-2xl font-display;
 	}
@@ -125,6 +140,80 @@
 
 	.page-content-container > h2 {
 		@apply text-3xl font-display pt-4;
+	}
+
+	/* CMS content: drop the empty blocks WordPress leaves behind, and give lists room for their markers */
+	.page-content-container :is(p, h2, h3):empty {
+		display: none;
+	}
+
+	.page-content-container ul {
+		padding-left: 1.5rem;
+	}
+
+	/* Roles: display (name), title (sections/doors), group (sub-heads), item (list titles),
+	   lede (tagline), prose (long reading), meta (dates, references), page (interior h1) */
+	.t-display,
+	.t-title,
+	.t-group,
+	.t-item,
+	.t-lede,
+	.t-page {
+		font-family: var(--font-display);
+	}
+
+	.t-display {
+		font-size: var(--display-size);
+		font-weight: 700;
+		line-height: 1;
+		letter-spacing: -0.03em;
+	}
+
+	.t-title {
+		font-size: var(--title-size);
+		font-weight: 700;
+		line-height: 1;
+		letter-spacing: -0.02em;
+	}
+
+	.t-page {
+		font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+		font-weight: 700;
+		line-height: 1.1;
+		letter-spacing: -0.02em;
+	}
+
+	.t-group {
+		font-size: 1.5rem;
+		font-weight: 700;
+		line-height: 1.2;
+	}
+
+	.t-item {
+		font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+		font-weight: 700;
+		line-height: 1.25;
+	}
+
+	.t-lede {
+		font-size: clamp(1.25rem, 1rem + 1.2vw, 1.875rem);
+		line-height: 1.3;
+	}
+
+	.t-prose {
+		max-width: 65ch;
+		font-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);
+		line-height: 1.65;
+	}
+
+	/* Light text on a dark ground reads thinner: open it up a little */
+	.dark .t-prose {
+		letter-spacing: 0.01em;
+		line-height: 1.75;
+	}
+
+	.t-meta {
+		@apply text-sm text-gray-600 dark:text-gray-300;
 	}
 
 	/* The home page is one line: a vertical trunk with stations (rings) hung off it */
@@ -162,14 +251,28 @@
 	}
 
 	.station {
-		--ring-top: 4.44rem;
+		--py: 3.5rem;
+		--ring-top: calc(var(--py) + var(--title-size) / 2);
 		position: relative;
 		padding-left: var(--content-x);
 	}
 
 	@media (min-width: 48rem) {
 		.station {
-			--ring-top: 6.5rem;
+			--py: 5rem;
+		}
+	}
+
+	/* The page opener: ring centred on the name */
+	.terminus {
+		--pt: 6rem;
+		--ring-top: calc(var(--pt) + var(--display-size) / 2);
+		padding-top: var(--pt);
+	}
+
+	@media (min-width: 48rem) {
+		.terminus {
+			--pt: 8rem;
 		}
 	}
 
