@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-23T00:00:00Z",
+  "generatedAt": "2026-10-23T12:00:00Z",
   "title": "Design System: alexwang.net",
   "extensions": {
     "colorMeta": {
@@ -47,6 +47,7 @@
       "api": "WebGL2, one fragment shader, fullscreen triangle, no library; premultiplied alpha, antialias off, powerPreference low-power",
       "routes": "6 (3 door lines purple/teal/amber at 3.5px half-width, alpha 0.95; 3 quiet routes at 2.25px, alpha 0.5/0.42/0.42), max 64 segments and 40 stations",
       "geometry": "octilinear, grid g = clamp(w/44, 24, 34)px (14px under 700px); door routes start at the data-route-start arrows",
+      "stations": "rings at each door start (10.5px radius, 7px narrow) and alternate bends (8px), plus interchanges (9px) where different routes cross; ring holes are filled with the page ground colour (gray-50 / gray-950), not white; max 40",
       "calm": "up to 4 data-calm boxes fade the map to 0.1 within 110px; map also dissolves into the page over the last 140px",
       "pixelBudget": "dpr capped at 1.5 (1.25 coarse), area budget 1.4e6 px (0.9e6 coarse); frame time EMA over 26ms after 45 samples drops quality x0.8 down to 0.55",
       "pause": "IntersectionObserver stops it off screen; visibilitychange stops it when the tab is hidden; context loss hides the canvas",
@@ -58,6 +59,7 @@
       "ring": ":focus-visible { outline: 2px solid brand-500; outline-offset: 2px } and brand-300 under .dark",
       "skipLink": "sr-only until focus, then fixed top-left, brand-600 fill, white text"
     },
+    "baseText": "body colour is set in the base layer: gray-900 by day, white at night (tinted ink, not the browser default)",
     "darkMode": "html.dark class set by a pre-paint inline script in app.html from localStorage 'darkmode', falling back to prefers-color-scheme; Tailwind custom variant dark = .dark"
   },
   "components": [

@@ -120,14 +120,14 @@ components:
     padding: '8px 24px'
   nav-pill-current:
     backgroundColor: '{colors.brand-600}'
-    textColor: '{colors.paper}'
+    textColor: '#ffffff'
   copy-button:
     textColor: '{colors.ink}'
     rounded: '{rounded.sm}'
     padding: '2px 8px'
   cta-fill:
     backgroundColor: '{colors.brand-600}'
-    textColor: '{colors.paper}'
+    textColor: '#ffffff'
     rounded: '{rounded.lg}'
     padding: '16px'
   cta-fill-hover:
@@ -173,7 +173,7 @@ A purple trunk and ink-on-paper neutrals, with one teal and one amber branch. Br
 - **Paper** (gray-50) and **Night** (gray-950): page grounds; ring centers and covers repaint with the ground.
 - **Paper Shade** (gray-100 / gray-800 at night): quiet bands on interior pages.
 - **Hairline** (gray-300 day, gray-700 night): the unlit trunk and list dividers.
-- **Ink** (gray-900) and white at night: body and headings. Secondary text is gray-700 / gray-300; meta is gray-600 / gray-300.
+- **Ink** (gray-900) and white at night: body and headings. Base text colour is set in the base layer from this tinted ink, never the browser default. Secondary text is gray-700 / gray-300; meta is gray-600 / gray-300.
 - The full tinted ramp (gray-50 to gray-950, brand-50 to brand-950) is defined in `@theme`; the frontmatter lists the steps in use.
 
 ### Named Rules
@@ -225,7 +225,7 @@ Flat. Surfaces are not lifted; there are no shadows on the home page. Depth is t
 
 ## Shapes
 
-Rings are circles (1.5rem, 0.3125rem border in the line color, center filled with the page ground). Lines are pills (999px caps). Photography is softly rounded (rounded 4px for thumbnails, 1rem for the portrait, 0.5rem for interior cards). Interior links and CTA buttons use 0.5rem or full pills. The map is strictly octilinear: routes turn only at multiples of 45 degrees.
+Rings are circles (1.5rem, 0.3125rem border in the line color, center filled with the page ground). Lines are pills (999px caps). Photography is softly rounded (rounded 4px for thumbnails, 1rem for the portrait, 0.5rem for interior cards). Interior links and CTA buttons use 0.5rem or full pills. The map is strictly octilinear: routes turn only at multiples of 45 degrees. Its station rings, interchanges included, are filled with the page ground colour (gray-50 / gray-950), not white.
 
 ## Components
 
