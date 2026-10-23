@@ -79,7 +79,10 @@
 			{:else}
 				<p>{year(data.project.date)}</p>
 			{/if}
-			<a href="/projects">All projects</a>
+			<a href="/projects" class="btn btn-outline btn-primary no-underline">
+				<i class="fa-solid fa-table-cells-large" aria-hidden="true"></i>
+				All projects
+			</a>
 		</div>
 	</header>
 
