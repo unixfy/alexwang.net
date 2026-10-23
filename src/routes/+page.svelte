@@ -7,6 +7,8 @@
 
 	let { data } = $props();
 
+	// The CMS only serves the profile picture at width 200, 600 or 1200 (other widths return a JSON
+	// error and the image silently disappears); project, certification and award images accept any.
 	const cms = 'https://cms.alexwang.net/assets';
 	const latest = $derived(data.projects[0]);
 	const hasPhoto = $derived(Boolean(data.config.links_profile_picture));
@@ -51,7 +53,7 @@
 				</div>
 				{#if hasPhoto}
 					<img
-						src="{cms}/{data.config.links_profile_picture}?format=webp&width=800"
+						src="{cms}/{data.config.links_profile_picture}?format=webp&width=1200"
 						alt="Alex Wang"
 						class="aspect-square w-40 sm:w-56 md:w-72 rounded-2xl object-cover bg-gray-200 dark:bg-gray-800 dark:brightness-90 md:order-last"
 					/>
