@@ -768,23 +768,15 @@ nav li.station:focus-within .station-ring {
 		}
 	}
 
-	/* The first paragraph of a project page leads in the display face; WordPress's empty blocks don't count.
-	   Older entries were pasted from another editor as one wrapper div of <div>, <br>, <div> lines instead
-	   of <p>s, so the lede is the first line inside that wrapper (or a lone div), and the wrapper is given
-	   the same paragraph rhythm as the rest of the CMS content. */
-	.first-lede > :is(p, div:not(:has(> div))):not(:empty):not(:is(p, div):not(:empty) ~ *),
-	.first-lede > div:has(> div) > div:not(:empty):not(div:not(:empty) ~ *) {
-		font-family: var(--font-display);
-		font-size: 1.2em;
-		line-height: 1.45;
-	}
-
-	.first-lede > div:has(> div) > br,
-	.first-lede > div:has(> div) > div:has(> br:only-child) {
+	/* Project text is all one size. Older entries were pasted from another editor as one wrapper div of
+	   <div>, <br>, <div> lines instead of <p>s; give that wrapper the same paragraph rhythm as the rest
+	   of the CMS content. */
+	.project-content > div:has(> div) > br,
+	.project-content > div:has(> div) > div:has(> br:only-child) {
 		display: none;
 	}
 
-	.first-lede > div:has(> div) > div ~ div {
+	.project-content > div:has(> div) > div ~ div {
 		margin-top: 1rem;
 	}
 

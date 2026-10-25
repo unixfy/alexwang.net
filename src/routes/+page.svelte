@@ -25,7 +25,8 @@
 		email = ['alex', 'alexwang.net'].join('@');
 	});
 
-	// Certifications and Recognition start closed; a link to one (the tower, a shared URL) opens it
+	// Certifications and Recognition start open but can be folded away; a link to one (the tower, a shared URL)
+	// opens it again if it was
 	$effect(() => {
 		const openTarget = () => {
 			const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
@@ -338,7 +339,7 @@
 				{@render more('/projects', 'All projects')}
 
 				{#if data.certifications.length}
-					<details id="work-certifications" class="group mt-20 scroll-mt-8">
+					<details id="work-certifications" open class="group mt-20 scroll-mt-8">
 						{@render foldHead('work-certifications')}
 						<ul class="list-none mt-8 grid sm:grid-cols-2 @5xl:grid-cols-3 gap-x-10 gap-y-6">
 							{#each data.certifications as certification}
@@ -362,7 +363,7 @@
 				{/if}
 
 				{#if data.recognitions.length}
-					<details id="work-recognition" class="group mt-20 scroll-mt-8">
+					<details id="work-recognition" open class="group mt-20 scroll-mt-8">
 						{@render foldHead('work-recognition')}
 						<ul class="list-none mt-8 grid md:grid-cols-2 @7xl:grid-cols-3 gap-x-10 gap-y-8">
 							{#each data.recognitions as recognition}

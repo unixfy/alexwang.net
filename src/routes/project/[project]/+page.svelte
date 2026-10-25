@@ -121,7 +121,7 @@
 					</a>
 				{/if}
 			</div>
-			<div class="page-content-container first-lede max-w-[65ch] text-lg 2xl:text-xl">
+			<div class="page-content-container project-content max-w-[65ch] text-lg 2xl:text-xl">
 				{@html data.project.content_html}
 			</div>
 		</div>
