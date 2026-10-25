@@ -1,17 +1,17 @@
 <script>
 	import Station from '#lib/Station.svelte';
-	import { year } from '#lib/date.js';
+	import { year, dateSpan } from '#lib/date.js';
 
 	let { data } = $props();
 
 	const lines = /** @type {const} */ (['work', 'writing', 'contact']);
 
-	// newest first from the CMS, so the years come out newest first too
+	// grouped by the year each one ended (or still running), in the order they are already sorted
 	const years = $derived.by(() => {
 		/** @type {Map<string, typeof data.projects>} */
 		const byYear = new Map();
 		for (const p of data.projects) {
-			const y = year(p.date);
+			const y = p.end_date ? year(p.end_date) : 'Present';
 			byYear.set(y, [...(byYear.get(y) ?? []), p]);
 		}
 		return [...byYear];
@@ -51,6 +51,9 @@
 							{/if}
 							<span class="t-item mt-3 block underline-offset-4 group-hover:underline">
 								{project.title}
+							</span>
+							<span class="t-meta mt-1 block tabular-nums">
+								{dateSpan(project.start_date, project.end_date)}
 							</span>
 						</a>
 					</li>

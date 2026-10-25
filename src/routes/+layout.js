@@ -1,4 +1,4 @@
-import getDirectusInstance from '#lib/directus.js';
+import getDirectusInstance, { describe } from '#lib/directus.js';
 import { readSingleton } from '@directus/sdk';
 
 const emptyConfig = {
@@ -6,7 +6,8 @@ const emptyConfig = {
 	banner_content: '',
 	sshkey: '',
 	links_profile_picture: null,
-	homepage_welcome_text: ''
+	homepage_welcome_text: '',
+	lead_text: ''
 };
 
 export async function load({ fetch }) {
@@ -20,13 +21,14 @@ export async function load({ fetch }) {
 						'banner_content',
 						'sshkey',
 						'links_profile_picture',
-						'homepage_welcome_text'
+						'homepage_welcome_text',
+						'lead_text'
 					]
 				})
 			)
 		};
 	} catch (err) {
-		console.error('Directus config unavailable', err);
+		console.error(`Directus config unavailable: ${describe(err)}`);
 		return { config: emptyConfig };
 	}
 }

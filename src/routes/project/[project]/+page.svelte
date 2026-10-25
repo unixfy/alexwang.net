@@ -1,7 +1,8 @@
 <script>
 	import Station from '#lib/Station.svelte';
 	import { goto } from '$app/navigation';
-	import { fullDate, year } from '#lib/date.js';
+	import { dateSpan } from '#lib/date.js';
+	import { domain } from '#lib/url.js';
 
 	let { data } = $props();
 
@@ -43,7 +44,7 @@
 					<span class={kind === 'next' ? 'font-bold text-brand-600 dark:text-brand-300' : ''}>
 						{kind === 'next' ? 'Next stop' : 'Previous stop'}
 					</span>
-					· {year(p.date)}
+					· {dateSpan(p.start_date, p.end_date)}
 				</span>
 				{#if kind === 'next'}<kbd class="kbd kbd-sm hidden lg:inline-flex" aria-hidden="true">→</kbd
 					>{/if}
@@ -61,9 +62,14 @@
 		<h1 class="t-page max-w-4xl text-brand-600 dark:text-brand-300">{data.project.title}</h1>
 		<div class="t-meta mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
 			{#if data.index >= 0}
-				<p>Stop {data.index + 1} of {data.total} · {year(data.project.date)}</p>
-				<!-- the whole line, newest first: stops already passed are lit, like the trunk -->
-				<ol class="route hidden sm:flex" aria-label="All projects, newest first">
+				<p>
+					Stop {data.index + 1} of {data.total} · {dateSpan(
+						data.project.start_date,
+						data.project.end_date
+					)}
+				</p>
+				<!-- the whole line, most recent first: stops already passed are lit, like the trunk -->
+				<ol class="route hidden sm:flex" aria-label="All projects, most recent first">
 					{#each data.route as r, i}
 						<li>
 							<a
@@ -77,7 +83,7 @@
 					{/each}
 				</ol>
 			{:else}
-				<p>{year(data.project.date)}</p>
+				<p>{dateSpan(data.project.start_date, data.project.end_date)}</p>
 			{/if}
 			<a href="/projects" class="btn btn-outline btn-primary no-underline">
 				<i class="fa-solid fa-table-cells-large" aria-hidden="true"></i>
@@ -107,7 +113,7 @@
 						rel="noopener"
 						class="btn btn-primary btn-lg btn-block group mt-4 no-underline"
 					>
-						View project
+						{domain(data.project.url) ?? 'View project'}
 						<i
 							class="fa-solid fa-arrow-up-right-from-square transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none"
 							aria-hidden="true"
@@ -119,7 +125,6 @@
 				{@html data.project.content_html}
 			</div>
 		</div>
-		<p class="t-meta mt-10">Published {fullDate(data.project.date)}</p>
 	</div>
 
 	<Station id="next" title="Keep riding" line="contact" end>

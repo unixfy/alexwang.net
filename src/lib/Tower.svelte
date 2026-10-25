@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 
-	/** @type {{ stops: { id: string; label: string; line: 'work' | 'writing' | 'contact' }[] }} */
+	/** @type {{ stops: { id: string; label: string; line: 'work' | 'writing' | 'contact'; sub?: boolean }[] }} */
 	let { stops } = $props();
 
 	/** @type {HTMLElement | undefined} */
@@ -25,7 +25,8 @@
 				canvas,
 				stops.map((s) => s.id),
 				stops.map((s) => s.line),
-				(i) => (active = i)
+				(i) => (active = i),
+				stops.map((s) => Boolean(s.sub))
 			);
 			ready = tower !== null;
 		});
@@ -49,7 +50,7 @@
 					<a
 						href="#{stop.id}"
 						data-stop
-						class="stop t-item"
+						class="stop {stop.sub ? 'stop-sub' : 't-item'}"
 						aria-current={active === i ? 'location' : undefined}
 						onpointerenter={() => tower?.hot(i)}
 						onpointerleave={() => tower?.hot(-1)}
@@ -84,6 +85,14 @@
 
 	:global(.dark) .stop {
 		color: var(--color-gray-300);
+	}
+
+	/* a part of the section above it: quieter label, tighter row, smaller station */
+	.stop-sub {
+		min-height: 2rem;
+		font-family: var(--font-display);
+		font-size: 0.9375rem;
+		font-weight: 600;
 	}
 
 	.stop:hover,
@@ -129,6 +138,10 @@
 		border-radius: 999px;
 		border: 5px solid var(--line);
 		background: var(--color-base-100);
+	}
+
+	.stop-sub .stop-dot {
+		scale: 0.65;
 	}
 
 	.tower.ready .stop-dot {

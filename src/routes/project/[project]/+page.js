@@ -1,6 +1,7 @@
 import getDirectusInstance from '#lib/directus.js';
 import { readItems } from '@directus/sdk';
 import { error } from '@sveltejs/kit';
+import { byRecency } from '#lib/date.js';
 
 export async function load({ fetch, params }) {
 	const directus = getDirectusInstance(fetch);
@@ -8,20 +9,20 @@ export async function load({ fetch, params }) {
 	const [project_req, all] = await Promise.all([
 		directus.request(
 			readItems('projects', {
-				fields: ['title', 'slug', 'content_html', 'image', 'date', 'url'],
+				fields: ['title', 'slug', 'content_html', 'image', 'start_date', 'end_date', 'url'],
 				filter: { slug: params.project },
 				limit: 1
 			})
 		),
-		// the whole line, newest first, so the page knows its neighbours
+		// the whole line, most recent first, so the page knows its neighbours
 		directus
 			.request(
 				readItems('projects', {
-					fields: ['slug', 'title', 'date', 'image'],
-					sort: '-date',
+					fields: ['slug', 'title', 'start_date', 'end_date', 'image'],
 					limit: -1
 				})
 			)
+			.then((rows) => rows.sort(byRecency))
 			.catch(() => [])
 	]);
 

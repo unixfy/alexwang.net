@@ -61,9 +61,10 @@ function glowTexture() {
  * @param {string[]} ids element ids of the sections, in page order
  * @param {('work' | 'writing' | 'contact')[]} lines which line colour each station wears
  * @param {(index: number) => void} onActive called when the current section changes
+ * @param {boolean[]} [subs] which stations are parts of the one before them: drawn smaller
  * @returns {{ hot: (index: number) => void, destroy: () => void } | null} null when WebGL is unavailable
  */
-export function startTower(host, canvas, ids, lines, onActive) {
+export function startTower(host, canvas, ids, lines, onActive, subs = []) {
 	/** @type {WebGLRenderer} */
 	let renderer;
 	try {
@@ -158,6 +159,7 @@ export function startTower(host, canvas, ids, lines, onActive) {
 
 		const g = new Group();
 		g.add(pad, face);
+		if (subs[k]) g.scale.setScalar(0.65);
 		tower.add(g);
 		return { g, face, top, glow, lineMat, scale: 1, tint: 0, glowA: 0.12, k };
 	});

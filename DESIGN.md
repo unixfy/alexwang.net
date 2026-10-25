@@ -210,11 +210,12 @@ On interior pages the three line colours cycle (Work, Writing, Contact, repeat) 
 - **Display** (800, clamp(3.25rem, 1.5rem + 7vw, 6rem), 1.0, width 118%, -0.035em): the name on the home terminus only.
 - **Title** (700, clamp(1.875rem, 1.3rem + 2.2vw, 3rem), 1.0, -0.02em): each station heading and each door label. Ring position derives from this size.
 - **Page** (700, clamp(2rem, 1.5rem + 2vw, 3rem), 1.1): the h1 of interior pages, brand-coloured; the ring centres on it (`--page-size`).
-- **Group** (700, 1.5rem, 1.2): sub-heads inside a station (Certifications, Recognition).
-- **Item** (700, clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem), 1.25): list titles: projects, posts, destinations.
+- **Group** (700, 1.5rem, 1.2): the parts of a station (Employment, Education, Projects, Certifications, Recognition). Each is a small station of its own: a ring on the trunk and a stub to the heading (`.group-head`).
+- **Item** (700, clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem), 1.25): titles of the main entries: employers, schools, projects, posts, destinations.
+- **Entry** (700 Archivo, 1.0625rem, 1.3): the same role one step down, for entries set in a grid (certifications, recognition).
 - **Lede** (400 Archivo, clamp(1.25rem, 1rem + 1.2vw, 1.875rem), 1.3): the tagline.
 - **Prose** (400 Public Sans, clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem), 1.65, max 65ch): long reading; at night letter-spacing 0.01em and line-height 1.75.
-- **Meta** (0.875rem, gray-600 / gray-300): dates, references. Dates use tabular numerals.
+- **Meta** (0.875rem, gray-600 / gray-300): dates, references. Every date on the home page is MM/YYYY with tabular numerals.
 
 ### Named Rules
 
@@ -264,7 +265,11 @@ A small pill (0.875rem by 1.75rem, ground-colored 3px border) riding the lit edg
 
 ### Signal tower
 
-From xl (1280px) the home page's right-hand gutter holds a sticky rail of section shortcuts (About when the welcome text exists, Work, Writing, Beyond work, Contact) drawn as a small 3D copy of the line: a bespoke line-diagram piece, not daisyUI. Behind the links, three.js draws a tilted orthographic spine with a lit part running from the top to a train capsule that follows the reader, pulses falling to the train, and per station a camera-facing ring (always a true circle, ground-filled so the spine does not show through) standing on a small hexagonal platform, with a soft glow. The drawing and the labels have separate columns: the first 6rem of each link is the drawing's (spine at 42px, platforms 28px either side, symmetric so they cannot swing under the text) and the label starts clear of it, never wrapping. Colours are the site's tokens (line colours per station, hairline track, gray platforms) and repaint on theme change. The current section's ring is larger and glows and its platform takes a tint of the line colour; hovering or focusing a link lights its station and leans the tower. Labels are Item-role links, one per stop, and the canvas is decorative. Without WebGL, or below xl, the rail stays as a plain CSS spine with a ring dot at every link.
+From xl (1280px) the home page's right-hand gutter holds a sticky rail of section shortcuts (About when the welcome text exists, Work, Writing, Beyond work, Contact) drawn as a small 3D copy of the line: a bespoke line-diagram piece, not daisyUI. Behind the links, three.js draws a tilted orthographic spine with a lit part running from the top to a train capsule that follows the reader, pulses falling to the train, and per station a camera-facing ring (always a true circle, ground-filled so the spine does not show through) standing on a small hexagonal platform, with a soft glow. The drawing and the labels have separate columns: the first 6rem of each link is the drawing's (spine at 42px, platforms 28px either side, symmetric so they cannot swing under the text) and the label starts clear of it, never wrapping. Colours are the site's tokens (line colours per station, hairline track, gray platforms) and repaint on theme change. The current section's ring is larger and glows and its platform takes a tint of the line colour; hovering or focusing a link lights its station and leans the tower. The parts of Work (Employment, Education, Projects, Certifications, Recognition) follow Work as smaller stops: a 0.65 scale station and a 0.9375rem, 600 label on a tighter row. Labels are Item-role links (sub-stops one step quieter), one per stop, and the canvas is decorative. Without WebGL, or below xl, the rail stays as a plain CSS spine with a ring dot at every link.
+
+### Entry grammar (Work)
+
+One grammar for every list in Work. A date sits first (left column from md, above the entry below it) in Meta type; then the title (Item for main entries, Entry in grids), a bold role line, a Meta line for place, and a description at 0.875-1rem in gray-700 / gray-300, one paragraph per line break. Employment and education entries are stops on the trunk (`.stop-mark`: a small ring where the entry begins; the one still running is filled and breathes, still when motion is reduced). A project's entry puts its span under the title (home, `/projects` and the project page all use the same `MM/YYYY – MM/YYYY` or `– Present` span), then an excerpt; when it has a link, a small outlined button below the row is labelled with the link's domain, and the project page's button uses the same label. The "more" links (All projects, More on the blog) are one shared row. Entries in two or three columns carry no stop, since only the first column sits beside the trunk. A link in a list or row is ink and underlines on hover or focus (`.ink-link`, or the row's own hover); a link in running prose stays brand and underlined.
 
 ### Door row
 

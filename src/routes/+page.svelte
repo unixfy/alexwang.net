@@ -5,7 +5,8 @@
 	import Network from '#lib/Network.svelte';
 	import CopyButton from '#lib/CopyButton.svelte';
 	import Tower from '#lib/Tower.svelte';
-	import { year, monthYear } from '#lib/date.js';
+	import { monthYear, dateSpan } from '#lib/date.js';
+	import { domain } from '#lib/url.js';
 
 	let { data } = $props();
 
@@ -13,6 +14,9 @@
 	// error and the image silently disappears); project, certification and award images accept any.
 	const cms = 'https://cms.alexwang.net/assets';
 	const latest = $derived(data.projects[0]);
+	const current = $derived(
+		data.employments.find((/** @type {{ end_date: string | null }} */ job) => !job.end_date)
+	);
 	const hasPhoto = $derived(Boolean(data.config.links_profile_picture));
 
 	// Assembled client-side so the address isn't sitting in the served HTML
@@ -21,11 +25,44 @@
 		email = ['alex', 'alexwang.net'].join('@');
 	});
 
+	// The parts of Work, in page order. Each gets a heading with its icon, a jump link under xl and a
+	// small stop on the rail from xl up. Employment and education only appear once the CMS has some.
+	const groups = $derived(
+		[
+			{
+				id: 'work-employment',
+				label: 'Employment',
+				icon: 'fa-briefcase',
+				show: data.employments.length
+			},
+			{
+				id: 'work-education',
+				label: 'Education',
+				icon: 'fa-graduation-cap',
+				show: data.educations.length
+			},
+			{ id: 'work-projects', label: 'Projects', show: true },
+			{
+				id: 'work-certifications',
+				label: 'Certifications',
+				icon: 'fa-certificate',
+				show: data.certifications.length
+			},
+			{
+				id: 'work-recognition',
+				label: 'Recognition',
+				icon: 'fa-trophy',
+				show: data.recognitions.length
+			}
+		].filter((g) => g.show)
+	);
+
 	// shortcuts for the rail on the right; the same sections the page is made of
 	const stops = $derived(
-		/** @type {{ id: string; label: string; line: 'work' | 'writing' | 'contact' }[]} */ ([
+		/** @type {{ id: string; label: string; line: 'work' | 'writing' | 'contact'; sub?: boolean }[]} */ ([
 			...(data.config.homepage_welcome_text ? [{ id: 'about', label: 'About', line: 'work' }] : []),
 			{ id: 'work', label: 'Work', line: 'work' },
+			...groups.map((g) => ({ id: g.id, label: g.label, line: 'work', sub: true })),
 			{ id: 'writing', label: 'Writing', line: 'writing' },
 			{ id: 'beyond', label: 'Beyond work', line: 'work' },
 			{ id: 'contact', label: 'Contact', line: 'contact' }
@@ -38,9 +75,39 @@
 		{ href: '#contact', label: 'Contact', line: 'contact' }
 	];
 
+	/**
+	 * One entry per line break, so each becomes its own spaced paragraph.
+	 * @param {string} text
+	 */
+	const lines = (text) => text.split(/\r?\n/).filter((line) => line.trim());
+
 	const row =
 		'group flex items-baseline gap-4 py-4 no-underline text-gray-900 dark:text-white hover:text-gray-900 dark:hover:text-white';
 </script>
+
+{#snippet more(/** @type {string} */ href, /** @type {string} */ label, external = false)}
+	<a
+		{href}
+		class={row}
+		target={external ? '_blank' : undefined}
+		rel={external ? 'noopener' : undefined}
+	>
+		<span class="t-item group-hover:underline underline-offset-4">
+			{label}
+			<i
+				class="fa-solid fa-arrow-right inline-block transition-transform motion-reduce:transition-none group-hover:translate-x-1"
+				aria-hidden="true"
+			></i>
+		</span>
+	</a>
+{/snippet}
+
+{#snippet groupHead(/** @type {string} */ id)}
+	{@const g = groups.find((x) => x.id === id)}
+	{#if g}
+		<h3 {id} class="t-group group-head scroll-mt-8 mt-20 first-of-type:mt-0 mb-8">{g.label}</h3>
+	{/if}
+{/snippet}
 
 <div class="line-page bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
 	<span class="train" aria-hidden="true"></span>
@@ -51,7 +118,9 @@
 			<div class="grid md:grid-cols-[1fr_auto] gap-8 md:gap-16 items-start max-w-6xl">
 				<div data-calm>
 					<h1 class="t-display text-brand-600 dark:text-brand-300">Alex Wang</h1>
-					<p class="t-lede mt-6 max-w-xl">I’m obsessed with mobility, technology, and solutions.</p>
+					{#if data.config.lead_text}
+						<p class="t-lede mt-6 max-w-xl">{data.config.lead_text}</p>
+					{/if}
 				</div>
 				{#if hasPhoto}
 					<img
@@ -83,7 +152,10 @@
 								>
 								<span class="text-gray-700 dark:text-gray-300 md:text-lg">
 									{#if door.line === 'work'}
-										{#if latest}Latest: {latest.title}, {year(latest.date)}{:else}Selected projects{/if}
+										{#if current}Currently: {current.title ? `${current.title} at` : 'at'}
+											{current.employer_name}{:else if latest}Latest: {latest.title}, {monthYear(
+												latest.start_date
+											)}{:else}Selected projects{/if}
 									{:else if door.line === 'writing'}
 										{#await data.posts}
 											Latest posts from the blog
@@ -128,46 +200,126 @@
 
 		<Station id="work" title="Work">
 			<div class="wide">
+				<nav aria-label="In Work" class="mb-12 flex flex-wrap gap-2 xl:hidden">
+					{#each groups as g}
+						<a href="#{g.id}" class="btn btn-sm btn-outline no-underline">
+							{g.label}
+						</a>
+					{/each}
+				</nav>
+
+				{#if data.employments.length}
+					{@render groupHead('work-employment')}
+					<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
+						{#each data.employments as job}
+							<li
+								class="stop-mark py-6 first:pt-0 md:grid md:grid-cols-[10rem_1fr] md:gap-x-8"
+								data-current={job.end_date ? undefined : ''}
+							>
+								<p class="t-meta tabular-nums mb-1 md:mb-0 md:pt-1.5 text-balance">
+									{dateSpan(job.start_date, job.end_date)}
+								</p>
+								<div>
+									<h4 class="t-item">
+										{#if job.employer_url}
+											<a href={job.employer_url} target="_blank" rel="noopener" class="ink-link"
+												>{job.employer_name}</a
+											>
+										{:else}
+											{job.employer_name}
+										{/if}
+									</h4>
+									{#if job.title}<p class="font-bold">{job.title}</p>{/if}
+									{#if job.location}<p class="t-meta">{job.location}</p>{/if}
+									{#if job.description}
+										<div
+											class="mt-3 max-w-prose space-y-2 text-sm md:text-base text-gray-700 dark:text-gray-300"
+										>
+											{#each lines(job.description) as line}<p>{line}</p>{/each}
+										</div>
+									{/if}
+								</div>
+							</li>
+						{/each}
+					</ol>
+				{/if}
+
+				{#if data.educations.length}
+					{@render groupHead('work-education')}
+					<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
+						{#each data.educations as school}
+							<li class="stop-mark py-6 first:pt-0 md:grid md:grid-cols-[10rem_1fr] md:gap-x-8">
+								<p class="t-meta tabular-nums mb-1 md:mb-0 md:pt-1.5 text-balance">
+									{dateSpan(school.start_date, school.end_date)}
+								</p>
+								<div>
+									<h4 class="t-item">{school.institution_name}</h4>
+									{#if school.degree_name}<p class="font-bold">{school.degree_name}</p>{/if}
+									{#if school.description}
+										<div
+											class="mt-3 max-w-prose space-y-2 text-sm md:text-base text-gray-700 dark:text-gray-300"
+										>
+											{#each lines(school.description) as line}<p>{line}</p>{/each}
+										</div>
+									{/if}
+								</div>
+							</li>
+						{/each}
+					</ol>
+				{/if}
+
+				{@render groupHead('work-projects')}
 				<ol
 					class="list-none grid gap-x-14 @5xl:grid-cols-2 [&>li]:border-b [&>li]:border-gray-300 dark:[&>li]:border-gray-700"
 				>
 					{#each data.projects as project}
 						<li>
 							<a href="/project/{project.slug}" class={row}>
-								<span class="w-14 shrink-0 tabular-nums text-gray-600 dark:text-gray-300"
-									>{year(project.date)}</span
-								>
-								<span class="flex-1 t-item group-hover:underline underline-offset-4"
-									>{project.title}</span
-								>
+								<span class="min-w-0 flex-1">
+									<span class="t-item block group-hover:underline underline-offset-4"
+										>{project.title}</span
+									>
+									<span class="t-meta mt-1 block tabular-nums"
+										>{dateSpan(project.start_date, project.end_date)}</span
+									>
+									{#if project.excerpt}
+										<span
+											class="mt-2 line-clamp-3 text-sm md:text-base text-gray-700 dark:text-gray-300"
+											>{project.excerpt}</span
+										>
+									{/if}
+								</span>
 								{#if project.image}
 									<img
 										src="{cms}/{project.image}?format=webp&width=400"
 										alt=""
 										loading="lazy"
 										style="view-transition-name: p-{project.slug}"
-										class="hidden sm:block w-32 aspect-video object-cover rounded dark:brightness-90 self-center"
+										class="hidden sm:block w-32 aspect-video object-cover rounded dark:brightness-90 self-start mt-1"
 									/>
 								{/if}
 							</a>
+							{#if project.url}
+								<a
+									href={project.url}
+									target="_blank"
+									rel="noopener"
+									class="btn btn-sm btn-outline btn-primary group mb-5 no-underline"
+								>
+									{domain(project.url) ?? 'View project'}
+									<i
+										class="fa-solid fa-arrow-up-right-from-square transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none"
+										aria-hidden="true"
+									></i>
+								</a>
+							{/if}
 						</li>
 					{/each}
-					<li class="@5xl:col-span-2 @5xl:border-b-0">
-						<a href="/projects" class={row}>
-							<span class="w-14 shrink-0" aria-hidden="true"></span>
-							<span class="t-item group-hover:underline underline-offset-4">
-								All projects
-								<i
-									class="fa-solid fa-arrow-right inline-block transition-transform motion-reduce:transition-none group-hover:translate-x-1"
-									aria-hidden="true"
-								></i>
-							</span>
-						</a>
-					</li>
 				</ol>
+				{@render more('/projects', 'All projects')}
 
 				{#if data.certifications.length}
-					<h3 class="t-group mt-16 mb-6">Certifications</h3>
+					{@render groupHead('work-certifications')}
 					<ul class="list-none grid sm:grid-cols-2 @5xl:grid-cols-3 gap-x-10 gap-y-6">
 						{#each data.certifications as certification}
 							<li class="flex gap-4 items-center">
@@ -178,9 +330,9 @@
 									class="w-14 aspect-square shrink-0 dark:brightness-90"
 								/>
 								<div>
-									<p class="font-bold">{certification.name}</p>
-									<p class="t-meta">
-										{certification.reference}, {monthYear(certification.date)}
+									<p class="t-entry">{certification.name}</p>
+									<p class="t-meta tabular-nums">
+										{certification.reference} · {monthYear(certification.date)}
 									</p>
 								</div>
 							</li>
@@ -189,7 +341,7 @@
 				{/if}
 
 				{#if data.recognitions.length}
-					<h3 class="t-group mt-16 mb-6">Recognition</h3>
+					{@render groupHead('work-recognition')}
 					<ul class="list-none grid md:grid-cols-2 @7xl:grid-cols-3 gap-x-10 gap-y-8">
 						{#each data.recognitions as recognition}
 							<li class="flex gap-4">
@@ -200,9 +352,11 @@
 									class="w-12 h-12 shrink-0 object-contain rounded bg-white p-1 dark:brightness-90"
 								/>
 								<div>
-									<p class="font-bold">{recognition.name}</p>
-									<p class="t-meta">{monthYear(recognition.date)}</p>
-									<p class="mt-1 text-gray-700 dark:text-gray-300">{recognition.description}</p>
+									<p class="t-entry">{recognition.name}</p>
+									<p class="t-meta tabular-nums">{monthYear(recognition.date)}</p>
+									<p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
+										{recognition.description}
+									</p>
 								</div>
 							</li>
 						{/each}
@@ -233,11 +387,7 @@
 					</div>
 				{/await}
 			</div>
-			<p class="mt-6 text-lg">
-				<a href="https://blog.alexwang.net" target="_blank" rel="noopener">
-					More on the blog <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-				</a>
-			</p>
+			<div class="wide">{@render more('https://blog.alexwang.net', 'More on the blog', true)}</div>
 		</Station>
 
 		<Station id="beyond" title="Beyond work">
@@ -265,7 +415,7 @@
 				<li>
 					<i class="fa-solid fa-envelope w-8" aria-hidden="true"></i>
 					{#if email}
-						<a href="mailto:{email}">{email}</a>
+						<a href="mailto:{email}" class="ink-link">{email}</a>
 						<CopyButton text={email} what="email address" class="ml-3 align-middle" />
 					{:else}
 						alex [at] alexwang.net
@@ -274,7 +424,7 @@
 				{#each data.socials as social}
 					<li>
 						<i class="fa-brands {social.icon} w-8" aria-hidden="true"></i>
-						<a href={social.url} target="_blank" rel="noopener">{social.name}</a>
+						<a href={social.url} target="_blank" rel="noopener" class="ink-link">{social.name}</a>
 					</li>
 				{/each}
 			</ul>
