@@ -268,7 +268,7 @@ function build(w, h, starts) {
 			if (segs[i].r === segs[j].r) continue;
 			const p = intersect(segs[i].a, segs[i].b, segs[j].a, segs[j].b);
 			if (!p || p[0] < 0 || p[0] > w || p[1] < 0 || p[1] > h) continue;
-			if (stations.some((s) => Math.hypot(s[0] - p[0], s[1] - p[1]) < 30)) continue;
+			if (stations.some((s) => Math.hypot(s[0] - p[0], s[1] - p[1]) < 42)) continue;
 			stations.push([p[0], p[1], 9, -1]);
 		}
 	}

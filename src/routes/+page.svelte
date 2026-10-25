@@ -25,6 +25,17 @@
 		email = ['alex', 'alexwang.net'].join('@');
 	});
 
+	// Certifications and Recognition start closed; a link to one (the tower, a shared URL) opens it
+	$effect(() => {
+		const openTarget = () => {
+			const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+			if (el instanceof HTMLDetailsElement) el.open = true;
+		};
+		openTarget();
+		addEventListener('hashchange', openTarget);
+		return () => removeEventListener('hashchange', openTarget);
+	});
+
 	// The parts of Work, in page order. Each gets a heading with its icon, a jump link under xl and a
 	// small stop on the rail from xl up. Employment and education only appear once the CMS has some.
 	const groups = $derived(
@@ -46,13 +57,15 @@
 				id: 'work-certifications',
 				label: 'Certifications',
 				icon: 'fa-certificate',
-				show: data.certifications.length
+				show: data.certifications.length,
+				count: data.certifications.length
 			},
 			{
 				id: 'work-recognition',
 				label: 'Recognition',
 				icon: 'fa-trophy',
-				show: data.recognitions.length
+				show: data.recognitions.length,
+				count: data.recognitions.length
 			}
 		].filter((g) => g.show)
 	);
@@ -100,6 +113,22 @@
 			></i>
 		</span>
 	</a>
+{/snippet}
+
+{#snippet foldHead(/** @type {string} */ id)}
+	{@const g = groups.find((x) => x.id === id)}
+	{#if g}
+		<summary
+			class="t-group group-head flex w-fit max-w-4xl cursor-pointer list-none items-baseline gap-3 underline-offset-4 hover:underline [&::-webkit-details-marker]:hidden"
+		>
+			{g.label}
+			<span class="t-meta font-normal tabular-nums">{g.count}</span>
+			<i
+				class="fa-solid fa-chevron-down self-center text-sm text-gray-500 transition-transform group-open:rotate-180 motion-reduce:transition-none dark:text-gray-400"
+				aria-hidden="true"
+			></i>
+		</summary>
+	{/if}
 {/snippet}
 
 {#snippet groupHead(/** @type {string} */ id)}
@@ -150,7 +179,7 @@
 									class="t-title group-hover:underline decoration-[var(--line)] decoration-4 underline-offset-8"
 									>{door.label}</span
 								>
-								<span class="text-gray-700 dark:text-gray-300 md:text-lg">
+								<span class="text-gray-700 dark:text-gray-300 text-lg leading-snug">
 									{#if door.line === 'work'}
 										{#if current}Currently: {current.title ? `${current.title} at` : 'at'}
 											{current.employer_name}{:else if latest}Latest: {latest.title}, {monthYear(
@@ -170,9 +199,14 @@
 									{/if}
 								</span>
 							</span>
+							<!-- the door's own line, running on from the label to the arrow where its route begins -->
+							<span
+								class="hidden h-1 min-w-6 flex-1 self-center rounded-full bg-[var(--line)] opacity-70 transition-opacity group-hover:opacity-100 md:block"
+								aria-hidden="true"
+							></span>
 							<i
 								data-route-start={door.line}
-								class="fa-solid fa-arrow-down ml-auto text-gray-500 dark:text-gray-400 transition-transform motion-reduce:transition-none group-hover:translate-y-1"
+								class="fa-solid fa-arrow-down ml-auto self-center text-gray-500 dark:text-gray-400 transition-transform motion-reduce:transition-none group-hover:translate-y-1"
 								aria-hidden="true"
 							></i>
 						</a>
@@ -183,13 +217,6 @@
 	</Network>
 
 	<div class="relative xl:[--rail:21rem]">
-		<!-- the right-hand gutter: a sticky signal tower of shortcuts, wide screens only -->
-		<aside class="pointer-events-none absolute inset-y-0 right-6 z-10 hidden w-64 xl:block">
-			<div class="pointer-events-auto sticky top-28 mt-40 h-[min(34rem,calc(100vh-9rem))]">
-				<Tower {stops} />
-			</div>
-		</aside>
-
 		{#if data.config.homepage_welcome_text}
 			<Station id="about" title="About">
 				<div class="t-prose space-y-5 [&_strong]:font-bold">
@@ -200,14 +227,6 @@
 
 		<Station id="work" title="Work">
 			<div class="wide">
-				<nav aria-label="In Work" class="mb-12 flex flex-wrap gap-2 xl:hidden">
-					{#each groups as g}
-						<a href="#{g.id}" class="btn btn-sm btn-outline no-underline">
-							{g.label}
-						</a>
-					{/each}
-				</nav>
-
 				{#if data.employments.length}
 					{@render groupHead('work-employment')}
 					<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
@@ -319,48 +338,52 @@
 				{@render more('/projects', 'All projects')}
 
 				{#if data.certifications.length}
-					{@render groupHead('work-certifications')}
-					<ul class="list-none grid sm:grid-cols-2 @5xl:grid-cols-3 gap-x-10 gap-y-6">
-						{#each data.certifications as certification}
-							<li class="flex gap-4 items-center">
-								<img
-									src="{cms}/{certification.image}?format=webp&width=160"
-									alt=""
-									loading="lazy"
-									class="w-14 aspect-square shrink-0 dark:brightness-90"
-								/>
-								<div>
-									<p class="t-entry">{certification.name}</p>
-									<p class="t-meta tabular-nums">
-										{certification.reference} · {monthYear(certification.date)}
-									</p>
-								</div>
-							</li>
-						{/each}
-					</ul>
+					<details id="work-certifications" class="group mt-20 scroll-mt-8">
+						{@render foldHead('work-certifications')}
+						<ul class="list-none mt-8 grid sm:grid-cols-2 @5xl:grid-cols-3 gap-x-10 gap-y-6">
+							{#each data.certifications as certification}
+								<li class="flex gap-4 items-center">
+									<img
+										src="{cms}/{certification.image}?format=webp&width=160"
+										alt=""
+										loading="lazy"
+										class="w-14 aspect-square shrink-0 dark:brightness-90"
+									/>
+									<div>
+										<p class="t-entry">{certification.name}</p>
+										<p class="t-meta tabular-nums">
+											{certification.reference} · {monthYear(certification.date)}
+										</p>
+									</div>
+								</li>
+							{/each}
+						</ul>
+					</details>
 				{/if}
 
 				{#if data.recognitions.length}
-					{@render groupHead('work-recognition')}
-					<ul class="list-none grid md:grid-cols-2 @7xl:grid-cols-3 gap-x-10 gap-y-8">
-						{#each data.recognitions as recognition}
-							<li class="flex gap-4">
-								<img
-									src="{cms}/{recognition.image}?format=webp&width=120"
-									alt=""
-									loading="lazy"
-									class="w-12 h-12 shrink-0 object-contain rounded bg-white p-1 dark:brightness-90"
-								/>
-								<div>
-									<p class="t-entry">{recognition.name}</p>
-									<p class="t-meta tabular-nums">{monthYear(recognition.date)}</p>
-									<p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
-										{recognition.description}
-									</p>
-								</div>
-							</li>
-						{/each}
-					</ul>
+					<details id="work-recognition" class="group mt-20 scroll-mt-8">
+						{@render foldHead('work-recognition')}
+						<ul class="list-none mt-8 grid md:grid-cols-2 @7xl:grid-cols-3 gap-x-10 gap-y-8">
+							{#each data.recognitions as recognition}
+								<li class="flex gap-4">
+									<img
+										src="{cms}/{recognition.image}?format=webp&width=120"
+										alt=""
+										loading="lazy"
+										class="w-12 h-12 shrink-0 object-contain rounded bg-white p-1 dark:brightness-90"
+									/>
+									<div>
+										<p class="t-entry">{recognition.name}</p>
+										<p class="t-meta tabular-nums">{monthYear(recognition.date)}</p>
+										<p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
+											{recognition.description}
+										</p>
+									</div>
+								</li>
+							{/each}
+						</ul>
+					</details>
 				{/if}
 			</div>
 		</Station>
@@ -430,5 +453,16 @@
 			</ul>
 			<p class="t-meta mt-10">End of the line.</p>
 		</Station>
+
+		<!-- the right-hand gutter: a sticky signal tower of shortcuts, wide screens only. Last in the source
+		     so keyboard and screen-reader visitors reach the content before its nine shortcuts. -->
+		<aside
+			aria-label="Page shortcuts"
+			class="pointer-events-none absolute inset-y-0 right-6 z-10 hidden w-64 xl:block"
+		>
+			<div class="pointer-events-auto sticky top-28 mt-40 h-[min(34rem,calc(100vh-9rem))]">
+				<Tower {stops} />
+			</div>
+		</aside>
 	</div>
 </div>

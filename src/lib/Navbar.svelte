@@ -7,13 +7,14 @@
 	/** @type {HTMLElement | undefined} */
 	let nav = $state();
 
-	const links = [
-		{ href: '/', label: 'Home' },
+	// On the home page the name is the page, so a Home link there would only be one more choice
+	const links = $derived([
+		...(page.url.pathname === '/' ? [] : [{ href: '/', label: 'Home' }]),
 		{ href: '/now', label: 'Now' },
 		{ href: '/i-like', label: 'What I Like' },
 		{ href: '/projects', label: 'Projects' },
-		{ href: '/linkedin', label: 'LinkedIn' }
-	];
+		{ href: '/linkedin', label: 'LinkedIn', external: true }
+	]);
 
 	const current = (/** @type {string} */ href) =>
 		(href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(href))
@@ -59,8 +60,8 @@
 	</div>
 	<div class="navbar pointer-events-auto hidden min-h-0 w-auto gap-2 px-6 py-5 md:flex">
 		<ul class="menu menu-horizontal menu-lg gap-1 p-0 font-display">
-			{#each links as { href, label }}
-				<li><a {href} aria-current={current(href)}>{label}</a></li>
+			{#each links as { href, label, external }}
+				<li><a {href} aria-current={current(href)}>{@render linkLabel(label, external)}</a></li>
 			{/each}
 		</ul>
 		{@render themeToggle()}
@@ -91,9 +92,11 @@
 			class="mobile-menu menu menu-lg w-full px-4 pb-4 font-display"
 			class:hidden={!open}
 		>
-			{#each links as { href, label }}
+			{#each links as { href, label, external }}
 				<li>
-					<a {href} aria-current={current(href)} onclick={() => (open = false)}>{label}</a>
+					<a {href} aria-current={current(href)} onclick={() => (open = false)}
+						>{@render linkLabel(label, external)}</a
+					>
 				</li>
 			{/each}
 		</ul>
@@ -137,6 +140,14 @@
 			>Alex Wang</span
 		>
 	</a>
+{/snippet}
+
+{#snippet linkLabel(/** @type {string} */ label, external = false)}
+	{label}
+	{#if external}
+		<i class="fa-solid fa-arrow-up-right-from-square text-[0.7em]" aria-hidden="true"></i>
+		<span class="sr-only">(opens LinkedIn)</span>
+	{/if}
 {/snippet}
 
 {#snippet themeToggle(/** @type {string} */ size = '')}
