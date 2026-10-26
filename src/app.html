@@ -1,20 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark" data-theme="line-night">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.svg" type="image/svg+xml" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" type="image/png" sizes="512x512" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="color-scheme" content="light dark" />
+		<meta name="color-scheme" content="dark light" />
 		<script>
 			document.documentElement.classList.add('js');
 			try {
 				var saved = localStorage.getItem('darkmode');
-				if (
-					saved === null ? matchMedia('(prefers-color-scheme: dark)').matches : saved === 'true'
-				) {
-					document.documentElement.classList.add('dark');
-					document.documentElement.dataset.theme = 'line-night';
+				if (saved === 'false') {
+					document.documentElement.classList.remove('dark');
+					document.documentElement.dataset.theme = 'line';
 				}
 			} catch (e) {}
 		</script>

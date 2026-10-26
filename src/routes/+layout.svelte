@@ -42,7 +42,7 @@
 	<title>{pageTitle} | Alex Wang</title>
 	<meta name="description" content="Alex Wang's portfolio site" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-	<meta name="theme-color" content="#7E1F86" />
+	<meta name="theme-color" content="#e5aee8" />
 
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://alexwang.net{page.url.pathname}" />

@@ -37,7 +37,6 @@
 
 @plugin 'daisyui/theme' {
 	name: 'line';
-	default: true;
 	color-scheme: light;
 	--color-base-100: var(--color-gray-50);
 	--color-base-200: var(--color-gray-100);
@@ -71,6 +70,7 @@
 
 @plugin 'daisyui/theme' {
 	name: 'line-night';
+	default: true;
 	color-scheme: dark;
 	--color-base-100: var(--color-gray-950);
 	--color-base-200: var(--color-gray-900);

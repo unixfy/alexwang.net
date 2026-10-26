@@ -1,21 +1,20 @@
 // Whether dark mode is enabled. Persists to localStorage and sets the `dark` class and the daisyUI
 // `data-theme` (line / line-night) on <html>.
-// Defaults to the system color scheme when the user hasn't chosen yet.
+// Defaults to dark when the user hasn't chosen yet.
 
 import { writable } from 'svelte/store';
 import { browser } from '$app/env';
 
 function createDarkmode() {
-	const store = writable(false);
+	const store = writable(true);
 	if (!browser) return store;
 
-	let initial = false;
+	let initial = true;
 	try {
 		const saved = localStorage.getItem('darkmode');
-		initial =
-			saved === null ? matchMedia('(prefers-color-scheme: dark)').matches : saved === 'true';
+		initial = saved !== 'false';
 	} catch {
-		// localStorage unavailable; fall back to light
+		// localStorage unavailable; fall back to dark
 	}
 	store.set(initial);
 
