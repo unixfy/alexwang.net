@@ -3,6 +3,7 @@
 	import Station from '#lib/Station.svelte';
 	import { fullDate } from '#lib/date.js';
 	import { foldLists } from '#lib/enhance.js';
+	import { stagger } from '#lib/reveal.js';
 
 	let { data } = $props();
 
@@ -31,6 +32,9 @@
 		heads.forEach((h, i) => (h.id ||= `stop-${i + 1}`));
 		stops = heads.map((h) => ({ id: h.id, text: h.textContent?.trim() ?? '' }));
 		foldLists(content);
+		stagger(content);
+		// headings stay put: the trunk's end is measured from them
+		content.querySelectorAll(':scope > h2').forEach((h) => h.classList.remove('reveal'));
 
 		// scroll-spy: the current stop is the last heading above the reading line (the first, until then)
 		let frame = 0;

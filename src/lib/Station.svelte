@@ -10,8 +10,10 @@
 	style="--line: var(--line-{line})"
 >
 	<span class="station-ring" aria-hidden="true"></span>
-	<h2 id="{id}-title" class="t-title mb-8 md:mb-10 dark:text-white">
+	<h2 id="{id}-title" class="t-title mb-8 md:mb-10 dark:text-white reveal">
 		{title}
 	</h2>
-	{@render children()}
+	<div class="reveal" style="--d: 100ms">
+		{@render children()}
+	</div>
 </section>

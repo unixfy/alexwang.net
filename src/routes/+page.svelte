@@ -233,7 +233,7 @@
 					<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
 						{#each data.employments as job}
 							<li
-								class="stop-mark py-6 first:pt-0 md:grid md:grid-cols-[10rem_1fr] md:gap-x-8"
+								class="stop-mark reveal py-6 first:pt-0 md:grid md:grid-cols-[10rem_1fr] md:gap-x-8"
 								data-current={job.end_date ? undefined : ''}
 							>
 								<p class="t-meta tabular-nums mb-1 md:mb-0 md:pt-1.5 text-balance">
@@ -268,7 +268,9 @@
 					{@render groupHead('work-education')}
 					<ol class="list-none max-w-4xl divide-y divide-gray-300 dark:divide-gray-700">
 						{#each data.educations as school}
-							<li class="stop-mark py-6 first:pt-0 md:grid md:grid-cols-[10rem_1fr] md:gap-x-8">
+							<li
+								class="stop-mark reveal py-6 first:pt-0 md:grid md:grid-cols-[10rem_1fr] md:gap-x-8"
+							>
 								<p class="t-meta tabular-nums mb-1 md:mb-0 md:pt-1.5 text-balance">
 									{dateSpan(school.start_date, school.end_date)}
 								</p>
@@ -292,8 +294,8 @@
 				<ol
 					class="list-none grid gap-x-14 @5xl:grid-cols-2 [&>li]:border-b [&>li]:border-gray-300 dark:[&>li]:border-gray-700"
 				>
-					{#each data.projects as project}
-						<li>
+					{#each data.projects as project, i}
+						<li class="reveal" style="--d: {(i % 2) * 80}ms">
 							<a href="/project/{project.slug}" class={row}>
 								<span class="min-w-0 flex-1">
 									<span class="t-item block group-hover:underline underline-offset-4"
@@ -343,7 +345,7 @@
 						{@render foldHead('work-certifications')}
 						<ul class="list-none mt-8 grid sm:grid-cols-2 @5xl:grid-cols-3 gap-x-10 gap-y-6">
 							{#each data.certifications as certification}
-								<li class="flex gap-4 items-center">
+								<li class="reveal flex gap-4 items-center">
 									<img
 										src="{cms}/{certification.image}?format=webp&width=160"
 										alt=""
@@ -367,7 +369,7 @@
 						{@render foldHead('work-recognition')}
 						<ul class="list-none mt-8 grid md:grid-cols-2 @7xl:grid-cols-3 gap-x-10 gap-y-8">
 							{#each data.recognitions as recognition}
-								<li class="flex gap-4">
+								<li class="reveal flex gap-4">
 									<img
 										src="{cms}/{recognition.image}?format=webp&width=120"
 										alt=""

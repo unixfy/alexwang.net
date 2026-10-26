@@ -4,6 +4,7 @@
 	import Footer from '#lib/Footer.svelte';
 	import Navbar from '#lib/Navbar.svelte';
 
+	import { watchReveals } from '#lib/reveal.js';
 	import { fade } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 
@@ -19,6 +20,12 @@
 	// Where the browser can, pages cross-fade and shared images (a project card to its page) morph;
 	// elsewhere the simple fade below applies. Neither runs under reduced motion.
 	const morph = browser && !calm && 'startViewTransition' in document;
+
+	/** @type {HTMLElement | undefined} */
+	let main = $state();
+	$effect(() => {
+		if (main) return watchReveals(main);
+	});
 
 	onNavigate((navigation) => {
 		if (!morph) return;
@@ -72,7 +79,7 @@
 <div class="relative min-h-screen bg-gray-50 dark:bg-gray-950">
 	<Navbar />
 
-	<main id="main">
+	<main id="main" bind:this={main}>
 		{#key page.url.pathname}
 			<div in:fade={{ duration: calm || morph ? 0 : 200, easing: cubicOut }}>
 				{@render children()}
