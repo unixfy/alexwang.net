@@ -60,10 +60,12 @@ export function watchReveals(root) {
  * Give each direct child of a block of CMS prose its own entrance, staggered, without the editor
  * having to mark anything up.
  * @param {HTMLElement} block
+ * @param {string} [except] children matching this selector are left alone; a transformed element
+ *   becomes its own stacking context, which would trap anything positioned inside it (a heading's ring)
  */
-export function stagger(block) {
+export function stagger(block, except = '') {
 	[...block.children].forEach((el, i) => {
-		if (!(el instanceof HTMLElement)) return;
+		if (!(el instanceof HTMLElement) || (except && el.matches(except))) return;
 		el.classList.add('reveal');
 		el.style.setProperty('--d', `${Math.min(i, 5) * 50}ms`);
 	});

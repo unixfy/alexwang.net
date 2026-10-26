@@ -32,9 +32,9 @@
 		heads.forEach((h, i) => (h.id ||= `stop-${i + 1}`));
 		stops = heads.map((h) => ({ id: h.id, text: h.textContent?.trim() ?? '' }));
 		foldLists(content);
-		stagger(content);
-		// headings stay put: the trunk's end is measured from them
-		content.querySelectorAll(':scope > h2').forEach((h) => h.classList.remove('reveal'));
+		// headings stay put: their station rings sit on the trunk (a moving heading would trap the ring
+		// beneath the train) and the trunk's end is measured from them
+		stagger(content, 'h2');
 
 		// scroll-spy: an IntersectionObserver watches a band at the reading line (45% down the screen);
 		// the heading that crosses it is the current one, and it stays current until the next arrives
