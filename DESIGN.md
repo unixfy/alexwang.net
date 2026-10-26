@@ -362,3 +362,11 @@ The hand-written signature SVG closes the page and is written left to right as i
 - **Don't** ship a stock daisyUI theme or data-theme; only `line` and `line-night`.
 - **Don't** build the trunk, rings, terminus, ticket or error line from daisyUI, and don't hand-roll pills, toggles, chevrons, badges or alerts that a primitive already covers.
 - **Don't** put the direction contract or surface brief into any browser-delivered file.
+
+## Motion
+
+- **Never `addEventListener('scroll', …)`.** Not for reveals, scroll-spy, progress or redraws. It is an anti-pattern here: it runs on the main thread for every scroll tick and almost always has a better tool. Use CSS scroll-driven animation (`animation-timeline`, as the trunk and train do), an `IntersectionObserver` for "which section is current", or Motion's `inView` / `scroll` helpers.
+- **Complex animation uses Motion** (the `motion` package, Framer Motion's framework-agnostic successor): entrances (`src/lib/reveal.js` plays `inView` + `animate`), anything sequenced, staggered, scroll-linked or interrupted.
+- **Simple animation uses Tailwind classes**: hover and focus transitions, colour and opacity changes, small transforms (`transition`, `duration-*`, `hover:-translate-y-0.5`, `motion-reduce:transition-none`). No hand-written keyframes or JS for what a utility class does.
+- Transform and opacity only; every effect has a still equivalent under `prefers-reduced-motion`, and nothing is hidden when script has not run.
+- **Install every package as a devDependency** (`npm i -D`). The site is built and bundled by Vite, so nothing needs to sit in `dependencies`.

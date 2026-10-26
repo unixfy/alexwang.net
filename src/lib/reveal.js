@@ -1,7 +1,13 @@
-// Entrances: anything marked `.reveal` rises in once, as it scrolls up into the lower edge of the
-// screen. The hidden state only exists under `.js` (set in app.html), so with no script nothing is
-// hidden. Everything already above that edge counts as seen, so a jump to an anchor or a fast fling
-// never leaves a section waiting, and the page's closing stretch is shown without waiting for its turn.
+// Entrances: anything marked `.reveal` rises in once as it scrolls into view. Motion's `inView`
+// (an IntersectionObserver underneath) says when; Motion's `animate` does the rise. Nothing here
+// listens to scroll. The hidden state exists only under `.js` (set in app.html), so without script,
+// or under reduced motion, nothing is ever hidden.
+import { animate, inView } from 'motion';
+
+const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/** @type {(() => void) | null} */
+let rescan = null;
 
 /**
  * Watch a subtree for `.reveal` elements, now and as they are added (the blog streams in late).
@@ -9,28 +15,44 @@
  * @returns {() => void} stop watching
  */
 export function watchReveals(root) {
-	let frame = 0;
+	/** @type {Set<Element>} */
+	const seen = new Set();
+	/** @type {(() => void)[]} */
+	const stops = [];
 
-	const sweep = () => {
-		frame = 0;
-		const edge = innerHeight * 0.92;
-		const nearEnd = scrollY + innerHeight * 3 >= document.documentElement.scrollHeight;
+	const scan = () => {
 		for (const el of root.querySelectorAll('.reveal:not(.in)')) {
-			if (nearEnd || el.getBoundingClientRect().top < edge) el.classList.add('in');
+			if (seen.has(el)) continue;
+			seen.add(el);
+			if (calm()) {
+				el.classList.add('in');
+				continue;
+			}
+			const delay = parseFloat(getComputedStyle(el).getPropertyValue('--d')) / 1000 || 0;
+			stops.push(
+				inView(
+					el,
+					() => {
+						animate(
+							el,
+							{ opacity: [0, 1], transform: ['translateY(26px)', 'translateY(0px)'] },
+							{ duration: 0.7, delay, ease: [0.2, 0.7, 0.2, 1] }
+						).finished.then(() => el.classList.add('in'));
+					},
+					{ margin: '0px 0px -8% 0px' }
+				)
+			);
 		}
 	};
-	const queue = () => (frame ||= requestAnimationFrame(sweep));
 
-	queue();
-	const mutations = new MutationObserver(queue);
+	rescan = scan;
+	scan();
+	const mutations = new MutationObserver(scan);
 	mutations.observe(root, { childList: true, subtree: true });
-	addEventListener('scroll', queue, { passive: true });
-	addEventListener('resize', queue);
 	return () => {
 		mutations.disconnect();
-		removeEventListener('scroll', queue);
-		removeEventListener('resize', queue);
-		cancelAnimationFrame(frame);
+		stops.forEach((stop) => stop());
+		if (rescan === scan) rescan = null;
 	};
 }
 
@@ -45,6 +67,5 @@ export function stagger(block) {
 		el.classList.add('reveal');
 		el.style.setProperty('--d', `${Math.min(i, 5) * 50}ms`);
 	});
-	// the watcher only wakes on scroll, resize and added nodes: tell it about the new classes
-	requestAnimationFrame(() => dispatchEvent(new Event('resize')));
+	rescan?.();
 }

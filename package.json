@@ -21,6 +21,7 @@
 		"@tailwindcss/vite": "^4.3.3",
 		"@types/three": "^0.186.0",
 		"daisyui": "^5.7.50",
+		"motion": "^14.6.0",
 		"prettier": "^3.9.10",
 		"prettier-plugin-svelte": "^4.1.1",
 		"svelte": "^5.57.2",

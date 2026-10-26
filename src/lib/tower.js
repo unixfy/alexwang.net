@@ -8,6 +8,7 @@
 // station sits exactly on its label's row. Nothing here reaches sideways into the label column:
 // the platforms are symmetric about the spine and the rings always face the camera.
 
+import { scroll } from 'motion';
 import {
 	AdditiveBlending,
 	BackSide,
@@ -363,8 +364,8 @@ export function startTower(host, canvas, ids, lines, onActive, subs = []) {
 	mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 	const onVis = () => (document.hidden ? stop() : visible && !reduced ? start() : request());
 	document.addEventListener('visibilitychange', onVis);
-	const onScroll = () => request();
-	if (reduced) addEventListener('scroll', onScroll, { passive: true });
+	// with reduced motion the tower redraws only when the reader moves; Motion reports that
+	const stopScroll = reduced ? scroll(() => request()) : null;
 	document.fonts?.ready.then(() => {
 		layout();
 		request();
@@ -382,7 +383,7 @@ export function startTower(host, canvas, ids, lines, onActive, subs = []) {
 			io.disconnect();
 			mo.disconnect();
 			document.removeEventListener('visibilitychange', onVis);
-			removeEventListener('scroll', onScroll);
+			stopScroll?.();
 			[unitCyl, trainGeo, pulseGeo, ringGeo, fillGeo, padGeo, glowGeo].forEach((g) => g.dispose());
 			glowMap.dispose();
 			Object.values(mats).forEach((m) => m.dispose());

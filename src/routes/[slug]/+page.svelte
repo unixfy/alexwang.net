@@ -36,17 +36,16 @@
 		// headings stay put: the trunk's end is measured from them
 		content.querySelectorAll(':scope > h2').forEach((h) => h.classList.remove('reveal'));
 
-		// scroll-spy: the current stop is the last heading above the reading line (the first, until then)
-		let frame = 0;
-		const update = () => {
-			frame = 0;
-			let id = heads[0]?.id ?? '';
-			for (const h of heads) if (h.getBoundingClientRect().top <= innerHeight * 0.45) id = h.id;
-			current = id;
-		};
-		const onScroll = () => (frame ||= requestAnimationFrame(update));
-		addEventListener('scroll', onScroll, { passive: true });
-		update();
+		// scroll-spy: an IntersectionObserver watches a band at the reading line (45% down the screen);
+		// the heading that crosses it is the current one, and it stays current until the next arrives
+		current = heads[0]?.id ?? '';
+		const spy = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) if (entry.isIntersecting) current = entry.target.id;
+			},
+			{ rootMargin: '-45% 0px -54% 0px' }
+		);
+		heads.forEach((h) => spy.observe(h));
 
 		// The line ends at the page's last station: its last heading, or the title's ring when there are
 		// none. The page has no closing station to cut the trunk off, so it says where the trunk stops.
@@ -72,8 +71,7 @@
 		measure();
 
 		return () => {
-			removeEventListener('scroll', onScroll);
-			cancelAnimationFrame(frame);
+			spy.disconnect();
 			watch.disconnect();
 		};
 	});
