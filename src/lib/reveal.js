@@ -37,7 +37,16 @@ export function watchReveals(root) {
 							el,
 							{ opacity: [0, 1], transform: ['translateY(26px)', 'translateY(0px)'] },
 							{ duration: 0.7, delay, ease: [0.2, 0.7, 0.2, 1] }
-						).finished.then(() => el.classList.add('in'));
+						).finished.then(() => {
+							// Motion leaves its final values inline, and an inline transform keeps the element a
+							// stacking context for good, which traps anything positioned inside it (a station ring)
+							// beneath the train. Hand the element back to the stylesheet once Motion has committed them.
+							requestAnimationFrame(() => {
+								el.style.removeProperty('opacity');
+								el.style.removeProperty('transform');
+								el.classList.add('in');
+							});
+						});
 					},
 					{ margin: '0px 0px -8% 0px' }
 				)
