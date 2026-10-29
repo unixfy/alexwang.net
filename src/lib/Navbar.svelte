@@ -10,9 +10,9 @@
 	// On the home page the name is the page, so a Home link there would only be one more choice
 	const links = $derived([
 		...(page.url.pathname === '/' ? [] : [{ href: '/', label: 'Home' }]),
+		{ href: '/blog', label: 'Blog' },
 		{ href: '/now', label: 'Now' },
 		{ href: '/i-like', label: 'What I Like' },
-		{ href: '/blog', label: 'Blog' },
 		{ href: '/projects', label: 'Projects' },
 		{ href: '/linkedin', label: 'LinkedIn', external: true }
 	]);

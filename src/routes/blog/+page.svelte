@@ -10,7 +10,8 @@
 
 <BlogArchive
 	{data}
-	heading="Blog"
-	lede="Technology, servers, transportation and travel."
+	heading={data.q ? `Search: ${data.q}` : 'Blog'}
+	lede={data.q ? null : 'Technology, servers, transportation and travel.'}
 	query={data.q}
+	trail={data.q ? [{ label: 'Blog', href: '/blog' }, { label: 'Search' }] : []}
 />

@@ -28,23 +28,20 @@
 						<span class="block aspect-[16/10] w-full"></span>
 					{/if}
 				</span>
-				<span class="mt-5 flex items-baseline justify-between gap-4">
-					{#if post.category}
-						<span class="kicker">{post.category.name}</span>
-					{:else}
-						<span></span>
-					{/if}
-					<span class="t-meta tabular-nums">
-						{short ? monthDay(post.date_published) : fullDate(post.date_published)}
-					</span>
-				</span>
 				<span
-					class="t-item mt-2 block underline-offset-4 decoration-[var(--line)] decoration-4 group-hover:underline"
+					class="t-item mt-5 block underline decoration-[var(--line)] decoration-2 underline-offset-4 transition-[text-decoration-thickness] group-hover:decoration-4"
 				>
 					{post.title}
-					{#if external}
-						<i class="fa-solid fa-arrow-up-right-from-square text-base" aria-hidden="true"></i>
-					{/if}
+					<i
+						class="fa-solid {external
+							? 'fa-arrow-up-right-from-square'
+							: 'fa-arrow-right'} ml-1 inline-block text-base transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
+						aria-hidden="true"
+					></i>
+				</span>
+				<span class="t-meta mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 tabular-nums">
+					<span>{short ? monthDay(post.date_published) : fullDate(post.date_published)}</span>
+					{#if post.category}<span class="kicker">{post.category.name}</span>{/if}
 				</span>
 				{#if post.excerpt}
 					<span class="mt-3 line-clamp-3 block text-lg text-gray-700 dark:text-gray-300">

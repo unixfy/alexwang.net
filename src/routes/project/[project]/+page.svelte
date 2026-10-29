@@ -1,5 +1,6 @@
 <script>
 	import Station from '#lib/Station.svelte';
+	import Stop from '#lib/Stop.svelte';
 	import { goto } from '$app/navigation';
 	import { dateSpan } from '#lib/date.js';
 	import { domain } from '#lib/url.js';
@@ -17,42 +18,6 @@
 </script>
 
 <svelte:window onkeydown={onKey} />
-
-{#snippet thumb(/** @type {string | null | undefined} */ image)}
-	{#if image}
-		<img
-			src="//cms.alexwang.net/assets/{image}?format=webp&width=480"
-			alt=""
-			loading="lazy"
-			class="hidden aspect-video w-28 shrink-0 rounded-md object-cover transition-[filter] duration-200 group-hover:brightness-110 motion-reduce:transition-none lg:block 2xl:w-36 dark:brightness-90"
-		/>
-	{/if}
-{/snippet}
-
-<!-- A neighbouring stop. The ring says which way it goes: back is an outline, next is filled and points on. -->
-{#snippet stop(/** @type {'prev' | 'next'} */ kind, /** @type {Record<string, any>} */ p)}
-	<a href="/project/{p.slug}" rel={kind} class="stop group {kind}">
-		<span class="stop-ring" aria-hidden="true">
-			<i class="fa-solid {kind === 'next' ? 'fa-arrow-right' : 'fa-arrow-left'}"></i>
-		</span>
-		{@render thumb(p.image)}
-		<span class="min-w-0 flex-1">
-			<span class="t-meta flex items-center gap-2 {kind === 'next' ? 'justify-end' : ''}">
-				{#if kind === 'prev'}<kbd class="kbd kbd-sm hidden lg:inline-flex" aria-hidden="true">←</kbd
-					>{/if}
-				<span>
-					<span class={kind === 'next' ? 'font-bold text-brand-600 dark:text-brand-300' : ''}>
-						{kind === 'next' ? 'Next stop' : 'Previous stop'}
-					</span>
-					· {dateSpan(p.start_date, p.end_date)}
-				</span>
-				{#if kind === 'next'}<kbd class="kbd kbd-sm hidden lg:inline-flex" aria-hidden="true">→</kbd
-					>{/if}
-			</span>
-			<span class="t-item mt-1 block underline-offset-4 group-hover:underline">{p.title}</span>
-		</span>
-	</a>
-{/snippet}
 
 <div class="line-page">
 	<span class="train" aria-hidden="true"></span>
@@ -133,27 +98,27 @@
 			class="grid max-w-5xl gap-5 sm:grid-cols-2 2xl:max-w-[80rem]"
 		>
 			{#if data.prev}
-				{@render stop('prev', data.prev)}
+				<Stop
+					kind="prev"
+					href="/project/{data.prev.slug}"
+					title={data.prev.title}
+					meta={dateSpan(data.prev.start_date, data.prev.end_date)}
+					image={data.prev.image}
+				/>
 			{/if}
-			{#if data.next}
-				<div class="max-sm:order-first sm:col-start-2">
-					{@render stop('next', data.next)}
-				</div>
-			{:else}
-				<a href="/projects" class="stop end group max-sm:order-first sm:col-start-2">
-					<span class="stop-ring" aria-hidden="true">
-						<i class="fa-solid fa-flag-checkered"></i>
-					</span>
-					<span class="min-w-0 flex-1">
-						<span class="t-meta block font-bold text-brand-600 dark:text-brand-300">
-							End of the line
-						</span>
-						<span class="t-item mt-1 block underline-offset-4 group-hover:underline">
-							All projects
-						</span>
-					</span>
-				</a>
-			{/if}
+			<div class="max-sm:order-first sm:col-start-2">
+				{#if data.next}
+					<Stop
+						kind="next"
+						href="/project/{data.next.slug}"
+						title={data.next.title}
+						meta={dateSpan(data.next.start_date, data.next.end_date)}
+						image={data.next.image}
+					/>
+				{:else}
+					<Stop kind="end" href="/projects" title="All projects" />
+				{/if}
+			</div>
 		</nav>
 	</Station>
 </div>
@@ -235,106 +200,6 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.route a::before {
-			transition: none;
-		}
-	}
-
-	/* ---- the neighbouring stops at the bottom ---- */
-	.stop {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-		height: 100%;
-		padding: 1rem;
-		border: 2px solid var(--color-gray-300);
-		border-radius: 0.75rem;
-		text-decoration: none;
-		color: var(--color-gray-900);
-		transition:
-			border-color 0.2s ease-out,
-			background-color 0.2s ease-out;
-	}
-
-	:global(.dark) .stop {
-		border-color: var(--color-gray-700);
-		color: white;
-	}
-
-	.stop:hover {
-		color: var(--color-gray-900);
-		border-color: var(--color-brand-600);
-	}
-
-	:global(.dark) .stop:hover {
-		color: white;
-		border-color: var(--color-brand-300);
-	}
-
-	/* next and the end of the line: the way on is the brand, tinted and pointing right */
-	.stop.next,
-	.stop.end {
-		border-color: var(--color-brand-600);
-		background: color-mix(in oklch, var(--color-brand-600) 7%, transparent);
-	}
-
-	:global(.dark) .stop.next,
-	:global(.dark) .stop.end {
-		border-color: var(--color-brand-300);
-		background: color-mix(in oklch, var(--color-brand-300) 9%, transparent);
-	}
-
-	.stop.next {
-		flex-direction: row-reverse;
-		text-align: right;
-	}
-
-	/* the ring: an outline for back, a filled one for the way on */
-	.stop-ring {
-		display: grid;
-		place-items: center;
-		flex: none;
-		width: 3rem;
-		height: 3rem;
-		border-radius: 999px;
-		border: 0.3125rem solid var(--color-gray-400);
-		color: var(--color-gray-700);
-		background: var(--color-base-100);
-	}
-
-	:global(.dark) .stop-ring {
-		border-color: var(--color-gray-600);
-		color: var(--color-gray-300);
-	}
-
-	.stop.next .stop-ring,
-	.stop.end .stop-ring {
-		border-color: var(--color-brand-600);
-		background: var(--color-brand-600);
-		color: white;
-	}
-
-	:global(.dark) .stop.next .stop-ring,
-	:global(.dark) .stop.end .stop-ring {
-		border-color: var(--color-brand-300);
-		background: var(--color-brand-300);
-		color: var(--color-gray-950);
-	}
-
-	.stop-ring i {
-		transition: translate 0.2s ease-out;
-	}
-
-	.stop.prev:hover .stop-ring i {
-		translate: -0.25rem 0;
-	}
-
-	.stop.next:hover .stop-ring i {
-		translate: 0.25rem 0;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.stop,
-		.stop-ring i {
 			transition: none;
 		}
 	}

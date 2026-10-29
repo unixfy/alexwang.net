@@ -12,10 +12,11 @@
 	 *   lede?: string | null,
 	 *   query?: string,
 	 *   active?: string,
-	 *   scope?: string
+	 *   scope?: string,
+	 *   trail?: { label: string, href?: string }[]
 	 * }}
 	 */
-	let { data, heading, lede = null, query = '', active = '', scope = '' } = $props();
+	let { data, heading, lede = null, query = '', active = '', scope = '', trail = [] } = $props();
 
 	// the archive as the server sent it, then whatever the scroll has added after it
 	let posts = $derived(data.posts);
@@ -93,41 +94,66 @@
 <div class="line-page">
 	<span class="train" aria-hidden="true"></span>
 
-	<header class="station station-start terminus-page pb-10 pr-6 md:pr-12">
+	<header class="station station-start terminus-page pb-6 pr-6 md:pr-12">
 		<span class="station-ring" aria-hidden="true"></span>
+		{#if trail.length}
+			<div class="breadcrumbs mb-1 text-base">
+				<ul>
+					{#each trail as crumb}
+						<li>
+							{#if crumb.href}<a href={crumb.href}>{crumb.label}</a>{:else}{crumb.label}{/if}
+						</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
 		<h1 class="t-page text-brand-600 dark:text-brand-300">{heading}</h1>
 		{#if lede}
 			<p class="t-lede mt-3 max-w-prose">{lede}</p>
 		{/if}
 
 		<div class="mt-8 flex flex-wrap items-center justify-between gap-x-10 gap-y-5">
-			{#if data.categories.length}
-				<nav
-					aria-label="Categories"
-					class="flex gap-x-6 gap-y-2 text-lg max-sm:-mr-6 max-sm:w-[calc(100%+1.5rem)] max-sm:overflow-x-auto max-sm:pb-2 sm:flex-wrap"
+			<nav
+				aria-label="Categories"
+				class="tabs tabs-border text-lg max-sm:-mr-6 max-sm:w-[calc(100%+1.5rem)] max-sm:flex-nowrap max-sm:overflow-x-auto"
+			>
+				<a
+					href="/blog"
+					class="tab whitespace-nowrap no-underline {active === '' && !query && !trail.length
+						? 'tab-active font-bold'
+						: ''}"
+					aria-current={active === '' && !query && !trail.length ? 'page' : undefined}>All posts</a
 				>
+				{#each data.categories as c}
 					<a
-						href="/blog"
-						class="nav-link"
-						aria-current={active === '' && !query ? 'page' : undefined}>All</a
+						href="/blog/category/{c.slug}"
+						class="tab whitespace-nowrap no-underline {active === c.slug
+							? 'tab-active font-bold'
+							: ''}"
+						aria-current={active === c.slug ? 'page' : undefined}>{c.name}</a
 					>
-					{#each data.categories as c}
-						<a
-							href="/blog/category/{c.slug}"
-							class="nav-link"
-							aria-current={active === c.slug ? 'page' : undefined}>{c.name}</a
-						>
-					{/each}
-				</nav>
-			{/if}
-			<form action="/blog" method="get" role="search" class="join w-full sm:w-96">
-				<label class="input join-item w-full">
-					<i class="fa-solid fa-magnifying-glass opacity-60" aria-hidden="true"></i>
-					<span class="sr-only">Search the blog</span>
-					<input type="search" name="q" value={query} placeholder="Search the blog" />
-				</label>
-				<button class="btn btn-primary join-item">Search</button>
-			</form>
+				{/each}
+			</nav>
+			<div class="flex w-full items-center gap-3 sm:w-auto">
+				<form action="/blog" method="get" role="search" class="join w-full sm:w-80">
+					<label class="input join-item w-full">
+						<i class="fa-solid fa-magnifying-glass opacity-60" aria-hidden="true"></i>
+						<span class="sr-only">Search the blog</span>
+						<input type="search" name="q" value={query} placeholder="Search the blog" />
+					</label>
+					<button class="btn btn-primary join-item">Search</button>
+				</form>
+				<!-- a feed is XML, not a page: it needs a real navigation, not the client router -->
+				<a
+					href="/blog/feed"
+					data-sveltekit-reload
+					class="btn btn-outline btn-square no-underline"
+					aria-label="RSS feed"
+					title="RSS feed"
+				>
+					<i class="fa-solid fa-rss" aria-hidden="true"></i>
+				</a>
+			</div>
 		</div>
 	</header>
 
@@ -141,7 +167,7 @@
 
 	{#if lead}
 		{@const external = !!lead.redirect_url}
-		<Station id="latest" title="Latest" line="writing">
+		<Station id="latest" title="Latest" line="writing" tight>
 			<a
 				href={external ? lead.redirect_url : `/blog/${lead.slug}`}
 				target={external ? '_blank' : undefined}
@@ -160,21 +186,21 @@
 					{/if}
 				</span>
 				<span class="block">
-					<span class="flex items-baseline gap-4">
-						{#if lead.category}<span class="kicker">{lead.category.name}</span>{/if}
-						<span class="t-meta tabular-nums">{fullDate(lead.date_published)}</span>
-					</span>
 					<span
-						class="t-title mt-4 block underline-offset-8 decoration-[var(--line)] decoration-4 group-hover:underline"
+						class="t-title block underline decoration-[var(--line)] decoration-4 underline-offset-8 transition-[text-decoration-thickness] group-hover:decoration-[0.5rem]"
 						>{lead.title}</span
 					>
+					<span class="t-meta mt-4 flex flex-wrap items-center gap-x-4 gap-y-1">
+						<span class="tabular-nums">{fullDate(lead.date_published)}</span>
+						{#if lead.category}<span class="kicker">{lead.category.name}</span>{/if}
+					</span>
 					{#if lead.excerpt}
 						<span class="mt-5 line-clamp-5 block text-xl text-gray-700 dark:text-gray-300"
 							>{lead.excerpt}</span
 						>
 					{/if}
-					<span class="t-item mt-6 inline-flex items-center gap-3">
-						Read it
+					<span class="btn btn-primary mt-6">
+						Read the post
 						<i
 							class="fa-solid {external
 								? 'fa-arrow-up-right-from-square'
@@ -193,6 +219,7 @@
 				id={query ? 'results' : `y${label}`}
 				title={label}
 				line={lines[(i + (lead ? 1 : 0)) % 3]}
+				tight={i === 0 && !lead}
 				end={!more && !tagged && i === groups.length - 1}
 			>
 				<BlogCards posts={group} short={!query} />
@@ -247,25 +274,3 @@
 		</Station>
 	{/if}
 </div>
-
-<style>
-	/* categories read as quiet text, the current one underlined in the line's colour */
-	.nav-link {
-		text-decoration: none;
-		white-space: nowrap;
-		padding-block: 0.15rem;
-		border-bottom: 3px solid transparent;
-		color: var(--color-gray-700);
-	}
-	:global(.dark) .nav-link {
-		color: var(--color-gray-300);
-	}
-	.nav-link:hover {
-		border-bottom-color: var(--line-writing);
-	}
-	.nav-link[aria-current='page'] {
-		border-bottom-color: var(--line-writing);
-		font-weight: 700;
-		color: inherit;
-	}
-</style>

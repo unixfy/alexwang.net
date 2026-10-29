@@ -1,5 +1,7 @@
 <script>
+	import { goto } from '$app/navigation';
 	import Station from '#lib/Station.svelte';
+	import Stop from '#lib/Stop.svelte';
 	import Comments from '#lib/Comments.svelte';
 	import { asset } from '#lib/blog.js';
 	import { fullDate } from '#lib/date.js';
@@ -24,7 +26,18 @@
 			publisher: { '@type': 'Person', name: 'Alex Wang', url: 'https://alexwang.net' }
 		}).replace(/</g, '\\u003c')
 	);
+
+	// ← and → ride the line, as on a project: previous stop (newer) and next stop (older)
+	const onKey = (/** @type {KeyboardEvent} */ e) => {
+		if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+		const t = e.target;
+		if (t instanceof HTMLElement && t.closest('input, textarea, select, [contenteditable]')) return;
+		const to = e.key === 'ArrowLeft' ? data.newer : e.key === 'ArrowRight' ? data.older : null;
+		if (to) goto(`/blog/${to.slug}`);
+	};
 </script>
+
+<svelte:window onkeydown={onKey} />
 
 <svelte:head>
 	<meta property="article:published_time" content={post.date_published} />
@@ -34,58 +47,44 @@
 	{@html `<script type="application/ld+json">${ld}</script>`}
 </svelte:head>
 
-{#snippet neighbour(/** @type {any} */ p, /** @type {'older' | 'newer'} */ kind)}
-	<a
-		href="/blog/{p.slug}"
-		rel={kind === 'older' ? 'prev' : 'next'}
-		class="stop group {kind === 'newer' ? 'next' : 'prev'}"
-	>
-		<span class="stop-ring" aria-hidden="true">
-			<i class="fa-solid {kind === 'newer' ? 'fa-arrow-right' : 'fa-arrow-left'}"></i>
-		</span>
-		<span class="min-w-0 flex-1">
-			<span class="t-meta block {kind === 'newer' ? 'text-right' : ''}">
-				<span class={kind === 'newer' ? 'font-bold text-brand-600 dark:text-brand-300' : ''}>
-					{kind === 'newer' ? 'Newer post' : 'Older post'}
-				</span>
-				· {fullDate(p.date_published)}
-			</span>
-			<span class="t-item mt-1 block underline-offset-4 group-hover:underline">{p.title}</span>
-		</span>
-	</a>
-{/snippet}
-
 {#snippet tagList()}
-	{#if post.tags.length}
-		<ul class="flex list-none flex-wrap gap-2 p-0" aria-label="Tags">
-			{#each post.tags as t}
-				<li>
-					<a href="/blog/tag/{t.slug}" class="badge badge-lg badge-outline no-underline">{t.name}</a
-					>
-				</li>
-			{/each}
-		</ul>
-	{/if}
+	<ul class="flex list-none flex-wrap gap-2 p-0" aria-label="Tags">
+		{#each post.tags as t}
+			<li>
+				<a href="/blog/tag/{t.slug}" class="badge badge-lg badge-outline no-underline">{t.name}</a>
+			</li>
+		{/each}
+	</ul>
 {/snippet}
 
 <article class="line-page">
 	<span class="train" aria-hidden="true"></span>
 
 	<header
-		class="station station-start terminus-page pb-10 pr-6 md:pr-12"
+		class="station station-start terminus-page pb-8 pr-6 md:pr-12"
 		style="--line: var(--line-writing)"
 	>
 		<span class="station-ring" aria-hidden="true"></span>
-		{#if category}
-			<div class="mb-4">
-				<a href="/blog/category/{category.slug}" class="kicker">{category.name}</a>
-			</div>
-		{/if}
 		<h1 class="t-page max-w-6xl text-brand-600 dark:text-brand-300">{post.title}</h1>
-		<p class="t-meta mt-4">
-			<time datetime={post.date_published}>{fullDate(post.date_published)}</time>
-			· {data.minutes} min read
-		</p>
+		<div class="t-meta mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+			<p>
+				<time datetime={post.date_published}>{fullDate(post.date_published)}</time>
+				· {data.minutes} min read
+			</p>
+			{#if category}
+				<a href="/blog/category/{category.slug}" class="kicker">{category.name}</a>
+			{/if}
+			{#if post.comments_enabled}
+				<a href="#comments" class="btn btn-ghost no-underline">
+					<i class="fa-solid fa-comments" aria-hidden="true"></i>
+					Comments{#if data.comments?.length}&nbsp;({data.comments.length}){/if}
+				</a>
+			{/if}
+			<a href="/blog" class="btn btn-outline btn-primary no-underline">
+				<i class="fa-solid fa-table-cells-large" aria-hidden="true"></i>
+				All posts
+			</a>
+		</div>
 		{#if post.featured_image}
 			<img
 				src={asset(post.featured_image, 1600)}
@@ -115,16 +114,14 @@
 				<div class="ride page-content-container post-body text-xl leading-relaxed">
 					{@html data.body}
 				</div>
-				<div class="mt-12 xl:hidden">{@render tagList()}</div>
+				{#if post.tags.length}
+					<div class="mt-12 xl:hidden">{@render tagList()}</div>
+				{/if}
 			</div>
+
+			<!-- the rail: where this post sits in the blog, whatever it contains -->
 			<aside class="hidden xl:block">
 				<div class="sticky top-8 space-y-8">
-					{#if post.tags.length}
-						<div>
-							<p class="t-meta mb-3 font-bold uppercase tracking-wider">Tagged</p>
-							{@render tagList()}
-						</div>
-					{/if}
 					{#if data.headings.length > 3}
 						<nav aria-label="In this post">
 							<p class="t-meta mb-2 font-bold uppercase tracking-wider">In this post</p>
@@ -134,6 +131,43 @@
 								{/each}
 							</ul>
 						</nav>
+					{/if}
+					<nav aria-label="Around the blog">
+						<p class="t-meta mb-2 font-bold uppercase tracking-wider">The blog</p>
+						<ul class="menu w-full p-0">
+							<li>
+								<a href="/blog"
+									><i class="fa-solid fa-table-cells-large w-4" aria-hidden="true"></i> All posts</a
+								>
+							</li>
+							{#if post.comments_enabled}
+								<li>
+									<a href="#comments"
+										><i class="fa-solid fa-comments w-4" aria-hidden="true"></i>
+										Comments{#if data.comments?.length}
+											({data.comments.length}){/if}</a
+									>
+								</li>
+							{/if}
+							{#if category}
+								<li>
+									<a href="/blog/category/{category.slug}"
+										><i class="fa-solid fa-folder w-4" aria-hidden="true"></i> More in {category.name}</a
+									>
+								</li>
+							{/if}
+							<li>
+								<a href="/blog/feed" data-sveltekit-reload
+									><i class="fa-solid fa-rss w-4" aria-hidden="true"></i> RSS feed</a
+								>
+							</li>
+						</ul>
+					</nav>
+					{#if post.tags.length}
+						<div>
+							<p class="t-meta mb-3 font-bold uppercase tracking-wider">Tagged</p>
+							{@render tagList()}
+						</div>
 					{/if}
 				</div>
 			</aside>
@@ -149,28 +183,32 @@
 	{/if}
 
 	<Station id="next" title="Keep riding" line="contact" end>
-		<nav aria-label="Neighbouring posts" class="grid max-w-6xl gap-6 sm:grid-cols-2">
-			{#if data.older}
-				{@render neighbour(data.older, 'older')}
-			{/if}
+		<nav
+			aria-label="Neighbouring posts"
+			class="grid max-w-5xl gap-5 sm:grid-cols-2 2xl:max-w-[80rem]"
+		>
 			{#if data.newer}
-				<div class="max-sm:order-first sm:col-start-2">
-					{@render neighbour(data.newer, 'newer')}
-				</div>
-			{:else}
-				<a href="/blog" class="stop end group max-sm:order-first sm:col-start-2">
-					<span class="stop-ring" aria-hidden="true"
-						><i class="fa-solid fa-flag-checkered"></i></span
-					>
-					<span class="min-w-0 flex-1">
-						<span class="t-meta block font-bold text-brand-600 dark:text-brand-300"
-							>End of the line</span
-						>
-						<span class="t-item mt-1 block underline-offset-4 group-hover:underline">All posts</span
-						>
-					</span>
-				</a>
+				<Stop
+					kind="prev"
+					href="/blog/{data.newer.slug}"
+					title={data.newer.title}
+					meta={fullDate(data.newer.date_published)}
+					image={data.newer.featured_image}
+				/>
 			{/if}
+			<div class="max-sm:order-first sm:col-start-2">
+				{#if data.older}
+					<Stop
+						kind="next"
+						href="/blog/{data.older.slug}"
+						title={data.older.title}
+						meta={fullDate(data.older.date_published)}
+						image={data.older.featured_image}
+					/>
+				{:else}
+					<Stop kind="end" href="/blog" title="All posts" />
+				{/if}
+			</div>
 		</nav>
 	</Station>
 </article>

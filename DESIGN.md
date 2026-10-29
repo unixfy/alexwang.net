@@ -297,7 +297,17 @@ The "New since your last visit" note is a primary badge (brand fill, matching te
 
 ### Alert and skeleton
 
-Alerts are flat daisyUI boxes: a warning alert (amber) when the SSH key is unavailable, a soft alert with an action button when the home page's latest posts fail to load. Loading shows daisyUI skeleton blocks in the shape of a post row (thumbnail, title, line); the shimmer stops under reduced motion.
+Alerts are flat daisyUI boxes: a warning alert (amber) when the SSH key is unavailable, a soft alert for a comment that did not send, and a success alert once one is held for moderation. The home page is complete on the server, so nothing loads in late; the skeleton primitive stays available, and its shimmer stops under reduced motion.
+
+### Forms
+
+Every form control is a daisyUI primitive, never a hand-built field: `fieldset` with `fieldset-legend` for a group, `label` for each label, `input`, `textarea`, `validator` with `validator-hint` for inline validation, `join` for a field fused to its button (search), `loading` for a pending button, `breadcrumbs` and `tab` for trails and filters. daisyUI is built with an explicit `include` list in `src/app.css`, so a primitive that is not on that list renders unstyled: add it there before using it. The controls take the theme's 2px border and 0.5rem field radius; do not restyle them with utility borders. Used by the blog's search and the comment form.
+
+### Blog
+
+The blog is the Writing line (teal), at `/blog`. The archive opens on a lead story (image, Title-role headline, summary, a primary "Read the post" button), then the rest grouped by year as stations, as on the projects list, three to a row from the width up, loading more as the reader scrolls (the "Older posts" link underneath is the same step without script). A post's headline in a list is always underlined in the line colour with an arrow after it; hover thickens the underline and moves the arrow, so it reads as a link before it is touched. Date and category sit under the headline; the category is a small ring in the line colour and the name in small caps. There is no eyebrow above a headline.
+
+Navigation: a daisyUI tabs row ("All posts" first, the current category underlined), breadcrumbs on a category, tag or search ("Blog / Category / Name"), a search join and an RSS button (RSS is XML, so its links reload the page rather than use the client router). A post has an "All posts" outline button and, when comments are open, a Comments link in its meta line, the same two in a sticky right rail from xl (with contents, tags and the category), and closes with the same "Keep riding" neighbour stops as a project, from one shared component: previous is the newer post, next the older, the end of the line is "All posts", ← and → ride. The post body is a CMS page: each h2 a station, photos at their own proportions and never taller than 75% of the screen.
 
 ### Interior terminus and end station
 
@@ -359,6 +369,8 @@ The hand-written signature SVG closes the page and is written left to right as i
 - **Don't** use heavy expanded Archivo for running text.
 - **Don't** add dependencies for an effect; the map is one shader. The exceptions already made: daisyUI for UI primitives, and three.js for the signal tower only.
 - **Don't** load three.js on narrow screens or eagerly (it stays a dynamic import behind a min-width 80rem check), and don't put anything interactive on the canvas.
+- **Don't** build a form field, search box or filter row by hand; use the daisyUI form primitives and make sure they are on the build's `include` list.
+- **Don't** put a category or label above a headline as an eyebrow; the headline leads and the label follows it.
 - **Don't** ship a stock daisyUI theme or data-theme; only `line` and `line-night`.
 - **Don't** build the trunk, rings, terminus, ticket or error line from daisyUI, and don't hand-roll pills, toggles, chevrons, badges or alerts that a primitive already covers.
 - **Don't** put the direction contract or surface brief into any browser-delivered file.
