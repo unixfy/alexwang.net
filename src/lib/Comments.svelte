@@ -124,13 +124,13 @@
 	use:enhance={submit}
 	class="ticket relative mt-12 max-w-3xl rounded-2xl border-2 border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-900"
 >
-	<fieldset class="fieldset p-6 pb-8 sm:p-8 sm:pb-10">
-		<legend class="fieldset-legend t-group px-0 pb-3">
+	<div class="p-6 sm:p-8">
+		<h3 class="t-group mb-5">
 			{replyTo ? `Reply to ${replyTo.author_name}` : 'Leave a comment'}
-		</legend>
+		</h3>
 
 		{#if replyTo}
-			<div role="status" class="alert alert-soft mb-2">
+			<div role="status" class="alert alert-soft mb-5">
 				<span>Your reply goes under {replyTo.author_name}’s comment.</span>
 				<button type="button" class="btn btn-sm" onclick={() => (replyTo = null)}>
 					Reply to the post instead
@@ -140,22 +140,24 @@
 		{/if}
 
 		{#if sent}
-			<div role="status" class="alert alert-success alert-soft mb-2">
+			<div role="status" class="alert alert-success alert-soft mb-5">
 				<span>Thanks! Your comment will appear once it has been approved.</span>
 			</div>
 		{/if}
 
-		<label class="label" for="comment-content">Your comment</label>
-		<textarea
-			bind:this={box}
-			id="comment-content"
-			name="content"
-			required
-			rows="5"
-			maxlength="5000"
-			class="textarea validator h-36 w-full text-base"></textarea>
-		<p class="validator-hint hidden">Write something first.</p>
-	</fieldset>
+		<fieldset class="fieldset">
+			<label class="label" for="comment-content">Your comment</label>
+			<textarea
+				bind:this={box}
+				id="comment-content"
+				name="content"
+				required
+				rows="5"
+				maxlength="5000"
+				class="textarea validator h-36 w-full text-base"></textarea>
+			<p class="validator-hint hidden">Write something first.</p>
+		</fieldset>
+	</div>
 
 	<div
 		class="relative border-t-2 border-dashed border-gray-300 dark:border-gray-700"
@@ -165,9 +167,9 @@
 		<span class="notch -right-3 border-l-2"></span>
 	</div>
 
-	<fieldset class="fieldset p-6 pt-8 sm:p-8 sm:pt-10">
-		<div class="grid gap-x-4 sm:grid-cols-2">
-			<div>
+	<div class="p-6 sm:p-8">
+		<div class="grid gap-x-4 gap-y-5 sm:grid-cols-2">
+			<fieldset class="fieldset">
 				<label class="label" for="comment-name">Name</label>
 				<input
 					id="comment-name"
@@ -178,8 +180,8 @@
 					class="input validator w-full"
 				/>
 				<p class="validator-hint hidden">Please tell us your name.</p>
-			</div>
-			<div>
+			</fieldset>
+			<fieldset class="fieldset">
 				<label class="label" for="comment-email">Email</label>
 				<input
 					id="comment-email"
@@ -192,7 +194,7 @@
 				/>
 				<p class="validator-hint hidden">Enter a valid email address.</p>
 				<p class="label">Never shown publicly.</p>
-			</div>
+			</fieldset>
 		</div>
 
 		<!-- a trap for bots: people never see it -->
@@ -201,18 +203,18 @@
 		</div>
 
 		{#if siteKey}
-			<div class="cf-turnstile mt-4" data-sitekey={siteKey}></div>
+			<div class="cf-turnstile mt-5" data-sitekey={siteKey}></div>
 		{/if}
 
 		{#if failed}
-			<div role="alert" class="alert alert-error alert-soft mt-4"><span>{failed}</span></div>
+			<div role="alert" class="alert alert-error alert-soft mt-5"><span>{failed}</span></div>
 		{/if}
-		<button class="btn btn-primary btn-lg mt-5 w-fit" disabled={sending}>
+		<button class="btn btn-primary btn-lg mt-6" disabled={sending}>
 			{#if sending}<span class="loading loading-spinner loading-sm"></span>{/if}
 			{sending ? 'Sending…' : replyTo ? 'Post reply' : 'Post comment'}
 			{#if !sending}<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>{/if}
 		</button>
-	</fieldset>
+	</div>
 </form>
 
 <style>

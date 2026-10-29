@@ -9,6 +9,10 @@
 	let { data } = $props();
 	const post = $derived(data.post);
 	const category = $derived(post.categories[0]);
+	// "Comments (9)": built as one string, because Svelte trims the space at the start of an {#if} block
+	const commentsLabel = $derived(
+		data.comments?.length ? `Comments (${data.comments.length})` : 'Comments'
+	);
 	// structured data for search engines, built from the same fallbacks as the page's own tags
 	const ld = $derived(
 		JSON.stringify({
@@ -77,7 +81,7 @@
 			{#if post.comments_enabled}
 				<a href="#comments" class="btn btn-ghost no-underline">
 					<i class="fa-solid fa-comments" aria-hidden="true"></i>
-					Comments{#if data.comments?.length}&nbsp;({data.comments.length}){/if}
+					{commentsLabel}
 				</a>
 			{/if}
 			<a href="/blog" class="btn btn-outline btn-primary no-underline">
@@ -144,8 +148,7 @@
 								<li>
 									<a href="#comments"
 										><i class="fa-solid fa-comments w-4" aria-hidden="true"></i>
-										Comments{#if data.comments?.length}
-											({data.comments.length}){/if}</a
+										{commentsLabel}</a
 									>
 								</li>
 							{/if}
@@ -175,11 +178,7 @@
 	</div>
 
 	{#if post.comments_enabled}
-		<Station
-			id="comments"
-			title={data.comments?.length ? `Comments (${data.comments.length})` : 'Comments'}
-			line="writing"
-		>
+		<Station id="comments" title={commentsLabel} line="writing">
 			<div class="max-w-4xl">
 				<Comments comments={data.comments} siteKey={data.turnstileSiteKey} />
 			</div>
