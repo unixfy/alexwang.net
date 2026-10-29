@@ -4,7 +4,7 @@ import { createDirectus, rest, staticToken, readItems, createItem } from '@direc
 import { fail } from '@sveltejs/kit';
 import getDirectusInstance, { describe } from '#lib/directus.js';
 import { error, redirect } from '@sveltejs/kit';
-import { visible, categoriesOf, asset } from '#lib/blog.js';
+import { visible, categoriesOf, asset, readingMinutes } from '#lib/blog.js';
 import { render } from '#lib/editorjs.js';
 import { excerpt } from '#lib/excerpt.js';
 
@@ -106,7 +106,8 @@ export async function load({ fetch, params }) {
 		},
 		body: body.html,
 		headings: body.headings,
-		minutes: Math.max(1, Math.round(body.words / 220)),
+		minutes: readingMinutes(body.words),
+		words: body.words,
 		older,
 		newer,
 		comments,

@@ -203,6 +203,7 @@
 						<img
 							src={asset(lead.featured_image, 1400)}
 							alt=""
+							style="view-transition-name: b-{lead.slug}"
 							class="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none dark:brightness-90"
 						/>
 					{:else}
@@ -217,6 +218,7 @@
 					<span class="t-meta mt-4 flex flex-wrap items-center gap-x-4 gap-y-1">
 						<span class="tabular-nums">{fullDate(lead.date_published)}</span>
 						{#if lead.category}<span class="kicker">{lead.category.name}</span>{/if}
+						<span>{lead.minutes} min ride</span>
 					</span>
 					{#if lead.excerpt}
 						<span class="mt-5 line-clamp-5 block text-xl text-gray-700 dark:text-gray-300"

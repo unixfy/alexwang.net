@@ -138,7 +138,7 @@ function tableOf(table) {
 
 /**
  * @param {any} content an Editor.js document ({ blocks }) or its JSON text
- * @returns {{ html: string, headings: { id: string, text: string }[], words: number }}
+ * @returns {{ html: string, headings: { id: string, text: string, before: number }[], words: number }}
  */
 export function render(content) {
 	let doc = content;
@@ -150,10 +150,11 @@ export function render(content) {
 		}
 	}
 	const blocks = /** @type {{ type: string, data: any }[]} */ (doc?.blocks ?? []);
-	/** @type {{ id: string, text: string }[]} */
+	/** @type {{ id: string, text: string, before: number }[]} */
 	const headings = [];
 	const used = new Set();
 	let text = '';
+	const wordsSoFar = () => text.split(/\s+/).filter(Boolean).length;
 
 	const html = blocks
 		.map(({ type, data }) => {
@@ -173,7 +174,7 @@ export function render(content) {
 					let id = slugify(label) || `section-${headings.length + 1}`;
 					while (used.has(id)) id += '-2';
 					used.add(id);
-					if (level === 2) headings.push({ id, text: label });
+					if (level === 2) headings.push({ id, text: label, before: wordsSoFar() });
 					return `<h${level} id="${id}">${inline(data.text)}</h${level}>`;
 				}
 				case 'list':

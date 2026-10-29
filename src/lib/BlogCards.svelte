@@ -22,6 +22,7 @@
 							src={asset(post.featured_image, 900)}
 							alt=""
 							loading="lazy"
+							style="view-transition-name: b-{post.slug}"
 							class="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none dark:brightness-90"
 						/>
 					{:else}
@@ -42,6 +43,7 @@
 				<span class="t-meta mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 tabular-nums">
 					<span>{short ? monthDay(post.date_published) : fullDate(post.date_published)}</span>
 					{#if post.category}<span class="kicker">{post.category.name}</span>{/if}
+					<span>{post.minutes} min ride</span>
 				</span>
 				{#if post.excerpt}
 					<span class="mt-3 line-clamp-3 block text-lg text-gray-700 dark:text-gray-300">

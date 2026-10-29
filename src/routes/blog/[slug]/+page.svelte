@@ -1,8 +1,12 @@
 <script>
+	import { onMount } from 'svelte';
+	import { animate } from 'motion';
 	import { goto } from '$app/navigation';
 	import Station from '#lib/Station.svelte';
 	import Stop from '#lib/Stop.svelte';
 	import Comments from '#lib/Comments.svelte';
+	import RideRoute from '#lib/RideRoute.svelte';
+	import RideBar from '#lib/RideBar.svelte';
 	import { asset } from '#lib/blog.js';
 	import { fullDate } from '#lib/date.js';
 
@@ -39,6 +43,86 @@
 		const to = e.key === 'ArrowLeft' ? data.newer : e.key === 'ArrowRight' ? data.older : null;
 		if (to) goto(`/blog/${to.slug}`);
 	};
+
+	// ---- the ride: the post's headings are its stops ----
+	const stops = $derived(data.headings);
+	const arrival = $derived(post.comments_enabled ? 'comments' : 'next');
+	let passed = $state(0);
+	let arrived = $state(false);
+	let started = $state(false);
+	let atEnd = $state(false);
+	/** @type {HTMLElement | undefined} */
+	let endMark = $state();
+
+	// 0 is the departure, 1..n the stops, n + 1 the arrival
+	const at = $derived(arrived ? stops.length + 1 : passed);
+	const minutesLeft = $derived(
+		at === 0
+			? data.minutes
+			: at > stops.length
+				? 0
+				: Math.max(1, Math.round((data.words - stops[at - 1].before) / 220))
+	);
+	const status = $derived(
+		at === 0
+			? `${stops.length} ${stops.length === 1 ? 'stop' : 'stops'} · ${data.minutes} min`
+			: at > stops.length
+				? 'Arrived'
+				: `Stop ${at} of ${stops.length} · ${minutesLeft} min left`
+	);
+
+	// Where the reader is comes from IntersectionObservers on a reading line 45% down the screen: a
+	// heading is passed once it is on or above that line. Nothing listens to scroll.
+	onMount(() => {
+		if (!stops.length) return;
+		const line = { rootMargin: '0px 0px -55% 0px' };
+		const above = (/** @type {IntersectionObserverEntry} */ e) =>
+			e.isIntersecting || e.boundingClientRect.bottom <= 0;
+
+		/** @type {Map<string, boolean>} */
+		const seen = new Map();
+		const headings = new IntersectionObserver((entries) => {
+			for (const e of entries) seen.set(e.target.id, above(e));
+			passed = stops.filter((s) => seen.get(s.id)).length;
+		}, line);
+		for (const s of stops) {
+			const el = document.getElementById(s.id);
+			if (el) headings.observe(el);
+		}
+
+		const finish = new IntersectionObserver(([e]) => (arrived = above(e)), line);
+		if (endMark) finish.observe(endMark);
+
+		const top = document.getElementById('post-top');
+		const begin = new IntersectionObserver(
+			([e]) => (started = !e.isIntersecting && e.boundingClientRect.bottom <= 0)
+		);
+		if (top) begin.observe(top);
+
+		const next = document.getElementById('next');
+		const end = new IntersectionObserver(([e]) => (atEnd = e.isIntersecting), {
+			rootMargin: '0px 0px -10% 0px'
+		});
+		if (next) end.observe(next);
+
+		return () => {
+			headings.disconnect();
+			finish.disconnect();
+			begin.disconnect();
+			end.disconnect();
+		};
+	});
+
+	// arriving at the end of the line: the closing station's ring pulses once
+	let pulsed = false;
+	$effect(() => {
+		if (!atEnd || pulsed) return;
+		pulsed = true;
+		const ring = document.querySelector('#next .station-ring');
+		if (ring && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			animate(ring, { scale: [1, 1.7, 1] }, { duration: 0.8, ease: [0.16, 1, 0.3, 1] });
+		}
+	});
 </script>
 
 <svelte:window onkeydown={onKey} />
@@ -65,6 +149,7 @@
 	<span class="train" aria-hidden="true"></span>
 
 	<header
+		id="post-top"
 		class="station station-start terminus-page pb-8 pr-6 md:pr-12"
 		style="--line: var(--line-writing)"
 	>
@@ -73,7 +158,8 @@
 		<div class="t-meta mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
 			<p>
 				<time datetime={post.date_published}>{fullDate(post.date_published)}</time>
-				· {data.minutes} min ride
+				· {data.minutes} min ride{#if stops.length}
+					· {stops.length} {stops.length === 1 ? 'stop' : 'stops'}{/if}
 			</p>
 			{#if category}
 				<a href="/blog/category/{category.slug}" class="kicker">{category.name}</a>
@@ -93,6 +179,7 @@
 			<img
 				src={asset(post.featured_image, 1600)}
 				alt=""
+				style="view-transition-name: b-{post.slug}"
 				class="mt-10 aspect-[2/1] max-h-[min(60vh,30rem)] w-full max-w-[90rem] rounded-xl object-cover dark:brightness-90"
 			/>
 		{/if}
@@ -103,21 +190,10 @@
 			class="xl:grid xl:grid-cols-[minmax(0,75ch)_16rem] xl:gap-16 2xl:grid-cols-[minmax(0,max-content)_18rem] 2xl:gap-20"
 		>
 			<div>
-				{#if data.headings.length > 0}
-					<details class="collapse collapse-arrow mb-8 bg-base-200 xl:hidden">
-						<summary class="collapse-title font-semibold">In this post</summary>
-						<div class="collapse-content">
-							<ul class="menu menu-md w-full px-0">
-								{#each data.headings as h}
-									<li><a href="#{h.id}">{h.text}</a></li>
-								{/each}
-							</ul>
-						</div>
-					</details>
-				{/if}
 				<div class="ride page-content-container post-body text-xl leading-relaxed">
 					{@html data.body}
 				</div>
+				<span bind:this={endMark} aria-hidden="true"></span>
 				{#if post.tags.length}
 					<div class="mt-12 xl:hidden">{@render tagList()}</div>
 				{/if}
@@ -126,14 +202,11 @@
 			<!-- the rail: where this post sits in the blog, whatever it contains -->
 			<aside class="hidden xl:block">
 				<div class="sticky top-8 space-y-8">
-					{#if data.headings.length > 0}
-						<nav aria-label="In this post">
-							<p class="t-meta mb-2 font-bold uppercase tracking-wider">In this post</p>
-							<ul class="menu w-full p-0">
-								{#each data.headings as h}
-									<li><a href="#{h.id}">{h.text}</a></li>
-								{/each}
-							</ul>
+					{#if stops.length}
+						<nav aria-label="Ride route">
+							<p class="t-meta mb-3 font-bold uppercase tracking-wider">The ride</p>
+							<RideRoute {stops} {at} {arrival} />
+							<p class="t-meta mt-3 tabular-nums">{status}</p>
 						</nav>
 					{/if}
 					<nav aria-label="Around the blog">
@@ -214,6 +287,9 @@
 			</div>
 		</nav>
 	</Station>
+	{#if stops.length}
+		<RideBar {stops} {at} {minutesLeft} {arrival} shown={started && !atEnd} />
+	{/if}
 </article>
 
 <style>

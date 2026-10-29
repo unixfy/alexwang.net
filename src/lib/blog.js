@@ -56,16 +56,24 @@ export function categoriesOf(post) {
 }
 
 /**
+ * How long a ride a post is, from its word count.
+ * @param {number} words
+ */
+export const readingMinutes = (words) => Math.max(1, Math.round(words / 220));
+
+/**
  * A post as a listing shows it: its summary as plain text and its main category.
  * @param {any} post
  */
 export function toCard({ categories, excerpt: summary, seo_description, content, ...post }) {
 	const cats = categoriesOf({ categories });
+	const body = render(content);
 	return {
 		...post,
 		// the editor's summary, then the SEO description, then the opening words of the body
-		excerpt: excerpt(summary || seo_description || render(content).html, 220),
-		category: cats[0] ?? null
+		excerpt: excerpt(summary || seo_description || body.html, 220),
+		category: cats[0] ?? null,
+		minutes: readingMinutes(body.words)
 	};
 }
 

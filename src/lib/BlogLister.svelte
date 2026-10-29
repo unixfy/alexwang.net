@@ -29,7 +29,8 @@
 						></i>
 					</span>
 					<span class="t-meta mt-1 block tabular-nums">
-						{fullDate(post.date_published)}{post.category ? ` · ${post.category.name}` : ''}
+						{fullDate(post.date_published)}{post.category ? ` · ${post.category.name}` : ''} · {post.minutes}
+						min ride
 					</span>
 					{#if post.excerpt}
 						<span class="mt-2 line-clamp-3 text-sm md:text-base text-gray-700 dark:text-gray-300"
@@ -42,6 +43,7 @@
 						src={asset(post.featured_image, 400)}
 						alt=""
 						loading="lazy"
+						style="view-transition-name: b-{post.slug}"
 						class="hidden sm:block w-32 aspect-video object-cover rounded dark:brightness-90 self-start mt-1"
 					/>
 				{/if}
