@@ -267,8 +267,147 @@
 		list-style: none;
 		padding-left: 0;
 	}
+	/* A table is a timetable: quiet small-caps column heads over a rule, the row's name in the display
+	   face, hairlines between rows, and the last row set apart when it is a total. On a phone each row
+	   becomes its own block, its cells labelled by their column. */
 	.post-body :global(.table-scroll) {
+		margin-block: 2.5rem;
 		overflow-x: auto;
+		border: 2px solid var(--color-gray-300);
+		border-radius: 1rem;
+	}
+	:global(.dark) .post-body :global(.table-scroll) {
+		border-color: var(--color-gray-700);
+	}
+	.post-body :global(table) {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 1rem;
+		line-height: 1.55;
+		font-variant-numeric: tabular-nums;
+	}
+	.post-body :global(thead th) {
+		padding: 0.9rem 1.25rem;
+		text-align: left;
+		font-size: 0.8125rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-gray-700);
+		background: transparent;
+		border-bottom: 2px solid var(--color-gray-300);
+	}
+	:global(.dark) .post-body :global(thead th) {
+		color: var(--color-gray-300);
+		border-bottom-color: var(--color-gray-700);
+	}
+	.post-body :global(tbody th),
+	.post-body :global(tbody td) {
+		padding: 1.1rem 1.25rem;
+		vertical-align: top;
+		text-align: left;
+		border-top: 1px solid var(--color-gray-300);
+		border-bottom: 0;
+		background: transparent;
+		color: inherit;
+	}
+	:global(.dark) .post-body :global(tbody th),
+	:global(.dark) .post-body :global(tbody td) {
+		border-top-color: var(--color-gray-800);
+	}
+	.post-body :global(tbody tr:first-child th),
+	.post-body :global(tbody tr:first-child td) {
+		border-top: 0;
+	}
+	.post-body :global(tbody th) {
+		width: 22%;
+		min-width: 9rem;
+		font-family: var(--font-display);
+		font-size: 1.0625rem;
+		font-weight: 700;
+	}
+	.post-body :global(tr.total th),
+	.post-body :global(tr.total td) {
+		font-weight: 700;
+		border-top: 2px solid var(--color-brand-600);
+		background: color-mix(in oklch, var(--color-brand-600) 7%, transparent);
+	}
+	:global(.dark) .post-body :global(tr.total th),
+	:global(.dark) .post-body :global(tr.total td) {
+		border-top-color: var(--color-brand-300);
+		background: color-mix(in oklch, var(--color-brand-300) 9%, transparent);
+	}
+
+	@media (max-width: 39.99rem) {
+		.post-body :global(.table-scroll) {
+			overflow: visible;
+		}
+		.post-body :global(thead) {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+		}
+		.post-body :global(table),
+		.post-body :global(tbody),
+		.post-body :global(tr),
+		.post-body :global(tbody th),
+		.post-body :global(tbody td) {
+			display: block;
+			width: auto;
+			min-width: 0;
+		}
+		.post-body :global(tbody tr) {
+			padding: 1.1rem 1.25rem;
+			border-top: 1px solid var(--color-gray-300);
+		}
+		:global(.dark) .post-body :global(tbody tr) {
+			border-top-color: var(--color-gray-800);
+		}
+		.post-body :global(tbody tr:first-child) {
+			border-top: 0;
+		}
+		.post-body :global(tbody th),
+		.post-body :global(tbody td) {
+			padding: 0.4rem 0 0;
+			border: 0;
+			background: transparent;
+		}
+		.post-body :global(tbody th) {
+			padding-top: 0;
+		}
+		.post-body :global(tbody td:empty) {
+			display: none;
+		}
+		.post-body :global(tbody td[data-label])::before {
+			content: attr(data-label);
+			display: block;
+			margin-bottom: 0.1rem;
+			font-size: 0.75rem;
+			font-weight: 700;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--color-gray-600);
+		}
+		:global(.dark) .post-body :global(tbody td[data-label])::before {
+			color: var(--color-gray-400);
+		}
+		.post-body :global(tr.total) {
+			border-top: 2px solid var(--color-brand-600);
+			background: color-mix(in oklch, var(--color-brand-600) 7%, transparent);
+		}
+		:global(.dark) .post-body :global(tr.total) {
+			border-top-color: var(--color-brand-300);
+			background: color-mix(in oklch, var(--color-brand-300) 9%, transparent);
+		}
+		.post-body :global(tr.total th),
+		.post-body :global(tr.total td),
+		:global(.dark) .post-body :global(tr.total th),
+		:global(.dark) .post-body :global(tr.total td) {
+			border-top: 0;
+			background: transparent;
+		}
 	}
 	.post-body :global(blockquote cite) {
 		display: block;

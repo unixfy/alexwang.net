@@ -99,15 +99,45 @@ function image(data) {
  * @param {any} table
  */
 function tableOf(table) {
-	const rows = table?.content ?? [];
+	const rows = /** @type {string[][]} */ (table?.content ?? []);
 	if (!rows.length) return '';
-	const cells = (/** @type {string[]} */ row, /** @type {'td' | 'th'} */ cell) =>
-		`<tr>${row.map((c) => `<${cell}>${inline(c)}</${cell}>`).join('')}</tr>`;
-	const head = table.withHeadings ? `<thead>${cells(rows[0], 'th')}</thead>` : '';
-	const body = (table.withHeadings ? rows.slice(1) : rows)
-		.map((/** @type {string[]} */ r) => cells(r, 'td'))
+	const headed = !!table.withHeadings;
+	const labels = headed ? rows[0].map((c) => esc(plain(c ?? ''))) : [];
+
+	/** @param {string[]} row @param {boolean} total */
+	const bodyRow = (row, total) =>
+		`<tr${total ? ' class="total"' : ''}>${row
+			.map((c, i) => {
+				const text = inline(lines(c ?? ''));
+				// with a heading row, the first column names the row and is its header cell
+				if (headed && i === 0) return `<th scope="row">${text}</th>`;
+				return `<td${labels[i] ? ` data-label="${labels[i]}"` : ''}>${text}</td>`;
+			})
+			.join('')}</tr>`;
+
+	const head = headed
+		? `<thead><tr>${rows[0].map((c) => `<th scope="col">${inline(c ?? '')}</th>`).join('')}</tr></thead>`
+		: '';
+	const data = headed ? rows.slice(1) : rows;
+	const body = data
+		.map((r, i) => bodyRow(r, i === data.length - 1 && /total/i.test(plain(r[0] ?? ''))))
 		.join('');
 	return `<div class="table-scroll"><table>${head}<tbody>${body}</tbody></table></div>`;
+}
+
+/**
+ * Cells that held several values on separate lines came out of the migration run together
+ * ("79,300 miles39,900 points$368.48 credit"). Where a value clearly starts right against the end of
+ * the last one, put it back on its own line. Cells that already have line breaks are left alone.
+ * @param {string} text
+ */
+function lines(text) {
+	if (/<br\s*\/?>/i.test(text)) return text;
+	return text
+		.replace(/([a-z)\.])(?=\$\d)/gi, '$1<br>')
+		.replace(/([a-z])(?=\d{1,3}(?:,\d{3})+(?:\.\d+)?\s)/g, '$1<br>')
+		.replace(/(<\/i>)(?=\$?\d)/gi, '$1<br>')
+		.replace(/([a-z])(?=<i>\()/gi, '$1<br>');
 }
 
 /**
