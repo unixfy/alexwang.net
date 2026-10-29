@@ -25,6 +25,7 @@
 	let more = $derived(data.hasOlder);
 	let loading = $state(false);
 	let failed = $state(false);
+	let announce = $state('');
 	/** @type {HTMLElement | undefined} */
 	let sentinel = $state();
 
@@ -63,7 +64,9 @@
 			if (!res.ok) throw new Error(String(res.status));
 			const next = await res.json();
 			const seen = new Set(posts.map((p) => p.slug));
-			posts = [...posts, ...next.posts.filter((/** @type {any} */ p) => !seen.has(p.slug))];
+			const fresh = next.posts.filter((/** @type {any} */ p) => !seen.has(p.slug));
+			posts = [...posts, ...fresh];
+			announce = `${fresh.length} more ${fresh.length === 1 ? 'post' : 'posts'} loaded`;
 			more = next.hasOlder;
 			nextPage += 1;
 		} catch {
@@ -95,6 +98,9 @@
 <div class="line-page">
 	<span class="train" aria-hidden="true"></span>
 
+	<!-- tells a screen reader that more posts arrived below -->
+	<p class="sr-only" role="status" aria-live="polite">{announce}</p>
+
 	<Network
 		focus={1}
 		narrowAlpha={0.4}
@@ -109,15 +115,15 @@
 			<span class="station-ring" aria-hidden="true"></span>
 			<div data-calm class="w-fit">
 				{#if trail.length}
-					<div class="breadcrumbs mb-1 text-base">
+					<nav aria-label="Breadcrumb" class="breadcrumbs mb-1 text-base">
 						<ul>
-							{#each trail as crumb}
-								<li>
+							{#each trail as crumb, i}
+								<li aria-current={i === trail.length - 1 ? 'page' : undefined}>
 									{#if crumb.href}<a href={crumb.href}>{crumb.label}</a>{:else}{crumb.label}{/if}
 								</li>
 							{/each}
 						</ul>
-					</div>
+					</nav>
 				{/if}
 				<h1 class="t-page text-brand-600 dark:text-brand-300">{heading}</h1>
 				{#if lede}

@@ -34,7 +34,12 @@ const safeHref = (href) => (/^(https?:|mailto:|tel:|\/|#)/i.test(href.trim()) ? 
  */
 export function inline(html) {
 	if (typeof html !== 'string') return '';
-	return html.replace(/<(\/?)([a-z][a-z0-9]*)\b([^>]*)>|</gi, (m, close, name, attrs) => {
+	// The migration dropped the space next to inline formatting ("<i>post</i>agent", "a<b>2020</b>"). A
+	// word never ends right where emphasis or a link does, so put the space back.
+	const spaced = html
+		.replace(/(<\/(?:b|strong|i|em|a|u|mark)>)(?=[A-Za-z0-9])/gi, '$1 ')
+		.replace(/([A-Za-z0-9])(?=<(?:b|strong|i|em|a|u|mark)[ >])/gi, '$1 ');
+	return spaced.replace(/<(\/?)([a-z][a-z0-9]*)\b([^>]*)>|</gi, (m, close, name, attrs) => {
 		if (!name) return '&lt;';
 		const tag = name.toLowerCase();
 		if (!INLINE.has(tag)) return esc(m);
@@ -92,7 +97,18 @@ function image(data) {
 	]
 		.filter(Boolean)
 		.join(' ');
-	return `<figure class="${classes}"><img src="${esc(url)}" alt="${alt}" loading="lazy" decoding="async">${caption}</figure>`;
+
+	// Photos from the CMS are served resized and as webp, and carry their size so the page does not
+	// jump as they load. Other sources are used as they are.
+	const MAX = 1600;
+	const cms = /^https:\/\/cms\.alexwang\.net\/assets\/[\w-]+$/.test(url);
+	const w = Number(data?.file?.width);
+	const h = Number(data?.file?.height);
+	const sized = w > 0 && h > 0;
+	const shown = sized ? Math.min(w, MAX) : 0;
+	const src = cms ? `${url}?format=webp&width=${shown || MAX}` : url;
+	const dims = sized ? ` width="${shown}" height="${Math.round((h * shown) / w)}"` : '';
+	return `<figure class="${classes}"><img src="${esc(src)}" alt="${alt}"${dims} loading="lazy" decoding="async">${caption}</figure>`;
 }
 
 /**

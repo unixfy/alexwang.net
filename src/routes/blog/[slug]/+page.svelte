@@ -282,14 +282,14 @@
 	.post-body :global(table) {
 		width: 100%;
 		border-collapse: collapse;
-		font-size: 1rem;
+		font-size: 1.125rem;
 		line-height: 1.55;
 		font-variant-numeric: tabular-nums;
 	}
 	.post-body :global(thead th) {
 		padding: 0.9rem 1.25rem;
 		text-align: left;
-		font-size: 0.8125rem;
+		font-size: 0.875rem;
 		font-weight: 700;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
@@ -323,7 +323,7 @@
 		width: 22%;
 		min-width: 9rem;
 		font-family: var(--font-display);
-		font-size: 1.0625rem;
+		font-size: 1.125rem;
 		font-weight: 700;
 	}
 	.post-body :global(tr.total th),
@@ -384,7 +384,7 @@
 			content: attr(data-label);
 			display: block;
 			margin-bottom: 0.1rem;
-			font-size: 0.75rem;
+			font-size: 0.875rem;
 			font-weight: 700;
 			letter-spacing: 0.08em;
 			text-transform: uppercase;
