@@ -114,7 +114,9 @@ export async function archive(directus, url, scope = {}) {
 	const [listing, categories] = await Promise.all([
 		listPosts(directus, { page, ...scope }),
 		directus
-			.request(readItems('categories', { fields: ['name', 'slug'], sort: 'name', limit: -1 }))
+			.request(
+				readItems('categories', { fields: ['name', 'slug'], sort: ['sort', 'name'], limit: -1 })
+			)
 			.catch(() => [])
 	]);
 	if (page > 1 && listing.posts.length === 0) error(404, 'No posts on this page');
