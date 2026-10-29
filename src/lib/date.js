@@ -15,6 +15,9 @@ export const year = (d) => formatDate(d, { year: 'numeric' });
 export const monthYear = (d) => formatDate(d, { month: '2-digit', year: 'numeric' });
 
 /** @param {string} d */
+export const monthDay = (d) => formatDate(d, { month: 'short', day: 'numeric' });
+
+/** @param {string} d */
 export const fullDate = (d) => formatDate(d, { month: 'long', day: '2-digit', year: 'numeric' });
 
 /**

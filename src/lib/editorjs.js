@@ -135,7 +135,12 @@ export function render(content) {
 			switch (type) {
 				case 'paragraph':
 					text += ` ${plain(data.text ?? '')}`;
-					return data.text?.trim() ? `<p>${inline(data.text)}</p>` : '';
+					// the editor leaves blank paragraphs (nbsp, br) between blocks; they are spacing, not content
+					return plain(data.text ?? '')
+						.replace(/\u00a0/g, '')
+						.trim()
+						? `<p>${inline(data.text)}</p>`
+						: '';
 				case 'header': {
 					const level = Math.min(6, Math.max(2, Number(data.level) || 2));
 					const label = plain(data.text ?? '');

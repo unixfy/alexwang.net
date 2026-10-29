@@ -2,6 +2,8 @@
 	import { page } from '$app/state';
 	import BlogCards from '#lib/BlogCards.svelte';
 	import Station from '#lib/Station.svelte';
+	import { asset } from '#lib/blog.js';
+	import { fullDate, year } from '#lib/date.js';
 
 	/**
 	 * @type {{
@@ -23,6 +25,22 @@
 	let failed = $state(false);
 	/** @type {HTMLElement | undefined} */
 	let sentinel = $state();
+
+	// the newest post leads the first page of an archive; the rest are grouped by year, as on /projects
+	const lead = $derived(data.page === 1 && !query ? posts[0] : null);
+	const rest = $derived(lead ? posts.slice(1) : posts);
+	const lines = /** @type {const} */ (['writing', 'contact', 'work']);
+	const groups = $derived.by(() => {
+		if (query) return /** @type {[string, any[]][]} */ ([[`Results for “${query}”`, rest]]);
+		/** @type {Map<string, any[]>} */
+		const byYear = new Map();
+		for (const p of rest) {
+			const y = year(p.date_published) || 'Undated';
+			byYear.set(y, [...(byYear.get(y) ?? []), p]);
+		}
+		return /** @type {[string, any[]][]} */ ([...byYear]);
+	});
+	const tagged = $derived(!!data.tags?.length);
 
 	const href = (/** @type {number} */ n) => {
 		const url = new URL(page.url.href);
@@ -84,7 +102,10 @@
 
 		<div class="mt-8 flex flex-wrap items-center justify-between gap-x-10 gap-y-5">
 			{#if data.categories.length}
-				<nav aria-label="Categories" class="flex flex-wrap gap-x-5 gap-y-2 text-lg">
+				<nav
+					aria-label="Categories"
+					class="flex gap-x-6 gap-y-2 text-lg max-sm:-mr-6 max-sm:w-[calc(100%+1.5rem)] max-sm:overflow-x-auto max-sm:pb-2 sm:flex-wrap"
+				>
 					<a
 						href="/blog"
 						class="nav-link"
@@ -110,68 +131,128 @@
 		</div>
 	</header>
 
-	<Station id="posts" title={query ? `Results for “${query}”` : 'Latest'} line="writing" end>
-		{#if data.page > 1}
-			<p class="mb-8">
-				<a href={href(data.page - 1)} rel="prev" class="btn btn-outline btn-sm no-underline">
-					<i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Newer posts
-				</a>
-			</p>
-		{/if}
+	{#if data.page > 1}
+		<div class="station pr-6 pb-2 md:pr-12">
+			<a href={href(data.page - 1)} rel="prev" class="btn btn-outline btn-sm no-underline">
+				<i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Newer posts
+			</a>
+		</div>
+	{/if}
 
-		{#if posts.length}
-			<BlogCards {posts} />
-			{#if more}
-				<div bind:this={sentinel} class="mt-12 flex justify-center">
-					{#if failed}
-						<button type="button" class="btn btn-outline" onclick={loadMore}>
-							Couldn’t load more. Try again
-						</button>
+	{#if lead}
+		{@const external = !!lead.redirect_url}
+		<Station id="latest" title="Latest" line="writing">
+			<a
+				href={external ? lead.redirect_url : `/blog/${lead.slug}`}
+				target={external ? '_blank' : undefined}
+				rel={external ? 'noopener' : undefined}
+				class="lead group grid max-w-[90rem] items-center gap-x-12 gap-y-6 no-underline text-gray-900 hover:text-gray-900 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] dark:text-white dark:hover:text-white"
+			>
+				<span class="block overflow-hidden rounded-xl bg-gray-200 dark:bg-gray-800">
+					{#if lead.featured_image}
+						<img
+							src={asset(lead.featured_image, 1400)}
+							alt=""
+							class="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none dark:brightness-90"
+						/>
 					{:else}
-						<a
-							href={href(nextPage)}
-							rel="next"
-							class="btn btn-outline no-underline"
-							aria-busy={loading}
-							onclick={(e) => {
-								e.preventDefault();
-								loadMore();
-							}}
-						>
-							{#if loading}<span class="loading loading-spinner loading-sm"></span>{/if}
-							Older posts
-						</a>
+						<span class="block aspect-[16/10] w-full"></span>
 					{/if}
-				</div>
-			{/if}
-		{:else}
+				</span>
+				<span class="block">
+					<span class="flex items-baseline gap-4">
+						{#if lead.category}<span class="kicker">{lead.category.name}</span>{/if}
+						<span class="t-meta tabular-nums">{fullDate(lead.date_published)}</span>
+					</span>
+					<span
+						class="t-title mt-4 block underline-offset-8 decoration-[var(--line)] decoration-4 group-hover:underline"
+						>{lead.title}</span
+					>
+					{#if lead.excerpt}
+						<span class="mt-5 line-clamp-5 block text-xl text-gray-700 dark:text-gray-300"
+							>{lead.excerpt}</span
+						>
+					{/if}
+					<span class="t-item mt-6 inline-flex items-center gap-3">
+						Read it
+						<i
+							class="fa-solid {external
+								? 'fa-arrow-up-right-from-square'
+								: 'fa-arrow-right'} transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
+							aria-hidden="true"
+						></i>
+					</span>
+				</span>
+			</a>
+		</Station>
+	{/if}
+
+	{#each groups as [label, group], i (label)}
+		{#if group.length}
+			<Station
+				id={query ? 'results' : `y${label}`}
+				title={label}
+				line={lines[(i + (lead ? 1 : 0)) % 3]}
+				end={!more && !tagged && i === groups.length - 1}
+			>
+				<BlogCards posts={group} short={!query} />
+			</Station>
+		{/if}
+	{/each}
+
+	{#if !posts.length}
+		<div class="station pr-6 pb-16 md:pr-12">
 			<p class="text-xl">
 				{query ? 'Nothing matches that search.' : 'No posts here yet.'}
 				<a href="/blog">See all posts</a>.
 			</p>
-		{/if}
+		</div>
+	{/if}
 
-		{#if data.tags?.length}
-			<details class="mt-16">
-				<summary class="t-group w-fit cursor-pointer">Browse by tag</summary>
-				<ul class="mt-5 flex list-none flex-wrap gap-3 p-0">
-					{#each data.tags as t}
-						<li>
-							<a href="/blog/tag/{t.slug}" class="badge badge-lg badge-outline no-underline"
-								>{t.name}</a
-							>
-						</li>
-					{/each}
-				</ul>
-			</details>
-		{/if}
-	</Station>
+	{#if more}
+		<div bind:this={sentinel} class="station pr-6 pb-16 md:pr-12">
+			{#if failed}
+				<button type="button" class="btn btn-outline" onclick={loadMore}>
+					Couldn’t load more. Try again
+				</button>
+			{:else}
+				<a
+					href={href(nextPage)}
+					rel="next"
+					class="btn btn-outline no-underline"
+					aria-busy={loading}
+					onclick={(e) => {
+						e.preventDefault();
+						loadMore();
+					}}
+				>
+					{#if loading}<span class="loading loading-spinner loading-sm"></span>{/if}
+					Older posts
+				</a>
+			{/if}
+		</div>
+	{/if}
+
+	{#if tagged}
+		<Station id="tags" title="Browse by tag" line="contact" end>
+			<ul class="flex max-w-5xl list-none flex-wrap gap-3 p-0">
+				{#each data.tags ?? [] as t}
+					<li>
+						<a href="/blog/tag/{t.slug}" class="badge badge-lg badge-outline no-underline"
+							>{t.name}</a
+						>
+					</li>
+				{/each}
+			</ul>
+		</Station>
+	{/if}
 </div>
 
 <style>
 	/* categories read as quiet text, the current one underlined in the line's colour */
 	.nav-link {
 		text-decoration: none;
+		white-space: nowrap;
 		padding-block: 0.15rem;
 		border-bottom: 3px solid transparent;
 		color: var(--color-gray-700);

@@ -55,15 +55,31 @@
 	</a>
 {/snippet}
 
+{#snippet tagList()}
+	{#if post.tags.length}
+		<ul class="flex list-none flex-wrap gap-2 p-0" aria-label="Tags">
+			{#each post.tags as t}
+				<li>
+					<a href="/blog/tag/{t.slug}" class="badge badge-lg badge-outline no-underline">{t.name}</a
+					>
+				</li>
+			{/each}
+		</ul>
+	{/if}
+{/snippet}
+
 <article class="line-page">
 	<span class="train" aria-hidden="true"></span>
 
-	<header class="station station-start terminus-page pb-12 pr-6 md:pr-12">
+	<header
+		class="station station-start terminus-page pb-10 pr-6 md:pr-12"
+		style="--line: var(--line-writing)"
+	>
 		<span class="station-ring" aria-hidden="true"></span>
 		{#if category}
-			<p class="t-meta mb-2">
-				<a href="/blog/category/{category.slug}" class="font-bold">{category.name}</a>
-			</p>
+			<div class="mb-4">
+				<a href="/blog/category/{category.slug}" class="kicker">{category.name}</a>
+			</div>
 		{/if}
 		<h1 class="t-page max-w-6xl text-brand-600 dark:text-brand-300">{post.title}</h1>
 		<p class="t-meta mt-4">
@@ -81,7 +97,7 @@
 
 	<div class="station pr-6 pb-16 md:pr-12">
 		<div
-			class="xl:grid xl:grid-cols-[minmax(0,80ch)_18rem] xl:gap-20 2xl:grid-cols-[minmax(0,88ch)_20rem]"
+			class="xl:grid xl:grid-cols-[minmax(0,75ch)_16rem] xl:gap-16 2xl:grid-cols-[minmax(0,max-content)_18rem] 2xl:gap-20"
 		>
 			<div>
 				{#if data.headings.length > 3}
@@ -96,33 +112,31 @@
 						</div>
 					</details>
 				{/if}
-				<div class="page-content-container post-body text-xl leading-relaxed">
+				<div class="ride page-content-container post-body text-xl leading-relaxed">
 					{@html data.body}
 				</div>
-
-				{#if post.tags.length}
-					<ul class="mt-10 flex list-none flex-wrap gap-2 p-0" aria-label="Tags">
-						{#each post.tags as t}
-							<li>
-								<a href="/blog/tag/{t.slug}" class="badge badge-lg badge-outline no-underline"
-									>{t.name}</a
-								>
-							</li>
-						{/each}
-					</ul>
-				{/if}
+				<div class="mt-12 xl:hidden">{@render tagList()}</div>
 			</div>
-			{#if data.headings.length > 3}
-				<aside class="hidden xl:block">
-					<nav aria-label="In this post" class="sticky top-8">
-						<ul class="menu menu-lg w-full p-0">
-							{#each data.headings as h}
-								<li><a href="#{h.id}">{h.text}</a></li>
-							{/each}
-						</ul>
-					</nav>
-				</aside>
-			{/if}
+			<aside class="hidden xl:block">
+				<div class="sticky top-8 space-y-8">
+					{#if post.tags.length}
+						<div>
+							<p class="t-meta mb-3 font-bold uppercase tracking-wider">Tagged</p>
+							{@render tagList()}
+						</div>
+					{/if}
+					{#if data.headings.length > 3}
+						<nav aria-label="In this post">
+							<p class="t-meta mb-2 font-bold uppercase tracking-wider">In this post</p>
+							<ul class="menu w-full p-0">
+								{#each data.headings as h}
+									<li><a href="#{h.id}">{h.text}</a></li>
+								{/each}
+							</ul>
+						</nav>
+					{/if}
+				</div>
+			</aside>
 		</div>
 	</div>
 
@@ -162,19 +176,28 @@
 </article>
 
 <style>
+	/* a photo is shown at its own proportions, never taller than the screen can hold */
 	.post-body :global(.post-figure) {
 		margin-block: 2.5rem;
 	}
 	.post-body :global(.post-figure img) {
-		width: 100%;
+		display: block;
+		width: auto;
 		height: auto;
-		border-radius: 0.5rem;
+		max-width: 100%;
+		max-height: min(75vh, 46rem);
+		margin-inline: auto;
+		border-radius: 1rem;
+	}
+	.post-body :global(.post-figure.stretched img) {
+		width: 100%;
+		object-fit: cover;
 	}
 	.post-body :global(.post-figure.bordered img) {
 		border: 2px solid var(--color-gray-300);
 	}
 	.post-body :global(.post-figure figcaption) {
-		margin-top: 0.5rem;
+		margin-top: 0.75rem;
 		text-align: center;
 	}
 	.post-body :global(pre) {
@@ -182,12 +205,13 @@
 		padding: 1rem 1.25rem;
 		border-radius: 0.5rem;
 		font-size: 0.9em;
+		line-height: 1.6;
 		background: var(--color-gray-900);
 		color: var(--color-gray-100);
 	}
 	.post-body :global(:not(pre) > code) {
 		padding: 0.1em 0.35em;
-		border-radius: 0.3rem;
+		border-radius: 0.25rem;
 		font-size: 0.9em;
 		background: var(--color-gray-200);
 	}
@@ -218,5 +242,14 @@
 	.post-body :global(h2),
 	.post-body :global(h3) {
 		scroll-margin-top: 1.5rem;
+	}
+	.post-body :global(h2) {
+		margin-top: 3rem;
+	}
+	.post-body :global(h3) {
+		margin-top: 2rem;
+		font-family: var(--font-display);
+		font-size: 1.5rem;
+		font-weight: 700;
 	}
 </style>

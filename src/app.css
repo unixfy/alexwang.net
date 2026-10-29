@@ -227,6 +227,32 @@
 		@apply text-brand-600 dark:text-brand-300 hover:text-brand-800 dark:hover:text-brand-200 underline underline-offset-4 decoration-1 transition-colors;
 	}
 
+	/* A post's label: a small station ring in its line's colour, then the category in small caps */
+	.kicker {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.8125rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		text-decoration: none;
+		@apply text-gray-700 hover:text-gray-900;
+	}
+
+	.dark .kicker {
+		@apply text-gray-300 hover:text-white;
+	}
+
+	.kicker::before {
+		content: '';
+		flex: none;
+		width: 0.75rem;
+		height: 0.75rem;
+		border-radius: 999px;
+		border: 0.2rem solid var(--line, var(--line-writing));
+	}
+
 	.ct {
 		@apply max-w-[1920px] mx-auto container;
 	}

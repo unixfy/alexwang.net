@@ -1,14 +1,15 @@
 <script>
 	import { asset } from '#lib/blog.js';
-	import { fullDate } from '#lib/date.js';
+	import { fullDate, monthDay } from '#lib/date.js';
 
-	let { posts } = $props();
+	/** @type {{ posts: any[], short?: boolean }} */
+	let { posts, short = false } = $props();
 </script>
 
 <ol class="post-grid list-none">
-	{#each posts as post (post.slug)}
+	{#each posts as post, i (post.slug)}
 		{@const external = !!post.redirect_url}
-		<li>
+		<li class="reveal" style="--d: {(i % 3) * 80}ms">
 			<a
 				href={external ? post.redirect_url : `/blog/${post.slug}`}
 				target={external ? '_blank' : undefined}
@@ -27,9 +28,15 @@
 						<span class="block aspect-[16/10] w-full"></span>
 					{/if}
 				</span>
-				<span class="t-meta mt-5 block tabular-nums">
-					{fullDate(post.date_published)}{#if post.category}
-						· {post.category.name}{/if}
+				<span class="mt-5 flex items-baseline justify-between gap-4">
+					{#if post.category}
+						<span class="kicker">{post.category.name}</span>
+					{:else}
+						<span></span>
+					{/if}
+					<span class="t-meta tabular-nums">
+						{short ? monthDay(post.date_published) : fullDate(post.date_published)}
+					</span>
 				</span>
 				<span
 					class="t-item mt-2 block underline-offset-4 decoration-[var(--line)] decoration-4 group-hover:underline"
