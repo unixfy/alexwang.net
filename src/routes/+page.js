@@ -2,7 +2,7 @@ import getDirectusInstance, { describe } from '#lib/directus.js';
 import { readItems } from '@directus/sdk';
 import { excerpt } from '#lib/excerpt.js';
 import { byRecency } from '#lib/date.js';
-import { listPosts } from '#lib/blog.js';
+import { fetchCards } from '#lib/blog.js';
 
 /** How many projects and blog posts the home page shows, so the two sections match. */
 const FEATURED = 4;
@@ -92,7 +92,7 @@ export async function load({ fetch }) {
 				'educations'
 			),
 			settle(
-				listPosts(directus, {}).then(({ posts }) => posts.slice(0, FEATURED)),
+				fetchCards(fetch).then(({ posts }) => posts.slice(0, FEATURED)),
 				'posts'
 			)
 		]);

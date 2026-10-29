@@ -21,7 +21,7 @@ It is one person's own hub rather than a template portfolio: content is authored
 ## Operating Context
 
 - Content is CMS-driven: Directus at cms.alexwang.net supplies config (banner, welcome text, profile picture, SSH key), projects, certifications, recognitions, socials, links and generic pages (`/[slug]`, e.g. /now, /i-like).
-- The blog lives on this site at `/blog`, from the same Directus: posts (Editor.js blocks rendered by `src/lib/editorjs.js`), categories, tags and moderated comments. The homepage shows the latest four; `/blog/feed` is the RSS feed.
+- The blog lives on this site at `/blog`, from the same Directus: posts (Editor.js blocks rendered by `src/lib/editorjs.js`), categories, tags and moderated comments. The homepage shows the latest four; `/blog/feed` is the RSS feed. Post bodies are read and rendered only on the server (a post's page loads in `+page.server.js`, and every list of posts comes from `/blog/posts.json`), so a body is never sent to the browser twice; the renderer shows the text as the CMS has it and does not patch the data.
 - Routes: `/`, `/blog`, `/blog/[slug]`, `/blog/category/[slug]`, `/blog/tag/[slug]`, `/blog/feed`, `/projects`, `/project/[slug]`, `/links`, `/sshkey`, CMS pages; `/linkedin` redirects out, `/portfolio` redirects to `/projects`.
 - Deployed on Cloudflare (SvelteKit adapter-cloudflare), installable as a PWA.
 

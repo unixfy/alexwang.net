@@ -6,7 +6,7 @@ export async function load({ fetch, url }) {
 	const directus = getDirectusInstance(fetch);
 	const q = url.searchParams.get('q')?.trim() ?? '';
 	const [data, tags] = await Promise.all([
-		archive(directus, url, q ? { search: q } : {}),
+		archive(fetch, directus, url, q ? { q } : {}),
 		directus
 			.request(readItems('tags', { fields: ['name', 'slug'], sort: 'name', limit: -1 }))
 			.catch(() => [])

@@ -34,12 +34,7 @@ const safeHref = (href) => (/^(https?:|mailto:|tel:|\/|#)/i.test(href.trim()) ? 
  */
 export function inline(html) {
 	if (typeof html !== 'string') return '';
-	// The migration dropped the space next to inline formatting ("<i>post</i>agent", "a<b>2020</b>"). A
-	// word never ends right where emphasis or a link does, so put the space back.
-	const spaced = html
-		.replace(/(<\/(?:b|strong|i|em|a|u|mark)>)(?=[A-Za-z0-9])/gi, '$1 ')
-		.replace(/([A-Za-z0-9])(?=<(?:b|strong|i|em|a|u|mark)[ >])/gi, '$1 ');
-	return spaced.replace(/<(\/?)([a-z][a-z0-9]*)\b([^>]*)>|</gi, (m, close, name, attrs) => {
+	return html.replace(/<(\/?)([a-z][a-z0-9]*)\b([^>]*)>|</gi, (m, close, name, attrs) => {
 		if (!name) return '&lt;';
 		const tag = name.toLowerCase();
 		if (!INLINE.has(tag)) return esc(m);
@@ -124,7 +119,7 @@ function tableOf(table) {
 	const bodyRow = (row, total) =>
 		`<tr${total ? ' class="total"' : ''}>${row
 			.map((c, i) => {
-				const text = inline(lines(c ?? ''));
+				const text = inline(c ?? '');
 				// with a heading row, the first column names the row and is its header cell
 				if (headed && i === 0) return `<th scope="row">${text}</th>`;
 				return `<td${labels[i] ? ` data-label="${labels[i]}"` : ''}>${text}</td>`;
@@ -139,21 +134,6 @@ function tableOf(table) {
 		.map((r, i) => bodyRow(r, i === data.length - 1 && /total/i.test(plain(r[0] ?? ''))))
 		.join('');
 	return `<div class="table-scroll"><table>${head}<tbody>${body}</tbody></table></div>`;
-}
-
-/**
- * Cells that held several values on separate lines came out of the migration run together
- * ("79,300 miles39,900 points$368.48 credit"). Where a value clearly starts right against the end of
- * the last one, put it back on its own line. Cells that already have line breaks are left alone.
- * @param {string} text
- */
-function lines(text) {
-	if (/<br\s*\/?>/i.test(text)) return text;
-	return text
-		.replace(/([a-z)\.])(?=\$\d)/gi, '$1<br>')
-		.replace(/([a-z])(?=\d{1,3}(?:,\d{3})+(?:\.\d+)?\s)/g, '$1<br>')
-		.replace(/(<\/i>)(?=\$?\d)/gi, '$1<br>')
-		.replace(/([a-z])(?=<i>\()/gi, '$1<br>');
 }
 
 /**

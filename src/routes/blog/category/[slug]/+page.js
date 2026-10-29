@@ -13,9 +13,7 @@ export async function load({ fetch, params, url }) {
 				limit: 1
 			})
 		),
-		archive(directus, url, {
-			filter: { categories: { categories_id: { slug: { _eq: params.slug } } } }
-		})
+		archive(fetch, directus, url, { category: params.slug })
 	]);
 	if (found.length === 0) error(404, 'Category not found');
 

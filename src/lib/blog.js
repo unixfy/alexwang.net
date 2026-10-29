@@ -103,16 +103,35 @@ export function pageOf(url) {
 }
 
 /**
+ * A page of post cards from the blog's own endpoint. The endpoint reads each body on the server to
+ * build a summary; asking it, rather than the CMS, keeps those bodies out of the page's HTML, which
+ * SvelteKit would otherwise inline for hydration.
+ * @param {typeof globalThis.fetch} fetch
+ * @param {{ page?: number, q?: string, category?: string, tag?: string }} [scope]
+ * @returns {Promise<{ posts: any[], hasOlder: boolean, page: number }>}
+ */
+export async function fetchCards(fetch, { page = 1, q, category, tag } = {}) {
+	const params = new URLSearchParams({ page: String(page) });
+	if (q) params.set('q', q);
+	if (category) params.set('category', category);
+	if (tag) params.set('tag', tag);
+	const res = await fetch(`/blog/posts.json?${params}`);
+	if (!res.ok) throw new Error(`Blog request failed (${res.status})`);
+	return res.json();
+}
+
+/**
  * The shared data of a blog archive page: its posts, the categories to move between, and a way to
  * the next and previous page.
+ * @param {typeof globalThis.fetch} fetch
  * @param {ReturnType<typeof import('#lib/directus.js').default>} directus
  * @param {URL} url
- * @param {{ filter?: object, search?: string }} [scope]
+ * @param {{ q?: string, category?: string, tag?: string }} [scope]
  */
-export async function archive(directus, url, scope = {}) {
+export async function archive(fetch, directus, url, scope = {}) {
 	const page = pageOf(url);
 	const [listing, categories] = await Promise.all([
-		listPosts(directus, { page, ...scope }),
+		fetchCards(fetch, { page, ...scope }),
 		directus
 			.request(
 				readItems('categories', { fields: ['name', 'slug'], sort: ['sort', 'name'], limit: -1 })

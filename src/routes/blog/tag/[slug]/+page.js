@@ -13,9 +13,7 @@ export async function load({ fetch, params, url }) {
 				limit: 1
 			})
 		),
-		archive(directus, url, {
-			filter: { tags: { tags_id: { slug: { _eq: params.slug } } } }
-		})
+		archive(fetch, directus, url, { tag: params.slug })
 	]);
 	if (found.length === 0) error(404, 'Tag not found');
 
