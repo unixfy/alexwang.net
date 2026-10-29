@@ -1,7 +1,9 @@
 <script>
 	/**
-	 * A post as a route: its headings are the stops, between a departure and an arrival. Stops the
-	 * reader has passed are lit like the trunk, the current one is a filled ring, the rest wait.
+	 * A post as a route: only its own headings are listed, as stops. The two ends of the line are
+	 * terminals drawn on the track, not entries: a start cap above the first stop and a flag below
+	 * the last. Stops the reader has passed are lit like the trunk, the current one is a larger
+	 * ring, the rest wait.
 	 * @type {{
 	 *   stops: { id: string, text: string }[],
 	 *   at: number,
@@ -10,32 +12,63 @@
 	 * }}
 	 */
 	let { stops, at, arrival, pick } = $props();
-
-	const nodes = $derived([
-		{ id: 'post-top', text: 'Departure' },
-		...stops,
-		{ id: arrival, text: 'Arrival' }
-	]);
 </script>
 
-<ol class="route">
-	{#each nodes as node, k (node.id)}
-		{@const state = k < at ? 'passed' : k === at ? 'current' : 'next'}
+<ol
+	class="route"
+	data-started={at >= 1 ? '' : undefined}
+	data-arrived={at > stops.length ? '' : undefined}
+>
+	{#each stops as stop, k (stop.id)}
+		{@const state = k + 1 < at ? 'passed' : k + 1 === at ? 'current' : 'next'}
 		<li class="node" data-state={state}>
 			<a
-				href="#{node.id}"
+				href="#{stop.id}"
 				aria-current={state === 'current' ? 'location' : undefined}
-				onclick={pick}>{node.text}</a
+				onclick={pick}>{stop.text}</a
 			>
 		</li>
 	{/each}
+	<!-- the end of the line: a flag, with the way to the comments or the next stops for those who want it -->
+	<li class="end">
+		<a href="#{arrival}" onclick={pick}>
+			<i class="fa-solid fa-flag-checkered" aria-hidden="true"></i>
+			<span class="sr-only">End of the post</span>
+		</a>
+	</li>
 </ol>
 
 <style>
 	.route {
+		position: relative;
 		list-style: none;
 		margin: 0;
-		padding: 0;
+		padding: 0.9rem 0 0;
+	}
+
+	/* the start of the line: a short stub of track above the first stop */
+	.route::before {
+		content: '';
+		position: absolute;
+		left: 0.375rem;
+		top: 0;
+		height: 1.4rem;
+		width: 0.25rem;
+		border-radius: 999px;
+		background: var(--color-gray-300);
+		transition: background-color 0.25s ease-out;
+	}
+
+	:global(.dark) .route::before {
+		background: var(--color-gray-700);
+	}
+
+	.route[data-started]::before {
+		background: var(--color-brand-600);
+	}
+
+	:global(.dark) .route[data-started]::before {
+		background: var(--color-brand-300);
 	}
 
 	.node {
@@ -100,8 +133,38 @@
 		background: var(--color-gray-700);
 	}
 
-	.node:last-child::after {
-		display: none;
+	/* the end of the line */
+	.end {
+		position: relative;
+		padding: 0.3rem 0 0.3rem 1.9rem;
+		min-height: 1.9rem;
+	}
+
+	.end a {
+		position: absolute;
+		left: -0.1rem;
+		top: 0.35rem;
+		display: grid;
+		place-items: center;
+		width: 1.2rem;
+		height: 1.2rem;
+		text-decoration: none;
+		font-size: 1rem;
+		color: var(--color-gray-600);
+
+		transition: color 0.25s ease-out;
+	}
+
+	:global(.dark) .end a {
+		color: var(--color-gray-400);
+	}
+
+	.route[data-arrived] .end a {
+		color: var(--color-brand-600);
+	}
+
+	:global(.dark) .route[data-arrived] .end a {
+		color: var(--color-brand-300);
 	}
 
 	.node[data-state='passed']::before {
@@ -145,9 +208,11 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.route::before,
 		.node::before,
 		.node::after,
-		.node a {
+		.node a,
+		.end a {
 			transition: none;
 		}
 	}

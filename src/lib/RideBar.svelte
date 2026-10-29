@@ -20,7 +20,7 @@
 
 	const label = $derived(
 		at === 0
-			? 'Departure'
+			? `${stops.length} ${stops.length === 1 ? 'stop' : 'stops'} ahead`
 			: at > stops.length
 				? 'Arrived'
 				: `Stop ${at} of ${stops.length} · ${stops[at - 1].text}`
