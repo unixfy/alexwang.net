@@ -2,6 +2,13 @@
 	import { enhance } from '$app/forms';
 	import { fullDate } from '#lib/date.js';
 
+	// the three line colours, handed out by name so a commenter keeps theirs
+	const lines = ['work', 'writing', 'contact'];
+	const lineOf = (/** @type {string} */ name) =>
+		lines[[...(name ?? '')].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % 3];
+	const initial = (/** @type {string} */ name) =>
+		([...(name ?? '').trim()][0] ?? '?').toUpperCase();
+
 	/** @type {{ comments: any[] | null, siteKey?: string }} */
 	let { comments, siteKey = '' } = $props();
 
@@ -69,19 +76,26 @@
 
 {#snippet thread(/** @type {string | null} */ parent)}
 	{#each threads.get(parent) ?? [] as c (c.id)}
-		<li id="comment-{c.id}" class="py-4">
-			<article>
-				<header class="t-meta flex flex-wrap items-baseline gap-x-3">
-					<strong class="text-base text-gray-900 dark:text-white">{c.author_name}</strong>
-					<time datetime={c.date_created}>{fullDate(c.date_created)}</time>
+		{@const replies = threads.get(c.id)}
+		<li id="comment-{c.id}" class="comment" class:has-replies={replies}>
+			<span class="avatar" style="--line: var(--line-{lineOf(c.author_name)})" aria-hidden="true">
+				{initial(c.author_name)}
+			</span>
+			<article class="min-w-0 pb-5">
+				<header class="flex flex-wrap items-baseline gap-x-3">
+					<strong class="font-display text-xl font-bold text-gray-900 dark:text-white"
+						>{c.author_name}</strong
+					>
+					<time class="t-meta" datetime={c.date_created}>{fullDate(c.date_created)}</time>
 				</header>
-				<p class="mt-1 whitespace-pre-line">{c.content}</p>
-				<button type="button" class="btn btn-link btn-sm px-0" onclick={() => reply(c)}>
+				<p class="mt-2 text-lg leading-relaxed whitespace-pre-line">{c.content}</p>
+				<button type="button" class="btn btn-ghost btn-sm mt-2 -ml-3" onclick={() => reply(c)}>
+					<i class="fa-solid fa-reply" aria-hidden="true"></i>
 					Reply<span class="sr-only"> to {c.author_name}</span>
 				</button>
 			</article>
-			{#if threads.get(c.id)}
-				<ol class="mt-1 list-none border-l-4 border-gray-300 pl-4 sm:pl-6 dark:border-gray-700">
+			{#if replies}
+				<ol class="replies list-none">
 					{@render thread(c.id)}
 				</ol>
 			{/if}
@@ -92,38 +106,46 @@
 {#if comments === null}
 	<div role="status" class="alert alert-soft"><span>Comments aren’t loading right now.</span></div>
 {:else if comments.length}
-	<ol class="list-none divide-y divide-gray-300 dark:divide-gray-700">
+	<ol class="list-none">
 		{@render thread(null)}
 	</ol>
 {:else}
-	<p class="text-lg">No comments yet. Be the first.</p>
+	<div class="flex items-center gap-5">
+		<span class="avatar empty" aria-hidden="true"><i class="fa-regular fa-comments"></i></span>
+		<p class="text-xl">No comments yet. Be the first to say something.</p>
+	</div>
 {/if}
 
+<!-- the form is a ticket: the message above the perforation, who it is from below it -->
 <form
 	bind:this={form}
 	method="POST"
 	action="?/comment"
 	use:enhance={submit}
-	class="mt-10 max-w-3xl"
+	class="ticket relative mt-12 max-w-3xl rounded-2xl border-2 border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-900"
 >
-	<fieldset class="fieldset w-full rounded-box border border-base-300 bg-base-200 p-5 sm:p-6">
-		<legend class="fieldset-legend t-group">{replyTo ? 'Reply' : 'Leave a comment'}</legend>
+	<fieldset class="fieldset p-6 pb-8 sm:p-8 sm:pb-10">
+		<legend class="fieldset-legend t-group px-0 pb-3">
+			{replyTo ? `Reply to ${replyTo.author_name}` : 'Leave a comment'}
+		</legend>
 
 		{#if replyTo}
-			<div role="status" class="alert alert-soft">
-				<span>Replying to {replyTo.author_name}</span>
-				<button type="button" class="btn btn-sm" onclick={() => (replyTo = null)}>Cancel</button>
+			<div role="status" class="alert alert-soft mb-2">
+				<span>Your reply goes under {replyTo.author_name}’s comment.</span>
+				<button type="button" class="btn btn-sm" onclick={() => (replyTo = null)}>
+					Reply to the post instead
+				</button>
 			</div>
 			<input type="hidden" name="parent" value={replyTo.id} />
 		{/if}
 
 		{#if sent}
-			<div role="status" class="alert alert-success alert-soft">
+			<div role="status" class="alert alert-success alert-soft mb-2">
 				<span>Thanks! Your comment will appear once it has been approved.</span>
 			</div>
 		{/if}
 
-		<label class="label" for="comment-content">Comment</label>
+		<label class="label" for="comment-content">Your comment</label>
 		<textarea
 			bind:this={box}
 			id="comment-content"
@@ -131,9 +153,19 @@
 			required
 			rows="5"
 			maxlength="5000"
-			class="textarea validator h-36 w-full"></textarea>
+			class="textarea validator h-36 w-full text-base"></textarea>
 		<p class="validator-hint hidden">Write something first.</p>
+	</fieldset>
 
+	<div
+		class="relative border-t-2 border-dashed border-gray-300 dark:border-gray-700"
+		aria-hidden="true"
+	>
+		<span class="notch -left-3 border-r-2"></span>
+		<span class="notch -right-3 border-l-2"></span>
+	</div>
+
+	<fieldset class="fieldset p-6 pt-8 sm:p-8 sm:pt-10">
 		<div class="grid gap-x-4 sm:grid-cols-2">
 			<div>
 				<label class="label" for="comment-name">Name</label>
@@ -175,9 +207,91 @@
 		{#if failed}
 			<div role="alert" class="alert alert-error alert-soft mt-4"><span>{failed}</span></div>
 		{/if}
-		<button class="btn btn-primary mt-4 w-fit" disabled={sending}>
+		<button class="btn btn-primary btn-lg mt-5 w-fit" disabled={sending}>
 			{#if sending}<span class="loading loading-spinner loading-sm"></span>{/if}
 			{sending ? 'Sending…' : replyTo ? 'Post reply' : 'Post comment'}
+			{#if !sending}<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>{/if}
 		</button>
 	</fieldset>
 </form>
+
+<style>
+	/* a comment is a stop: its ring on the left, and a branch line running down to its replies */
+	.comment {
+		--av: 2.25rem;
+		--gap: 0.75rem;
+		display: grid;
+		grid-template-columns: var(--av) minmax(0, 1fr);
+		column-gap: var(--gap);
+		position: relative;
+	}
+
+	@media (min-width: 40rem) {
+		.comment {
+			--av: 3rem;
+			--gap: 1.25rem;
+		}
+	}
+
+	.avatar {
+		display: grid;
+		place-items: center;
+		z-index: 1;
+		width: var(--av, 3rem);
+		height: var(--av, 3rem);
+		border-radius: 999px;
+		border: 0.25rem solid var(--line, var(--line-writing));
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 1rem;
+		background: var(--color-base-100);
+	}
+
+	.avatar.empty {
+		flex: none;
+		border-color: var(--color-gray-400);
+		color: var(--color-gray-700);
+		font-weight: 400;
+	}
+
+	:global(.dark) .avatar.empty {
+		border-color: var(--color-gray-600);
+		color: var(--color-gray-300);
+	}
+
+	.comment.has-replies::before {
+		content: '';
+		position: absolute;
+		left: calc(var(--av) / 2 - 0.15625rem);
+		top: calc(var(--av) * 0.75);
+		bottom: 0;
+		width: 0.3125rem;
+		border-radius: 999px;
+		background: var(--color-gray-300);
+	}
+
+	:global(.dark) .comment.has-replies::before {
+		background: var(--color-gray-700);
+	}
+
+	.replies {
+		grid-column: 2;
+		margin-top: 0.25rem;
+	}
+
+	/* the perforation: a notch bitten out of each edge */
+	.notch {
+		position: absolute;
+		top: -0.75rem;
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 999px;
+		background: var(--color-gray-50);
+		border-color: var(--color-gray-300);
+	}
+
+	:global(.dark) .notch {
+		background: var(--color-gray-950);
+		border-color: var(--color-gray-700);
+	}
+</style>

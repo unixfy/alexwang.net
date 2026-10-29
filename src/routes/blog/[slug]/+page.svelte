@@ -175,7 +175,11 @@
 	</div>
 
 	{#if post.comments_enabled}
-		<Station id="comments" title="Comments" line="writing">
+		<Station
+			id="comments"
+			title={data.comments?.length ? `Comments (${data.comments.length})` : 'Comments'}
+			line="writing"
+		>
 			<div class="max-w-4xl">
 				<Comments comments={data.comments} siteKey={data.turnstileSiteKey} />
 			</div>
