@@ -15,6 +15,8 @@
 	let { data, children } = $props();
 
 	const pageTitle = $derived(page.error ? 'Error' : page.data.title || 'Welcome');
+	const description = $derived(page.data.description || "Alex Wang's portfolio site");
+	const image = $derived(page.data.image || 'https://alexwang.net/og.png');
 
 	const calm = browser && matchMedia('(prefers-reduced-motion: reduce)').matches;
 	// Where the browser can, pages cross-fade and shared images (a project card to its page) morph;
@@ -40,17 +42,20 @@
 
 <svelte:head>
 	<title>{pageTitle} | Alex Wang</title>
-	<meta name="description" content="Alex Wang's portfolio site" />
+	<meta name="description" content={description} />
+	{#if page.data.robots}<meta name="robots" content={page.data.robots} />{/if}
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 	<meta name="theme-color" content="#e5aee8" />
 
-	<meta property="og:type" content="website" />
+	<meta property="og:type" content={page.data.ogType || 'website'} />
 	<meta property="og:url" content="https://alexwang.net{page.url.pathname}" />
 	<meta property="og:title" content="{pageTitle} | Alex Wang" />
-	<meta property="og:description" content="Alex Wang's portfolio site" />
-	<meta property="og:image" content="https://alexwang.net/og.png" />
-	<meta property="og:image:width" content="1200" />
-	<meta property="og:image:height" content="630" />
+	<meta property="og:description" content={description} />
+	<meta property="og:image" content={image} />
+	{#if !page.data.image}
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+	{/if}
 	<meta name="twitter:card" content="summary_large_image" />
 
 	{#if !dev && browser}

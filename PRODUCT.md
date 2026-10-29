@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Alex Wang's personal site serves four overlapping audiences: recruiters and hiring managers evaluating background, certifications and projects; peers and collaborators in Alex's professional network; readers of Alex's blog (blog.alexwang.net); and social/link-in-bio traffic arriving at `/links` from a profile.
+Alex Wang's personal site serves four overlapping audiences: recruiters and hiring managers evaluating background, certifications and projects; peers and collaborators in Alex's professional network; readers of Alex's blog (/blog); and social/link-in-bio traffic arriving at `/links` from a profile.
 
 ## Product Purpose
 
@@ -21,15 +21,15 @@ It is one person's own hub rather than a template portfolio: content is authored
 ## Operating Context
 
 - Content is CMS-driven: Directus at cms.alexwang.net supplies config (banner, welcome text, profile picture, SSH key), projects, certifications, recognitions, socials, links and generic pages (`/[slug]`, e.g. /now, /i-like).
-- The blog lives separately on WordPress (blog.alexwang.net); the homepage pulls the latest four posts via its REST API.
-- Routes: `/`, `/projects`, `/project/[slug]`, `/links`, `/sshkey`, CMS pages; `/linkedin` redirects out, `/portfolio` redirects to `/projects`.
+- The blog lives on this site at `/blog`, from the same Directus: posts (Editor.js blocks rendered by `src/lib/editorjs.js`), categories, tags and moderated comments. The homepage shows the latest four; `/blog/feed` is the RSS feed.
+- Routes: `/`, `/blog`, `/blog/[slug]`, `/blog/category/[slug]`, `/blog/tag/[slug]`, `/blog/feed`, `/projects`, `/project/[slug]`, `/links`, `/sshkey`, CMS pages; `/linkedin` redirects out, `/portfolio` redirects to `/projects`.
 - Deployed on Cloudflare (SvelteKit adapter-cloudflare), installable as a PWA.
 
 ## Capabilities and Constraints
 
 - Stack: SvelteKit 3, Svelte 5, Tailwind CSS 4, daisyUI 5 (the owner's chosen UI primitive library: navbar, menu, buttons, badge, collapse, swap, toast, alert, skeleton, progress; themed from the site's own tokens, never stock themes), Directus SDK, and three.js (the owner asked for it; it draws only the home page's signal-tower rail, is lazy-loaded as its own chunk, and only on screens 1280px and wider). Animation: Motion (`motion`, Framer Motion's framework-agnostic successor) for anything complex, Tailwind utility classes for anything simple, and never a scroll event listener. Every package is installed as a devDependency (`npm i -D`). Dependencies stay few: heavy visual effects are hand-written (the home page's WebGL2 map is a single shader with no library) or lazily loaded, never a framework added for one effect.
 - Ambitious visuals are welcome (WebGL, scroll-driven and generative motion) provided every effect degrades: the page must be complete without WebGL2 and without JavaScript, respect `prefers-reduced-motion`, pause when off screen, and hold up on integrated and budget mobile GPUs.
-- Content sources (Directus, WordPress) stay as they are.
+- Content source (Directus) stays as it is.
 - Light and dark mode must both be supported, with the choice persisted.
 
 ## Brand Commitments

@@ -190,8 +190,7 @@
 										{#await data.posts}
 											Latest posts from the blog
 										{:then posts}
-											{#if posts[0]}Latest: {@html posts[0].title.rendered}{:else}Posts from the
-												blog{/if}
+											{#if posts[0]}Latest: {posts[0].title}{:else}Posts from the blog{/if}
 										{:catch}
 											Posts from the blog
 										{/await}
@@ -404,16 +403,11 @@
 				{:catch}
 					<div role="status" class="alert alert-soft">
 						<span>The latest posts aren’t loading right now.</span>
-						<a
-							href="https://blog.alexwang.net"
-							target="_blank"
-							rel="noopener"
-							class="btn btn-sm no-underline">Read them on the blog</a
-						>
+						<a href="/blog" class="btn btn-sm no-underline">Read them on the blog</a>
 					</div>
 				{/await}
 			</div>
-			<div class="wide">{@render more('https://blog.alexwang.net', 'More on the blog', true)}</div>
+			<div class="wide">{@render more('/blog', 'More on the blog')}</div>
 		</Station>
 
 		<Station id="beyond" title="Beyond work">

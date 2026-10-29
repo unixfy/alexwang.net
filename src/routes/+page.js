@@ -2,6 +2,7 @@ import getDirectusInstance, { describe } from '#lib/directus.js';
 import { readItems } from '@directus/sdk';
 import { excerpt } from '#lib/excerpt.js';
 import { byRecency } from '#lib/date.js';
+import { listPosts } from '#lib/blog.js';
 
 /** How many projects and blog posts the home page shows, so the two sections match. */
 const FEATURED = 4;
@@ -10,15 +11,10 @@ const FEATURED = 4;
 export async function load({ fetch }) {
 	const directus = getDirectusInstance(fetch);
 
-	// Not awaited: SvelteKit streams top-level promises, so the page renders before the blog responds
-	const posts = fetch(`https://blog.alexwang.net/wp-json/wp/v2/posts?per_page=${FEATURED}`, {
-		signal: AbortSignal.timeout(8000)
-	}).then((/** @type {Response} */ res) => {
-		if (!res.ok) throw new Error(`Blog request failed (${res.status})`);
-		return res.json();
-	});
-	// It may reject while the Directus calls below are still awaited; without a handler Node treats that as fatal.
+	// Not awaited: SvelteKit streams top-level promises, so the page renders before the posts arrive.
+	// It may reject while the calls below are still awaited; without a handler Node treats that as fatal.
 	// The page still sees the rejection through `posts` itself.
+	const posts = listPosts(directus, {}).then(({ posts }) => posts.slice(0, FEATURED));
 	posts.catch(() => {});
 
 	// One failing collection leaves its section empty instead of failing the whole page

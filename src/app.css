@@ -255,7 +255,7 @@
 		@apply text-3xl font-display pt-4;
 	}
 
-	/* CMS content: drop the empty blocks WordPress leaves behind, and give lists room for their markers */
+	/* CMS content: drop the empty blocks the editor leaves behind, and give lists room for their markers */
 	.page-content-container :is(p, h2, h3):empty {
 		display: none;
 	}
@@ -749,7 +749,7 @@ nav li.station:focus-within .station-ring {
 			text-wrap: balance;
 		}
 
-		/* the heading and its first block share a row, so they share a top edge and a gap above. WordPress
+		/* the heading and its first block share a row, so they share a top edge and a gap above. The page editor
 		   leaves hidden empty paragraphs after headings, so "first block" skips up to two of them. */
 		.ride:has(> h2) > h2,
 		.ride:has(> h2) > h2 + :not(:empty),

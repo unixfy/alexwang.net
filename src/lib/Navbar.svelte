@@ -12,6 +12,7 @@
 		...(page.url.pathname === '/' ? [] : [{ href: '/', label: 'Home' }]),
 		{ href: '/now', label: 'Now' },
 		{ href: '/i-like', label: 'What I Like' },
+		{ href: '/blog', label: 'Blog' },
 		{ href: '/projects', label: 'Projects' },
 		{ href: '/linkedin', label: 'LinkedIn', external: true }
 	]);
