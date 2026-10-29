@@ -2,12 +2,8 @@
 	import { enhance } from '$app/forms';
 	import { fullDate } from '#lib/date.js';
 
-	// the three line colours, handed out by name so a commenter keeps theirs
-	const lines = ['work', 'writing', 'contact'];
-	const lineOf = (/** @type {string} */ name) =>
-		lines[[...(name ?? '')].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % 3];
-	const initial = (/** @type {string} */ name) =>
-		([...(name ?? '').trim()][0] ?? '?').toUpperCase();
+	// the three line colours take turns down a thread, as they do down the page
+	const lines = ['writing', 'contact', 'work'];
 
 	/** @type {{ comments: any[] | null, siteKey?: string }} */
 	let { comments, siteKey = '' } = $props();
@@ -74,21 +70,25 @@
 	}
 </script>
 
-{#snippet thread(/** @type {string | null} */ parent)}
+{#snippet thread(/** @type {string | null} */ parent, /** @type {number} */ depth)}
 	{#each threads.get(parent) ?? [] as c (c.id)}
 		{@const replies = threads.get(c.id)}
-		<li id="comment-{c.id}" class="comment" class:has-replies={replies}>
-			<span class="avatar" style="--line: var(--line-{lineOf(c.author_name)})" aria-hidden="true">
-				{initial(c.author_name)}
-			</span>
+		<li
+			id="comment-{c.id}"
+			class="comment"
+			class:has-replies={replies}
+			style="--line: var(--line-{lines[depth % 3]})"
+		>
+			<span class="stop" aria-hidden="true"></span>
 			<article class="min-w-0 pb-5">
 				<header class="flex flex-wrap items-baseline gap-x-3">
-					<strong class="font-display text-xl font-bold text-gray-900 dark:text-white"
+					<strong
+						class="min-w-0 break-words font-display text-xl font-bold text-gray-900 dark:text-white"
 						>{c.author_name}</strong
 					>
 					<time class="t-meta" datetime={c.date_created}>{fullDate(c.date_created)}</time>
 				</header>
-				<p class="mt-2 text-lg leading-relaxed whitespace-pre-line">{c.content}</p>
+				<p class="mt-2 break-words text-lg leading-relaxed whitespace-pre-line">{c.content}</p>
 				<button type="button" class="btn btn-ghost btn-sm mt-2 -ml-3" onclick={() => reply(c)}>
 					<i class="fa-solid fa-reply" aria-hidden="true"></i>
 					Reply<span class="sr-only"> to {c.author_name}</span>
@@ -96,7 +96,7 @@
 			</article>
 			{#if replies}
 				<ol class="replies list-none">
-					{@render thread(c.id)}
+					{@render thread(c.id, depth + 1)}
 				</ol>
 			{/if}
 		</li>
@@ -107,13 +107,10 @@
 	<div role="status" class="alert alert-soft"><span>Comments aren’t loading right now.</span></div>
 {:else if comments.length}
 	<ol class="list-none">
-		{@render thread(null)}
+		{@render thread(null, 0)}
 	</ol>
 {:else}
-	<div class="flex items-center gap-5">
-		<span class="avatar empty" aria-hidden="true"><i class="fa-regular fa-comments"></i></span>
-		<p class="text-xl">No comments yet. Be the first to say something.</p>
-	</div>
+	<p class="text-xl">No comments yet. Be the first to say something.</p>
 {/if}
 
 <!-- the form is a ticket: the message above the perforation, who it is from below it -->
@@ -125,14 +122,17 @@
 	class="ticket relative mt-12 max-w-3xl rounded-2xl border-2 border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-900"
 >
 	<div class="p-6 sm:p-8">
-		<h3 class="t-group mb-5">
-			{replyTo ? `Reply to ${replyTo.author_name}` : 'Leave a comment'}
-		</h3>
+		<h3 class="t-group mb-5 w-full">{replyTo ? 'Write a reply' : 'Leave a comment'}</h3>
 
 		{#if replyTo}
-			<div role="status" class="alert alert-soft mb-5">
-				<span>Your reply goes under {replyTo.author_name}’s comment.</span>
-				<button type="button" class="btn btn-sm" onclick={() => (replyTo = null)}>
+			<div
+				role="status"
+				class="alert alert-soft mb-5 flex w-full flex-wrap items-center gap-x-4 gap-y-3"
+			>
+				<span class="min-w-0 flex-1 basis-60 break-words">
+					Replying to <strong>{replyTo.author_name}</strong>
+				</span>
+				<button type="button" class="btn btn-sm shrink-0" onclick={() => (replyTo = null)}>
 					Reply to the post instead
 				</button>
 			</div>
@@ -218,54 +218,38 @@
 </form>
 
 <style>
-	/* a comment is a stop: its ring on the left, and a branch line running down to its replies */
+	/* a comment is a stop: a station ring on the left, and a branch line running down to its replies */
 	.comment {
-		--av: 2.25rem;
+		--ring: 1.25rem;
 		--gap: 0.75rem;
 		display: grid;
-		grid-template-columns: var(--av) minmax(0, 1fr);
+		grid-template-columns: var(--ring) minmax(0, 1fr);
 		column-gap: var(--gap);
 		position: relative;
 	}
 
 	@media (min-width: 40rem) {
 		.comment {
-			--av: 3rem;
+			--ring: 1.5rem;
 			--gap: 1.25rem;
 		}
 	}
 
-	.avatar {
-		display: grid;
-		place-items: center;
+	.stop {
 		z-index: 1;
-		width: var(--av, 3rem);
-		height: var(--av, 3rem);
+		width: var(--ring);
+		height: var(--ring);
+		margin-top: 0.2rem;
 		border-radius: 999px;
-		border: 0.25rem solid var(--line, var(--line-writing));
-		font-family: var(--font-display);
-		font-weight: 800;
-		font-size: 1rem;
+		border: 0.3125rem solid var(--line, var(--line-writing));
 		background: var(--color-base-100);
-	}
-
-	.avatar.empty {
-		flex: none;
-		border-color: var(--color-gray-400);
-		color: var(--color-gray-700);
-		font-weight: 400;
-	}
-
-	:global(.dark) .avatar.empty {
-		border-color: var(--color-gray-600);
-		color: var(--color-gray-300);
 	}
 
 	.comment.has-replies::before {
 		content: '';
 		position: absolute;
-		left: calc(var(--av) / 2 - 0.15625rem);
-		top: calc(var(--av) * 0.75);
+		left: calc(var(--ring) / 2 - 0.15625rem);
+		top: 1.5rem;
 		bottom: 0;
 		width: 0.3125rem;
 		border-radius: 999px;
