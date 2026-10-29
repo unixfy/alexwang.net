@@ -93,7 +93,7 @@
 			<img
 				src={asset(post.featured_image, 1600)}
 				alt=""
-				class="mt-10 aspect-[2/1] w-full max-w-[90rem] rounded-xl object-cover dark:brightness-90"
+				class="mt-10 aspect-[2/1] max-h-[min(60vh,30rem)] w-full max-w-[90rem] rounded-xl object-cover dark:brightness-90"
 			/>
 		{/if}
 	</header>

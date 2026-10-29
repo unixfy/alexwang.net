@@ -125,10 +125,13 @@
 				{/if}
 			</div>
 
-			<div data-calm class="mt-8 flex flex-wrap items-center justify-between gap-x-10 gap-y-5">
+			<div
+				data-calm
+				class="mt-8 grid items-center gap-x-10 gap-y-5 lg:grid-cols-[minmax(0,1fr)_auto]"
+			>
 				<nav
 					aria-label="Categories"
-					class="tabs tabs-border text-lg max-sm:-mr-6 max-sm:w-[calc(100%+1.5rem)] max-sm:flex-nowrap max-sm:overflow-x-auto"
+					class="tabs tabs-border min-w-0 flex-nowrap overflow-x-auto text-lg max-sm:-mr-6 max-sm:w-[calc(100%+1.5rem)]"
 				>
 					<a
 						href="/blog"
@@ -229,23 +232,28 @@
 	{/if}
 
 	{#each groups as [label, group], i (label)}
-		{#if group.length}
+		{#if group.length || query}
 			<Station
 				id={query ? 'results' : `y${label}`}
 				title={label}
 				line={lines[(i + (lead ? 1 : 0)) % 3]}
 				end={!more && !tagged && i === groups.length - 1}
 			>
-				<BlogCards posts={group} short={!query} />
+				{#if group.length}
+					<BlogCards posts={group} short={!query} />
+				{:else}
+					<p class="text-xl">
+						Nothing matches that search. <a href="/blog">See all posts</a>.
+					</p>
+				{/if}
 			</Station>
 		{/if}
 	{/each}
 
-	{#if !posts.length}
+	{#if !posts.length && !query}
 		<div class="station pr-6 pb-16 md:pr-12">
 			<p class="text-xl">
-				{query ? 'Nothing matches that search.' : 'No posts here yet.'}
-				<a href="/blog">See all posts</a>.
+				No posts here yet. <a href="/blog">See all posts</a>.
 			</p>
 		</div>
 	{/if}

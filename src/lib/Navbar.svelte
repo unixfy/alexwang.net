@@ -60,7 +60,7 @@
 		{/if}
 	</div>
 	<div class="navbar pointer-events-auto hidden min-h-0 w-auto gap-2 px-6 py-5 md:flex">
-		<ul class="menu menu-horizontal menu-lg gap-1 p-0 font-display">
+		<ul class="menu menu-horizontal menu-md lg:menu-lg gap-1 p-0 font-display">
 			{#each links as { href, label, external }}
 				<li><a {href} aria-current={current(href)}>{@render linkLabel(label, external)}</a></li>
 			{/each}
@@ -137,7 +137,7 @@
 			</g>
 		</svg>
 		<span
-			class="font-display text-xl leading-none font-extrabold tracking-tight [font-stretch:118%] decoration-[var(--line-work)] decoration-2 underline-offset-4 group-hover:underline"
+			class="font-display text-xl leading-none font-extrabold tracking-tight whitespace-nowrap [font-stretch:118%] decoration-[var(--line-work)] decoration-2 underline-offset-4 group-hover:underline"
 			>Alex Wang</span
 		>
 	</a>
