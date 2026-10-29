@@ -1,24 +1,18 @@
 <script>
 	/**
-	 * A post as a route: only its own headings are listed, as stops. The two ends of the line are
-	 * terminals drawn on the track, not entries: a start cap above the first stop and a flag below
-	 * the last. Stops the reader has passed are lit like the trunk, the current one is a larger
+	 * A post as a route: only its own headings are listed, as stops, and the track begins with a short
+	 * stub above the first. Stops the reader has passed are lit like the trunk, the current one is a larger
 	 * ring, the rest wait.
 	 * @type {{
 	 *   stops: { id: string, text: string }[],
 	 *   at: number,
-	 *   arrival: string,
 	 *   pick?: () => void
 	 * }}
 	 */
-	let { stops, at, arrival, pick } = $props();
+	let { stops, at, pick } = $props();
 </script>
 
-<ol
-	class="route"
-	data-started={at >= 1 ? '' : undefined}
-	data-arrived={at > stops.length ? '' : undefined}
->
+<ol class="route" data-started={at >= 1 ? '' : undefined}>
 	{#each stops as stop, k (stop.id)}
 		{@const state = k + 1 < at ? 'passed' : k + 1 === at ? 'current' : 'next'}
 		<li class="node" data-state={state}>
@@ -29,13 +23,6 @@
 			>
 		</li>
 	{/each}
-	<!-- the end of the line: a flag, with the way to the comments or the next stops for those who want it -->
-	<li class="end">
-		<a href="#{arrival}" onclick={pick}>
-			<i class="fa-solid fa-flag-checkered" aria-hidden="true"></i>
-			<span class="sr-only">End of the post</span>
-		</a>
-	</li>
 </ol>
 
 <style>
@@ -133,38 +120,9 @@
 		background: var(--color-gray-700);
 	}
 
-	/* the end of the line */
-	.end {
-		position: relative;
-		padding: 0.3rem 0 0.3rem 1.9rem;
-		min-height: 1.9rem;
-	}
-
-	.end a {
-		position: absolute;
-		left: -0.1rem;
-		top: 0.35rem;
-		display: grid;
-		place-items: center;
-		width: 1.2rem;
-		height: 1.2rem;
-		text-decoration: none;
-		font-size: 1rem;
-		color: var(--color-gray-600);
-
-		transition: color 0.25s ease-out;
-	}
-
-	:global(.dark) .end a {
-		color: var(--color-gray-400);
-	}
-
-	.route[data-arrived] .end a {
-		color: var(--color-brand-600);
-	}
-
-	:global(.dark) .route[data-arrived] .end a {
-		color: var(--color-brand-300);
+	/* the track ends at the last stop */
+	.node:last-child::after {
+		display: none;
 	}
 
 	.node[data-state='passed']::before {
@@ -211,8 +169,7 @@
 		.route::before,
 		.node::before,
 		.node::after,
-		.node a,
-		.end a {
+		.node a {
 			transition: none;
 		}
 	}

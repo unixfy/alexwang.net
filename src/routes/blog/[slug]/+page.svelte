@@ -46,7 +46,6 @@
 
 	// ---- the ride: the post's headings are its stops ----
 	const stops = $derived(data.headings);
-	const arrival = $derived(post.comments_enabled ? 'comments' : 'next');
 	let passed = $state(0);
 	let arrived = $state(false);
 	let started = $state(false);
@@ -205,7 +204,7 @@
 					{#if stops.length}
 						<nav aria-label="Ride route">
 							<p class="t-meta mb-3 font-bold uppercase tracking-wider">The ride</p>
-							<RideRoute {stops} {at} {arrival} />
+							<RideRoute {stops} {at} />
 							<p class="t-meta mt-3 tabular-nums">{status}</p>
 						</nav>
 					{/if}
@@ -288,7 +287,7 @@
 		</nav>
 	</Station>
 	{#if stops.length}
-		<RideBar {stops} {at} {minutesLeft} {arrival} shown={started && !atEnd} />
+		<RideBar {stops} {at} {minutesLeft} shown={started && !atEnd} />
 	{/if}
 </article>
 

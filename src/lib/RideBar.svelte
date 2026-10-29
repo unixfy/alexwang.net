@@ -9,11 +9,10 @@
 	 *   stops: { id: string, text: string }[],
 	 *   at: number,
 	 *   minutesLeft: number,
-	 *   arrival: string,
 	 *   shown: boolean
 	 * }}
 	 */
-	let { stops, at, minutesLeft, arrival, shown } = $props();
+	let { stops, at, minutesLeft, shown } = $props();
 
 	/** @type {HTMLDetailsElement | undefined} */
 	let menu = $state();
@@ -52,7 +51,7 @@
 			<i class="fa-solid fa-chevron-up chevron" aria-hidden="true"></i>
 		</summary>
 		<div class="sheet">
-			<RideRoute {stops} {at} {arrival} pick={() => menu && (menu.open = false)} />
+			<RideRoute {stops} {at} pick={() => menu && (menu.open = false)} />
 		</div>
 	</details>
 </div>
