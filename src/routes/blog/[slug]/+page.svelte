@@ -99,7 +99,7 @@
 			class="xl:grid xl:grid-cols-[minmax(0,75ch)_16rem] xl:gap-16 2xl:grid-cols-[minmax(0,max-content)_18rem] 2xl:gap-20"
 		>
 			<div>
-				{#if data.headings.length > 3}
+				{#if data.headings.length > 0}
 					<details class="collapse collapse-arrow mb-8 bg-base-200 xl:hidden">
 						<summary class="collapse-title font-semibold">In this post</summary>
 						<div class="collapse-content">
@@ -122,7 +122,7 @@
 			<!-- the rail: where this post sits in the blog, whatever it contains -->
 			<aside class="hidden xl:block">
 				<div class="sticky top-8 space-y-8">
-					{#if data.headings.length > 3}
+					{#if data.headings.length > 0}
 						<nav aria-label="In this post">
 							<p class="t-meta mb-2 font-bold uppercase tracking-wider">In this post</p>
 							<ul class="menu w-full p-0">
