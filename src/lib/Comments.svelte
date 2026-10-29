@@ -104,71 +104,80 @@
 	method="POST"
 	action="?/comment"
 	use:enhance={submit}
-	class="mt-10 max-w-2xl space-y-4"
+	class="mt-10 max-w-3xl"
 >
-	<h3 class="t-group">{replyTo ? 'Reply' : 'Leave a comment'}</h3>
+	<fieldset class="fieldset w-full rounded-box border border-base-300 bg-base-200 p-5 sm:p-6">
+		<legend class="fieldset-legend t-group">{replyTo ? 'Reply' : 'Leave a comment'}</legend>
 
-	{#if replyTo}
-		<p class="alert alert-soft">
-			<span>Replying to {replyTo.author_name}</span>
-			<button type="button" class="btn btn-sm" onclick={() => (replyTo = null)}>Cancel</button>
-		</p>
-		<input type="hidden" name="parent" value={replyTo.id} />
-	{/if}
+		{#if replyTo}
+			<div role="status" class="alert alert-soft">
+				<span>Replying to {replyTo.author_name}</span>
+				<button type="button" class="btn btn-sm" onclick={() => (replyTo = null)}>Cancel</button>
+			</div>
+			<input type="hidden" name="parent" value={replyTo.id} />
+		{/if}
 
-	{#if sent}
-		<p role="status" class="alert alert-success alert-soft">
-			Thanks! Your comment will appear once it has been approved.
-		</p>
-	{/if}
+		{#if sent}
+			<div role="status" class="alert alert-success alert-soft">
+				<span>Thanks! Your comment will appear once it has been approved.</span>
+			</div>
+		{/if}
 
-	<label class="block">
-		<span class="mb-1 block font-semibold">Comment</span>
+		<label class="label" for="comment-content">Comment</label>
 		<textarea
 			bind:this={box}
+			id="comment-content"
 			name="content"
 			required
 			rows="5"
 			maxlength="5000"
-			class="textarea textarea-bordered w-full"></textarea>
-	</label>
-	<div class="grid gap-4 sm:grid-cols-2">
-		<label class="block">
-			<span class="mb-1 block font-semibold">Name</span>
-			<input
-				name="name"
-				required
-				maxlength="100"
-				autocomplete="name"
-				class="input input-bordered w-full"
-			/>
-		</label>
-		<label class="block">
-			<span class="mb-1 block font-semibold">Email</span>
-			<input
-				name="email"
-				required
-				type="email"
-				maxlength="200"
-				autocomplete="email"
-				class="input input-bordered w-full"
-			/>
-			<span class="t-meta mt-1 block">Never shown.</span>
-		</label>
-	</div>
-	<!-- a trap for bots: people never see it -->
-	<div class="absolute -left-[9999px]" aria-hidden="true">
-		<label>Website <input name="website" tabindex="-1" autocomplete="off" /></label>
-	</div>
+			class="textarea validator h-36 w-full"></textarea>
+		<p class="validator-hint hidden">Write something first.</p>
 
-	{#if siteKey}
-		<div class="cf-turnstile" data-sitekey={siteKey}></div>
-	{/if}
+		<div class="grid gap-x-4 sm:grid-cols-2">
+			<div>
+				<label class="label" for="comment-name">Name</label>
+				<input
+					id="comment-name"
+					name="name"
+					required
+					maxlength="100"
+					autocomplete="name"
+					class="input validator w-full"
+				/>
+				<p class="validator-hint hidden">Please tell us your name.</p>
+			</div>
+			<div>
+				<label class="label" for="comment-email">Email</label>
+				<input
+					id="comment-email"
+					name="email"
+					required
+					type="email"
+					maxlength="200"
+					autocomplete="email"
+					class="input validator w-full"
+				/>
+				<p class="validator-hint hidden">Enter a valid email address.</p>
+				<p class="label">Never shown publicly.</p>
+			</div>
+		</div>
 
-	{#if failed}
-		<p role="alert" class="alert alert-error alert-soft">{failed}</p>
-	{/if}
-	<button class="btn btn-primary" disabled={sending}>
-		{sending ? 'Sending…' : replyTo ? 'Post reply' : 'Post comment'}
-	</button>
+		<!-- a trap for bots: people never see it -->
+		<div class="absolute -left-[9999px]" aria-hidden="true">
+			<label>Website <input name="website" tabindex="-1" autocomplete="off" /></label>
+		</div>
+
+		{#if siteKey}
+			<div class="cf-turnstile mt-4" data-sitekey={siteKey}></div>
+		{/if}
+
+		{#if failed}
+			<div role="alert" class="alert alert-error alert-soft mt-4"><span>{failed}</span></div>
+		{/if}
+		<button class="btn btn-primary mt-4 w-fit" disabled={sending}>
+			{#if sending}<span class="loading loading-spinner loading-sm"></span>{/if}
+			{sending ? 'Sending…' : replyTo ? 'Post reply' : 'Post comment'}
+		</button>
+	</fieldset>
 </form>

@@ -122,3 +122,14 @@ export async function archive(directus, url, scope = {}) {
 	if (page > 1 && listing.posts.length === 0) error(404, 'No posts on this page');
 	return { ...listing, categories };
 }
+
+/**
+ * The filter a category or tag archive applies to posts.
+ * @param {{ category?: string | null, tag?: string | null }} scope
+ */
+export function scopeFilter({ category, tag }) {
+	const all = [];
+	if (category) all.push({ categories: { categories_id: { slug: { _eq: category } } } });
+	if (tag) all.push({ tags: { tags_id: { slug: { _eq: tag } } } });
+	return all.length ? { _and: all } : undefined;
+}

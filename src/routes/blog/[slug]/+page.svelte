@@ -7,12 +7,31 @@
 	let { data } = $props();
 	const post = $derived(data.post);
 	const category = $derived(post.categories[0]);
+	// structured data for search engines, built from the same fallbacks as the page's own tags
+	const ld = $derived(
+		JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BlogPosting',
+			headline: post.title,
+			description: data.description,
+			image: data.image ? [data.image] : undefined,
+			datePublished: post.date_published,
+			url: `https://alexwang.net/blog/${post.slug}`,
+			mainEntityOfPage: `https://alexwang.net/blog/${post.slug}`,
+			articleSection: category?.name,
+			keywords: post.tags.map((/** @type {any} */ t) => t.name).join(', ') || undefined,
+			author: { '@type': 'Person', name: 'Alex Wang', url: 'https://alexwang.net' },
+			publisher: { '@type': 'Person', name: 'Alex Wang', url: 'https://alexwang.net' }
+		}).replace(/</g, '\\u003c')
+	);
 </script>
 
 <svelte:head>
-	<link rel="alternate" type="application/rss+xml" title="Alex Wang's blog" href="/blog/feed" />
-	<link rel="canonical" href="https://alexwang.net/blog/{post.slug}" />
 	<meta property="article:published_time" content={post.date_published} />
+	<meta property="article:author" content="Alex Wang" />
+	{#if category}<meta property="article:section" content={category.name} />{/if}
+	{#each post.tags as t}<meta property="article:tag" content={t.name} />{/each}
+	{@html `<script type="application/ld+json">${ld}</script>`}
 </svelte:head>
 
 {#snippet neighbour(/** @type {any} */ p, /** @type {'older' | 'newer'} */ kind)}
@@ -39,14 +58,14 @@
 <article class="line-page">
 	<span class="train" aria-hidden="true"></span>
 
-	<header class="station station-start terminus-page pb-8 pr-6 md:pr-12">
+	<header class="station station-start terminus-page pb-12 pr-6 md:pr-12">
 		<span class="station-ring" aria-hidden="true"></span>
 		{#if category}
 			<p class="t-meta mb-2">
 				<a href="/blog/category/{category.slug}" class="font-bold">{category.name}</a>
 			</p>
 		{/if}
-		<h1 class="t-page max-w-4xl text-brand-600 dark:text-brand-300">{post.title}</h1>
+		<h1 class="t-page max-w-6xl text-brand-600 dark:text-brand-300">{post.title}</h1>
 		<p class="t-meta mt-4">
 			<time datetime={post.date_published}>{fullDate(post.date_published)}</time>
 			· {data.minutes} min read
@@ -55,13 +74,15 @@
 			<img
 				src={asset(post.featured_image, 1600)}
 				alt=""
-				class="mt-8 aspect-video w-full max-w-4xl rounded-lg object-cover dark:brightness-90"
+				class="mt-10 aspect-[2/1] w-full max-w-[90rem] rounded-xl object-cover dark:brightness-90"
 			/>
 		{/if}
 	</header>
 
-	<div class="station pr-6 pb-12 md:pr-12">
-		<div class="xl:grid xl:grid-cols-[minmax(0,70ch)_15rem] xl:gap-14">
+	<div class="station pr-6 pb-16 md:pr-12">
+		<div
+			class="xl:grid xl:grid-cols-[minmax(0,80ch)_18rem] xl:gap-20 2xl:grid-cols-[minmax(0,88ch)_20rem]"
+		>
 			<div>
 				{#if data.headings.length > 3}
 					<details class="collapse collapse-arrow mb-8 bg-base-200 xl:hidden">
@@ -75,7 +96,7 @@
 						</div>
 					</details>
 				{/if}
-				<div class="page-content-container post-body text-lg">
+				<div class="page-content-container post-body text-xl leading-relaxed">
 					{@html data.body}
 				</div>
 
@@ -107,14 +128,14 @@
 
 	{#if post.comments_enabled}
 		<Station id="comments" title="Comments" line="writing">
-			<div class="max-w-3xl">
+			<div class="max-w-4xl">
 				<Comments comments={data.comments} siteKey={data.turnstileSiteKey} />
 			</div>
 		</Station>
 	{/if}
 
 	<Station id="next" title="Keep riding" line="contact" end>
-		<nav aria-label="Neighbouring posts" class="grid max-w-5xl gap-5 sm:grid-cols-2">
+		<nav aria-label="Neighbouring posts" class="grid max-w-6xl gap-6 sm:grid-cols-2">
 			{#if data.older}
 				{@render neighbour(data.older, 'older')}
 			{/if}
@@ -142,7 +163,7 @@
 
 <style>
 	.post-body :global(.post-figure) {
-		margin-block: 1.5rem;
+		margin-block: 2.5rem;
 	}
 	.post-body :global(.post-figure img) {
 		width: 100%;

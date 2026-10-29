@@ -5,6 +5,7 @@
 </script>
 
 <BlogArchive
+	scope="category={data.category.slug}"
 	{data}
 	heading={data.category.name}
 	lede={data.category.description || `Posts filed under ${data.category.name}`}

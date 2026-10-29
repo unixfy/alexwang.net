@@ -10,7 +10,7 @@ const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 let rescan = null;
 
 /**
- * Watch a subtree for `.reveal` elements, now and as they are added (the blog streams in late).
+ * Watch a subtree for `.reveal` elements, now and as they are added.
  * @param {HTMLElement} root
  * @returns {() => void} stop watching
  */

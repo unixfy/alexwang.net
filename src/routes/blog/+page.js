@@ -15,8 +15,8 @@ export async function load({ fetch, url }) {
 		...data,
 		tags,
 		q,
-		title: q ? `Search: ${q}` : 'Blog',
+		title: q ? `Search: ${q}` : data.page > 1 ? `Blog, page ${data.page}` : 'Blog',
 		description: 'Writing by Alex Wang on technology, servers, transportation and travel.',
-		robots: q || data.page > 1 ? 'noindex, follow' : undefined
+		robots: q ? 'noindex, follow' : undefined
 	};
 }

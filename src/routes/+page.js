@@ -7,15 +7,9 @@ import { listPosts } from '#lib/blog.js';
 /** How many projects and blog posts the home page shows, so the two sections match. */
 const FEATURED = 4;
 
-/** Home page data: Directus content loads up front, blog posts stream in afterwards. */
+/** Home page data: everything comes from Directus and is loaded up front, so the page renders complete. */
 export async function load({ fetch }) {
 	const directus = getDirectusInstance(fetch);
-
-	// Not awaited: SvelteKit streams top-level promises, so the page renders before the posts arrive.
-	// It may reject while the calls below are still awaited; without a handler Node treats that as fatal.
-	// The page still sees the rejection through `posts` itself.
-	const posts = listPosts(directus, {}).then(({ posts }) => posts.slice(0, FEATURED));
-	posts.catch(() => {});
 
 	// One failing collection leaves its section empty instead of failing the whole page
 	const settle = (/** @type {Promise<any[]>} */ request, /** @type {string} */ name) =>
@@ -24,7 +18,7 @@ export async function load({ fetch }) {
 			return [];
 		});
 
-	const [certifications, socials, projects, recognitions, employments, educations] =
+	const [certifications, socials, projects, recognitions, employments, educations, posts] =
 		await Promise.all([
 			settle(
 				directus.request(
@@ -96,6 +90,10 @@ export async function load({ fetch }) {
 					})
 				),
 				'educations'
+			),
+			settle(
+				listPosts(directus, {}).then(({ posts }) => posts.slice(0, FEATURED)),
+				'posts'
 			)
 		]);
 

@@ -1,7 +1,6 @@
 <script>
 	import Station from '#lib/Station.svelte';
 	import BlogLister from '#lib/BlogLister.svelte';
-	import BlogListerLoading from '#lib/BlogListerLoading.svelte';
 	import Network from '#lib/Network.svelte';
 	import CopyButton from '#lib/CopyButton.svelte';
 	import Tower from '#lib/Tower.svelte';
@@ -187,13 +186,7 @@
 												latest.start_date
 											)}{:else}Selected projects{/if}
 									{:else if door.line === 'writing'}
-										{#await data.posts}
-											Latest posts from the blog
-										{:then posts}
-											{#if posts[0]}Latest: {posts[0].title}{:else}Posts from the blog{/if}
-										{:catch}
-											Posts from the blog
-										{/await}
+										{#if data.posts[0]}Latest: {data.posts[0].title}{:else}Posts from the blog{/if}
 									{:else}
 										Email, LinkedIn and elsewhere
 									{/if}
@@ -392,20 +385,13 @@
 
 		<Station id="writing" title="Writing" line="writing">
 			<div class="wide">
-				{#await data.posts}
-					<BlogListerLoading />
-				{:then posts}
-					{#if posts.length}
-						<BlogLister {posts} />
-					{:else}
-						<p class="text-lg">No posts yet.</p>
-					{/if}
-				{:catch}
-					<div role="status" class="alert alert-soft">
-						<span>The latest posts aren’t loading right now.</span>
-						<a href="/blog" class="btn btn-sm no-underline">Read them on the blog</a>
-					</div>
-				{/await}
+				{#if data.posts.length}
+					<BlogLister posts={data.posts} />
+				{:else}
+					<p class="text-lg">
+						No posts to show right now. <a href="/blog">Browse the blog</a>.
+					</p>
+				{/if}
 			</div>
 			<div class="wide">{@render more('/blog', 'More on the blog')}</div>
 		</Station>

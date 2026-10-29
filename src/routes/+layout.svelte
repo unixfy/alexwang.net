@@ -16,6 +16,12 @@
 
 	const pageTitle = $derived(page.error ? 'Error' : page.data.title || 'Welcome');
 	const description = $derived(page.data.description || "Alex Wang's portfolio site");
+	// one address per page; a blog archive's later pages are their own pages, a search is not
+	const canonical = $derived.by(() => {
+		const n = Number(page.url.searchParams.get('page'));
+		const paged = page.url.pathname.startsWith('/blog') && n > 1 ? `?page=${n}` : '';
+		return `https://alexwang.net${page.url.pathname === '/' ? '' : page.url.pathname}${paged}`;
+	});
 	const image = $derived(page.data.image || 'https://alexwang.net/og.png');
 
 	const calm = browser && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -48,7 +54,10 @@
 	<meta name="theme-color" content="#e5aee8" />
 
 	<meta property="og:type" content={page.data.ogType || 'website'} />
-	<meta property="og:url" content="https://alexwang.net{page.url.pathname}" />
+	<link rel="canonical" href={canonical} />
+	<meta property="og:url" content={canonical} />
+	<meta property="og:site_name" content="Alex Wang" />
+	<meta property="og:locale" content="en_US" />
 	<meta property="og:title" content="{pageTitle} | Alex Wang" />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={image} />
@@ -57,6 +66,10 @@
 		<meta property="og:image:height" content="630" />
 	{/if}
 	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="{pageTitle} | Alex Wang" />
+	<meta name="twitter:description" content={description} />
+	<meta name="twitter:image" content={image} />
+	<link rel="alternate" type="application/rss+xml" title="Alex Wang's blog" href="/blog/feed" />
 
 	{#if !dev && browser}
 		<link rel="manifest" href="/manifest.webmanifest" />

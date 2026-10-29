@@ -22,8 +22,7 @@ export async function load({ fetch, params, url }) {
 	return {
 		...data,
 		tag: found[0],
-		title: found[0].name,
-		description: found[0].description || `Posts filed under ${found[0].name}.`,
-		robots: data.page > 1 ? 'noindex, follow' : undefined
+		title: data.page > 1 ? `${found[0].name}, page ${data.page}` : found[0].name,
+		description: found[0].description || `Posts tagged “${found[0].name}”.`
 	};
 }
