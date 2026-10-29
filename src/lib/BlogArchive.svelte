@@ -167,7 +167,7 @@
 
 	{#if lead}
 		{@const external = !!lead.redirect_url}
-		<Station id="latest" title="Latest" line="writing" tight>
+		<Station id="latest" title="Latest" line="writing">
 			<a
 				href={external ? lead.redirect_url : `/blog/${lead.slug}`}
 				target={external ? '_blank' : undefined}
@@ -219,7 +219,6 @@
 				id={query ? 'results' : `y${label}`}
 				title={label}
 				line={lines[(i + (lead ? 1 : 0)) % 3]}
-				tight={i === 0 && !lead}
 				end={!more && !tagged && i === groups.length - 1}
 			>
 				<BlogCards posts={group} short={!query} />
