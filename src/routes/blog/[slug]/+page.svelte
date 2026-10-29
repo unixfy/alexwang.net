@@ -69,7 +69,7 @@
 		<div class="t-meta mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
 			<p>
 				<time datetime={post.date_published}>{fullDate(post.date_published)}</time>
-				· {data.minutes} min read
+				· {data.minutes} min ride
 			</p>
 			{#if category}
 				<a href="/blog/category/{category.slug}" class="kicker">{category.name}</a>

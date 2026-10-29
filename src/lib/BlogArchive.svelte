@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/state';
 	import BlogCards from '#lib/BlogCards.svelte';
+	import Network from '#lib/Network.svelte';
 	import Station from '#lib/Station.svelte';
 	import { asset } from '#lib/blog.js';
 	import { fullDate, year } from '#lib/date.js';
@@ -94,68 +95,82 @@
 <div class="line-page">
 	<span class="train" aria-hidden="true"></span>
 
-	<header class="station station-start terminus-page pb-6 pr-6 md:pr-12">
-		<span class="station-ring" aria-hidden="true"></span>
-		{#if trail.length}
-			<div class="breadcrumbs mb-1 text-base">
-				<ul>
-					{#each trail as crumb}
-						<li>
-							{#if crumb.href}<a href={crumb.href}>{crumb.label}</a>{:else}{crumb.label}{/if}
-						</li>
-					{/each}
-				</ul>
+	<Network
+		focus={1}
+		narrowAlpha={0.4}
+		starts={[
+			[0.68, 0.62],
+			[0.56, 0.44],
+			[0.76, 0.8]
+		]}
+		fade="bottom"
+	>
+		<header class="station station-start terminus-page pb-6 pr-6 md:pr-12">
+			<span class="station-ring" aria-hidden="true"></span>
+			<div data-calm class="w-fit">
+				{#if trail.length}
+					<div class="breadcrumbs mb-1 text-base">
+						<ul>
+							{#each trail as crumb}
+								<li>
+									{#if crumb.href}<a href={crumb.href}>{crumb.label}</a>{:else}{crumb.label}{/if}
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/if}
+				<h1 class="t-page text-brand-600 dark:text-brand-300">{heading}</h1>
+				{#if lede}
+					<p class="t-lede mt-3 max-w-prose">{lede}</p>
+				{/if}
 			</div>
-		{/if}
-		<h1 class="t-page text-brand-600 dark:text-brand-300">{heading}</h1>
-		{#if lede}
-			<p class="t-lede mt-3 max-w-prose">{lede}</p>
-		{/if}
 
-		<div class="mt-8 flex flex-wrap items-center justify-between gap-x-10 gap-y-5">
-			<nav
-				aria-label="Categories"
-				class="tabs tabs-border text-lg max-sm:-mr-6 max-sm:w-[calc(100%+1.5rem)] max-sm:flex-nowrap max-sm:overflow-x-auto"
-			>
-				<a
-					href="/blog"
-					class="tab whitespace-nowrap no-underline {active === '' && !query && !trail.length
-						? 'tab-active font-bold'
-						: ''}"
-					aria-current={active === '' && !query && !trail.length ? 'page' : undefined}>All posts</a
+			<div data-calm class="mt-8 flex flex-wrap items-center justify-between gap-x-10 gap-y-5">
+				<nav
+					aria-label="Categories"
+					class="tabs tabs-border text-lg max-sm:-mr-6 max-sm:w-[calc(100%+1.5rem)] max-sm:flex-nowrap max-sm:overflow-x-auto"
 				>
-				{#each data.categories as c}
 					<a
-						href="/blog/category/{c.slug}"
-						class="tab whitespace-nowrap no-underline {active === c.slug
+						href="/blog"
+						class="tab whitespace-nowrap no-underline {active === '' && !query && !trail.length
 							? 'tab-active font-bold'
 							: ''}"
-						aria-current={active === c.slug ? 'page' : undefined}>{c.name}</a
+						aria-current={active === '' && !query && !trail.length ? 'page' : undefined}
+						>All posts</a
 					>
-				{/each}
-			</nav>
-			<div class="flex w-full items-center gap-3 sm:w-auto">
-				<form action="/blog" method="get" role="search" class="join w-full sm:w-80">
-					<label class="input join-item w-full">
-						<i class="fa-solid fa-magnifying-glass opacity-60" aria-hidden="true"></i>
-						<span class="sr-only">Search the blog</span>
-						<input type="search" name="q" value={query} placeholder="Search the blog" />
-					</label>
-					<button class="btn btn-primary join-item">Search</button>
-				</form>
-				<!-- a feed is XML, not a page: it needs a real navigation, not the client router -->
-				<a
-					href="/blog/feed"
-					data-sveltekit-reload
-					class="btn btn-outline btn-square no-underline"
-					aria-label="RSS feed"
-					title="RSS feed"
-				>
-					<i class="fa-solid fa-rss" aria-hidden="true"></i>
-				</a>
+					{#each data.categories as c}
+						<a
+							href="/blog/category/{c.slug}"
+							class="tab whitespace-nowrap no-underline {active === c.slug
+								? 'tab-active font-bold'
+								: ''}"
+							aria-current={active === c.slug ? 'page' : undefined}>{c.name}</a
+						>
+					{/each}
+				</nav>
+				<div class="flex w-full items-center gap-3 sm:w-auto">
+					<form action="/blog" method="get" role="search" class="join w-full sm:w-80">
+						<label class="input join-item w-full">
+							<i class="fa-solid fa-magnifying-glass opacity-60" aria-hidden="true"></i>
+							<span class="sr-only">Search the blog</span>
+							<input type="search" name="q" value={query} placeholder="Search the blog" />
+						</label>
+						<button class="btn btn-primary join-item">Search</button>
+					</form>
+					<!-- a feed is XML, not a page: it needs a real navigation, not the client router -->
+					<a
+						href="/blog/feed"
+						data-sveltekit-reload
+						class="btn btn-outline btn-square no-underline"
+						aria-label="RSS feed"
+						title="RSS feed"
+					>
+						<i class="fa-solid fa-rss" aria-hidden="true"></i>
+					</a>
+				</div>
 			</div>
-		</div>
-	</header>
+		</header>
+	</Network>
 
 	{#if data.page > 1}
 		<div class="station pr-6 pb-2 md:pr-12">

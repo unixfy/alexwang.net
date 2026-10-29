@@ -297,8 +297,12 @@ function compile(gl, type, src) {
 /**
  * @param {HTMLElement} host
  * @param {HTMLCanvasElement} canvas
+ * @param {{ focus?: number, starts?: (number[] | null)[], narrowAlpha?: number }} [options] `focus` is the
+ *   door route (0 work, 1 writing, 2 contact) drawn at full strength, the others dimmed; `starts` places
+ *   door routes that have no `data-route-start` element, as fractions of the host's width and height;
+ *   `narrowAlpha` scales every line on narrow screens, for a map that should sit quietly behind text
  */
-export function startNetwork(host, canvas) {
+export function startNetwork(host, canvas, options = {}) {
 	const context = canvas.getContext('webgl2', {
 		alpha: true,
 		premultipliedAlpha: true,
@@ -386,9 +390,12 @@ export function startNetwork(host, canvas) {
 		canvas.height = Math.round(h * dpr);
 		gl.viewport(0, 0, canvas.width, canvas.height);
 
-		const starts = ['work', 'writing', 'contact'].map((name) => {
+		const starts = ['work', 'writing', 'contact'].map((name, i) => {
 			const el = host.querySelector(`[data-route-start="${name}"]`);
-			if (!el) return null;
+			if (!el) {
+				const at = options.starts?.[i];
+				return at ? [at[0] * w, at[1] * h] : null;
+			}
 			const r = el.getBoundingClientRect();
 			return [r.right - hr.left + (w < 700 ? 12 : 22), r.top + r.height / 2 - hr.top];
 		});
@@ -425,10 +432,7 @@ export function startNetwork(host, canvas) {
 			Array.from({ length: n }, (_, i) => a[i] ?? v);
 		gl.uniform1fv(u('uLen'), pad(net.routeLen, ROUTES, 1));
 		gl.uniform1fv(u('uHalf'), [3.5, 3.5, 3.5, 2.25, 2.25, 2.25]);
-		gl.uniform1fv(
-			u('uAlpha'),
-			[0.95, 0.95, 0.95, 0.5, 0.42, 0.42].map((v) => v * (dark ? 0.9 : 1))
-		);
+		gl.uniform1fv(u('uAlpha'), alphas());
 		gl.uniform1fv(u('uSpeed'), [210, 180, 160, 120, 100, 140]);
 		gl.uniform1fv(u('uPhase'), [0, 90, 40, 220, 300, 60]);
 		gl.uniform2f(u('uRes'), canvas.width, canvas.height);
@@ -442,9 +446,18 @@ export function startNetwork(host, canvas) {
 		gl.uniform3fv(u('uGround'), colors.ground);
 		gl.uniform3fv(u('uInk'), colors.ink);
 		gl.uniform1f(u('uDark'), dark);
-		gl.uniform1fv(
-			u('uAlpha'),
-			[0.95, 0.95, 0.95, 0.5, 0.42, 0.42].map((v) => v * (dark ? 0.9 : 1))
+		gl.uniform1fv(u('uAlpha'), alphas());
+	}
+
+	// the three door routes at full strength (or only the focused one), the quiet network behind them
+	function alphas() {
+		const quiet = w < 700 ? (options.narrowAlpha ?? 1) : 1;
+		return [0.95, 0.95, 0.95, 0.5, 0.42, 0.42].map(
+			(v, i) =>
+				v *
+				(dark ? 0.9 : 1) *
+				quiet *
+				(options.focus == null || i > 2 || i === options.focus ? 1 : 0.32)
 		);
 	}
 
