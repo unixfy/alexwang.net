@@ -109,7 +109,7 @@ export async function listPosts(directus, { page = 1, filter, search }) {
  */
 export function pageOf(url) {
 	const n = Number.parseInt(url.searchParams.get('page') ?? '1', 10);
-	return Number.isFinite(n) && n > 0 ? n : 1;
+	return Number.isFinite(n) && n > 0 ? Math.min(n, 1000) : 1;
 }
 
 /**

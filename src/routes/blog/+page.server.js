@@ -1,7 +1,7 @@
 import { archive } from '#lib/blog.js';
 
 export async function load({ fetch, url }) {
-	const q = url.searchParams.get('q')?.trim() ?? '';
+	const q = (url.searchParams.get('q') ?? '').trim().slice(0, 100);
 	const data = await archive(fetch, url, q ? { q } : {}, {
 		tags: { collection: 'tags', fields: ['name', 'slug'], sort: 'name', limit: -1 }
 	});

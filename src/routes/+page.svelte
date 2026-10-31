@@ -153,10 +153,16 @@
 				</div>
 				{#if hasPhoto}
 					<img
-						src="{cms}/{data.config.links_profile_picture}?format=webp&width=640"
+						src="{cms}/{data.config.links_profile_picture}?format=webp&width=600"
 						alt="Alex Wang"
 						fetchpriority="high"
 						decoding="async"
+						onerror={(e) => {
+							// the CMS only resizes to the sizes it allows; on a refusal, ask for the one that always works
+							const img = /** @type {HTMLImageElement} */ (e.currentTarget);
+							if (!img.src.endsWith('width=1200'))
+								img.src = `${cms}/${data.config.links_profile_picture}?format=webp&width=1200`;
+						}}
 						class="aspect-square w-40 sm:w-56 md:w-72 rounded-2xl object-cover bg-gray-200 dark:bg-gray-800 dark:brightness-90 md:order-last"
 					/>
 				{/if}

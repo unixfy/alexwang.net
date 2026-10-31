@@ -111,7 +111,11 @@ export async function load({ fetch, params }) {
 		older,
 		newer,
 		comments,
-		turnstileSiteKey: TURNSTILE_SITE_KEY ?? '',
+		// without all three settings nobody can post, so the form is replaced by a note
+		turnstileSiteKey:
+			TURNSTILE_SITE_KEY && TURNSTILE_SECRET_KEY && DIRECTUS_COMMENTS_TOKEN
+				? TURNSTILE_SITE_KEY
+				: '',
 		title: post.title,
 		description: post.seo_description || excerpt(post.excerpt, 200) || excerpt(body.html, 200),
 		image: asset(post.featured_image, 1200),
@@ -125,13 +129,19 @@ export const actions = {
 	// server holds a token that can create them (always as drafts, awaiting moderation).
 	async comment({ request, params, fetch, getClientAddress }) {
 		const form = await request.formData();
-		const text = (/** @type {string} */ key) => String(form.get(key) ?? '').trim();
+		// line endings as one character each, and no stray control characters
+		const text = (/** @type {string} */ key) =>
+			String(form.get(key) ?? '')
+				.replace(/\r\n?/g, '\n')
+				// eslint-disable-next-line no-control-regex
+				.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '')
+				.trim();
 
 		// a bot filled the hidden field: look like it worked
 		if (text('website')) return { sent: true };
 
 		const values = {
-			author_name: text('name'),
+			author_name: text('name').replace(/\s+/g, ' '),
 			author_email: text('email'),
 			content: text('content')
 		};
@@ -150,23 +160,46 @@ export const actions = {
 			return fail(400, { error: 'That comment is too long.', values });
 		}
 
+		if (!TURNSTILE_SECRET_KEY || !DIRECTUS_COMMENTS_TOKEN) {
+			console.error(
+				'Comments are not configured: TURNSTILE_SECRET_KEY or DIRECTUS_COMMENTS_TOKEN is missing'
+			);
+			return fail(503, { error: 'Comments can’t be posted right now.', values });
+		}
+
+		const token = text('cf-turnstile-response');
+		if (!token) {
+			return fail(400, {
+				error: 'The spam check didn’t run. Reload the page and try again.',
+				values
+			});
+		}
+		const check = new URLSearchParams({ secret: TURNSTILE_SECRET_KEY, response: token });
+		try {
+			check.set('remoteip', getClientAddress());
+		} catch {
+			// no client address here: the check works without it
+		}
 		const verdict = await fetch(VERIFY, {
 			method: 'POST',
-			body: new URLSearchParams({
-				secret: TURNSTILE_SECRET_KEY ?? '',
-				response: text('cf-turnstile-response'),
-				remoteip: getClientAddress()
-			})
+			body: check,
+			signal: AbortSignal.timeout(8000)
 		})
 			.then((res) => res.json())
 			.catch(() => null);
-		if (!verdict?.success) {
+		if (!verdict) {
+			return fail(503, {
+				error: 'The spam check couldn’t be reached. Please try again in a moment.',
+				values
+			});
+		}
+		if (!verdict.success) {
 			return fail(400, { error: 'The spam check didn’t pass. Please try again.', values });
 		}
 
 		try {
 			const directus = createDirectus('https://cms.alexwang.net', { globals: { fetch } })
-				.with(staticToken(DIRECTUS_COMMENTS_TOKEN ?? ''))
+				.with(staticToken(DIRECTUS_COMMENTS_TOKEN))
 				.with(rest());
 			const [post] = await directus.request(
 				readItems('posts', {
