@@ -1,21 +1,21 @@
-import getDirectusInstance from '#lib/directus.js';
-import { readItems } from '@directus/sdk';
 import { error } from '@sveltejs/kit';
 import { archive } from '#lib/blog.js';
 
 export async function load({ fetch, params, url }) {
-	const directus = getDirectusInstance(fetch);
-	const [found, data] = await Promise.all([
-		directus.request(
-			readItems('tags', {
+	const { found, ...data } = await archive(
+		fetch,
+		url,
+		{ tag: params.slug },
+		{
+			found: {
+				collection: 'tags',
 				fields: ['name', 'slug', 'description'],
 				filter: { slug: { _eq: params.slug } },
 				limit: 1
-			})
-		),
-		archive(fetch, directus, url, { tag: params.slug })
-	]);
-	if (found.length === 0) error(404, 'Tag not found');
+			}
+		}
+	);
+	if (!found?.length) error(404, 'Tag not found');
 
 	return {
 		...data,

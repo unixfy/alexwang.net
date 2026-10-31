@@ -2,6 +2,8 @@ import { readItems } from '@directus/sdk';
 import { error } from '@sveltejs/kit';
 import { excerpt } from '#lib/excerpt.js';
 import { render } from '#lib/editorjs.js';
+import getDirectusInstance from '#lib/directus.js';
+import { collections } from '#lib/cms.js';
 
 /** Posts on one page of an archive. */
 export const PER_PAGE = 10;
@@ -129,25 +131,34 @@ export async function fetchCards(fetch, { page = 1, q, category, tag } = {}) {
 }
 
 /**
- * The shared data of a blog archive page: its posts, the categories to move between, and a way to
- * the next and previous page.
+ * The shared data of a blog archive page, from the server: its posts, and in one query the categories
+ * to move between plus whatever else the page names (its tag list, the category it is about).
  * @param {typeof globalThis.fetch} fetch
- * @param {ReturnType<typeof import('#lib/directus.js').default>} directus
  * @param {URL} url
  * @param {{ q?: string, category?: string, tag?: string }} [scope]
+ * @param {Record<string, import('#lib/cms.js').Spec>} [extra]
+ * @returns {Promise<{ posts: any[], hasOlder: boolean, page: number, categories: any[], tags?: any[], found?: any[] }>}
  */
-export async function archive(fetch, directus, url, scope = {}) {
+export async function archive(fetch, url, scope = {}, extra = {}) {
 	const page = pageOf(url);
-	const [listing, categories] = await Promise.all([
-		fetchCards(fetch, { page, ...scope }),
-		directus
-			.request(
-				readItems('categories', { fields: ['name', 'slug'], sort: ['sort', 'name'], limit: -1 })
-			)
-			.catch(() => [])
+	const [listing, rows] = await Promise.all([
+		listPosts(getDirectusInstance(fetch), {
+			page,
+			filter: scopeFilter(scope),
+			...(scope.q ? { search: scope.q } : {})
+		}),
+		collections(fetch, {
+			categories: {
+				collection: 'categories',
+				fields: ['name', 'slug'],
+				sort: ['sort', 'name'],
+				limit: -1
+			},
+			...extra
+		})
 	]);
 	if (page > 1 && listing.posts.length === 0) error(404, 'No posts on this page');
-	return { ...listing, categories };
+	return /** @type {any} */ ({ ...listing, ...rows });
 }
 
 /**
