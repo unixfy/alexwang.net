@@ -30,7 +30,7 @@
 					{/if}
 				</span>
 				<span
-					class="t-item mt-5 block underline decoration-[var(--line)] decoration-2 underline-offset-4 transition-[text-decoration-thickness] group-hover:decoration-4"
+					class="t-item mt-4 block underline decoration-[var(--line)] decoration-2 underline-offset-4 transition-[text-decoration-thickness] group-hover:decoration-4"
 				>
 					{post.title}
 					<i
@@ -40,13 +40,13 @@
 						aria-hidden="true"
 					></i>
 				</span>
-				<span class="t-meta mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 tabular-nums">
+				<span class="t-meta mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 tabular-nums">
 					<span>{short ? monthDay(post.date_published) : fullDate(post.date_published)}</span>
 					{#if post.category}<span class="kicker">{post.category.name}</span>{/if}
 					<span>{post.minutes} min ride</span>
 				</span>
 				{#if post.excerpt}
-					<span class="mt-3 line-clamp-3 block text-lg text-gray-700 dark:text-gray-300">
+					<span class="mt-2 line-clamp-2 block text-gray-700 dark:text-gray-300">
 						{post.excerpt}
 					</span>
 				{/if}
@@ -56,10 +56,10 @@
 </ol>
 
 <style>
-	/* as many generous cards as the width allows */
+	/* same grid as the project tiles, so sections keep the same rhythm */
 	.post-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
-		gap: 3.5rem 2rem;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+		gap: 3rem 1.5rem;
 	}
 </style>
