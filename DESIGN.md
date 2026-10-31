@@ -215,7 +215,9 @@ On interior pages the three line colours cycle (Work, Writing, Contact, repeat) 
 - **Entry** (700 Archivo, 1.0625rem, 1.3): the same role one step down, for entries set in a grid (certifications, recognition).
 - **Lede** (400 Archivo, clamp(1.25rem, 1rem + 1.2vw, 1.875rem), 1.3): the tagline.
 - **Prose** (400 Public Sans, clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem), 1.65, max 65ch): long reading; at night letter-spacing 0.01em and line-height 1.75.
-- **Meta** (0.875rem, gray-600 / gray-300): dates, references. Every date on the home page is MM/YYYY with tabular numerals.
+- **Meta** (0.875rem, gray-600 / gray-300): dates, references, in tabular numerals. Every date on the home page is MM/YYYY.
+- **Label** (700, 0.875rem, 0.08em, uppercase): the small caps for names that are not headings: a post's category (`.kicker`), the rail's titles, table column heads. The one place text is uppercase.
+- **Headings inside CMS content** are set tight (1.2) whatever leading the body uses; an `h3` is Group-sized, an `h4` is body-sized and bold. Light-on-dark body text gets 0.01em tracking, as Prose does.
 
 ### Named Rules
 

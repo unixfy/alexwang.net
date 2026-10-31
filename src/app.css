@@ -333,10 +333,6 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
-		font-size: 0.875rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
 		text-decoration: none;
 		@apply text-gray-700 hover:text-gray-900;
 	}
@@ -380,6 +376,29 @@
 
 	.page-content-container > h2 {
 		@apply text-3xl font-display pt-4;
+	}
+
+	/* a heading is not a paragraph: set it tight whatever leading the page body uses */
+	.page-content-container :is(h2, h3, h4) {
+		line-height: 1.2;
+	}
+
+	.page-content-container > h3 {
+		@apply font-display;
+		font-size: 1.5rem;
+		font-weight: 700;
+		margin-top: 2rem;
+	}
+
+	.page-content-container > h4 {
+		font-weight: 700;
+		line-height: 1.3;
+		margin-top: 1.5rem;
+	}
+
+	/* light on dark reads thinner: open the reading text a little, as Prose does */
+	.dark .page-content-container :is(p, li, blockquote) {
+		letter-spacing: 0.01em;
 	}
 
 	/* CMS content: drop the empty blocks the editor leaves behind, and give lists room for their markers */
@@ -473,6 +492,17 @@
 
 	.t-meta {
 		@apply text-sm text-gray-600 dark:text-gray-300;
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* small caps for names of things that are not headings: rail titles, column heads, categories */
+	.t-label,
+	.kicker {
+		font-size: 0.875rem;
+		font-weight: 700;
+		line-height: 1.3;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
 	}
 
 	/* The home page is one line: a vertical trunk with stations (rings) hung off it */

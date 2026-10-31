@@ -46,6 +46,11 @@
 
 	// ---- the ride: the post's headings are its stops ----
 	const stops = $derived(data.headings);
+	// "· 11 min ride · 7 stops", one string for the same reason
+	const journey = $derived(
+		`· ${data.minutes} min ride` +
+			(stops.length ? ` · ${stops.length} ${stops.length === 1 ? 'stop' : 'stops'}` : '')
+	);
 	let passed = $state(0);
 	let arrived = $state(false);
 	let started = $state(false);
@@ -157,8 +162,7 @@
 		<div class="t-meta mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
 			<p>
 				<time datetime={post.date_published}>{fullDate(post.date_published)}</time>
-				· {data.minutes} min ride{#if stops.length}
-					· {stops.length} {stops.length === 1 ? 'stop' : 'stops'}{/if}
+				{journey}
 			</p>
 			{#if category}
 				<a href="/blog/category/{category.slug}" class="kicker">{category.name}</a>
@@ -203,13 +207,13 @@
 				<div class="sticky top-8 space-y-8">
 					{#if stops.length}
 						<nav aria-label="Ride route">
-							<p class="t-meta mb-3 font-bold uppercase tracking-wider">The ride</p>
+							<p class="t-label mb-3">The ride</p>
 							<RideRoute {stops} {at} />
 							<p class="t-meta mt-3 tabular-nums">{status}</p>
 						</nav>
 					{/if}
 					<nav aria-label="Around the blog">
-						<p class="t-meta mb-2 font-bold uppercase tracking-wider">The blog</p>
+						<p class="t-label mb-2">The blog</p>
 						<ul class="menu w-full p-0">
 							<li>
 								<a href="/blog"
@@ -240,7 +244,7 @@
 					</nav>
 					{#if post.tags.length}
 						<div>
-							<p class="t-meta mb-3 font-bold uppercase tracking-wider">Tagged</p>
+							<p class="t-label mb-3">Tagged</p>
 							{@render tagList()}
 						</div>
 					{/if}
