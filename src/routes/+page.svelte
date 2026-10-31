@@ -153,8 +153,10 @@
 				</div>
 				{#if hasPhoto}
 					<img
-						src="{cms}/{data.config.links_profile_picture}?format=webp&width=1200"
+						src="{cms}/{data.config.links_profile_picture}?format=webp&width=640"
 						alt="Alex Wang"
+						fetchpriority="high"
+						decoding="async"
 						class="aspect-square w-40 sm:w-56 md:w-72 rounded-2xl object-cover bg-gray-200 dark:bg-gray-800 dark:brightness-90 md:order-last"
 					/>
 				{/if}

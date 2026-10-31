@@ -182,6 +182,8 @@
 			<img
 				src={asset(post.featured_image, 1600)}
 				alt=""
+				fetchpriority="high"
+				decoding="async"
 				style="view-transition-name: b-{post.slug}"
 				class="mt-10 aspect-[2/1] max-h-[min(60vh,30rem)] w-full max-w-[90rem] rounded-xl object-cover dark:brightness-90"
 			/>
