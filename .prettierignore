@@ -20,3 +20,4 @@ yarn.lock
 coverage
 test-results
 playwright-report
+perf-results.json
