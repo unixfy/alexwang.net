@@ -136,10 +136,37 @@ function tableOf(table) {
 	return `<div class="table-scroll"><table>${head}<tbody>${body}</tbody></table></div>`;
 }
 
-/** @param {string} text */
+/**
+ * Whether a character code is whitespace, exactly as `\s` in a regular expression means it.
+ * @param {number} c
+ */
+const isSpace = (c) =>
+	c === 32 ||
+	(c >= 9 && c <= 13) ||
+	(c > 127 &&
+		(c === 0xa0 ||
+			c === 0x1680 ||
+			(c >= 0x2000 && c <= 0x200a) ||
+			c === 0x2028 ||
+			c === 0x2029 ||
+			c === 0x202f ||
+			c === 0x205f ||
+			c === 0x3000 ||
+			c === 0xfeff));
+
+/**
+ * How many runs of non-whitespace a text holds; the same count as splitting on `\s+`, without
+ * building an array of every word (this runs over whole posts for reading times).
+ * @param {string} text
+ */
 const wordsIn = (text) => {
 	let n = 0;
-	for (const w of text.split(/\s+/)) if (w) n++;
+	let inWord = false;
+	for (let i = 0; i < text.length; i++) {
+		const space = isSpace(text.charCodeAt(i));
+		if (!space && !inWord) n++;
+		inWord = !space;
+	}
 	return n;
 };
 
