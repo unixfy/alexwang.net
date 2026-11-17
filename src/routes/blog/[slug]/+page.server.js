@@ -44,7 +44,7 @@ export async function load({ fetch, params }) {
 	const post = /** @type {any} */ (found[0]);
 
 	// a stub that stands in for something published elsewhere
-	if (post.redirect_url) redirect(307, post.redirect_url);
+	if (post.redirect_url) redirect(307, post.redirect_url, { external: true });
 
 	const when = post.date_published;
 	const neighbour = (/** @type {'older' | 'newer'} */ which) =>
