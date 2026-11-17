@@ -31,14 +31,14 @@ export default defineConfig({
 		coverage: {
 			provider: 'v8',
 			include: ['src/**/*.{js,svelte}'],
-			reporter: ['text', 'html', 'json-summary', 'lcov'],
+			reporter: ['text', 'html', 'json', 'json-summary', 'lcov'],
 			thresholds: {
 				lines: 99,
 				statements: 99,
 				functions: 99,
-				// Svelte compiles every `{expression}` in markup to `expression ?? ''`, a branch that is never
-				// taken while data is present, so components are held to statements and lines; plain
-				// modules are held to their branches as well
+				// Svelte compiles every `{expression}` in markup to `expression ?? ''`, a branch v8 counts though
+				// the source has none; the raw figure is a floor, and tests/coverage/branches.js (run by
+				// `npm run test:coverage`) holds the branches written in the source to 99%
 				branches: 90,
 				'src/**/*.js': { lines: 99, statements: 99, functions: 99, branches: 99 }
 			}

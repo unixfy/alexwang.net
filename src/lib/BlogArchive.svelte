@@ -284,10 +284,10 @@
 		</div>
 	{/if}
 
-	{#if tagged}
+	{#if data.tags?.length}
 		<Station id="tags" title="Browse by tag" line="contact" end>
 			<ul class="flex max-w-5xl list-none flex-wrap gap-3 p-0">
-				{#each data.tags ?? [] as t}
+				{#each data.tags as t}
 					<li>
 						<a href="/blog/tag/{t.slug}" class="badge badge-lg badge-outline no-underline"
 							>{t.name}</a

@@ -98,6 +98,16 @@ describe('layout', () => {
 		expect(animate.mock.lastCall?.[1]).toMatchObject({ duration: 200 });
 	});
 
+	test('under reduced motion a new page appears without a fade', async () => {
+		browser.media.reduce = true;
+		render(Layout, { data: { config }, children: html('<p>first</p>') });
+		const animate = vi.mocked(Element.prototype.animate);
+		animate.mockClear();
+		page.url = new URL('https://alexwang.net/elsewhere');
+		await tick();
+		expect(animate.mock.calls.every((c) => c[1]?.duration === 0)).toBe(true);
+	});
+
 	test('a banner from the CMS', () => {
 		render(Layout, {
 			data: {

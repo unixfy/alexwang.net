@@ -29,7 +29,7 @@
 	onMount(() => {
 		const heads = [...content.querySelectorAll('h2')].filter((h) => h.textContent?.trim());
 		heads.forEach((h, i) => (h.id ||= `stop-${i + 1}`));
-		stops = heads.map((h) => ({ id: h.id, text: h.textContent?.trim() ?? '' }));
+		stops = heads.map((h) => ({ id: h.id, text: /** @type {string} */ (h.textContent).trim() }));
 		foldLists(content);
 		// headings stay put: their station rings sit on the trunk (a moving heading would trap the ring
 		// beneath the train) and the trunk's end is measured from them

@@ -12,7 +12,7 @@
 		"format": "prettier --write .",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"test:coverage": "vitest run --coverage",
+		"test:coverage": "vitest run --coverage && node tests/coverage/branches.js",
 		"test:system": "playwright test",
 		"test:perf": "node --expose-gc tests/perf/cpu.js"
 	},

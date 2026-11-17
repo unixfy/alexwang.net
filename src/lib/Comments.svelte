@@ -42,7 +42,8 @@
 
 	// replies sit under the comment they answer; a reply to a comment that is not visible stands alone
 	const threads = $derived.by(() => {
-		const all = comments ?? [];
+		// only read once there are comments to show
+		const all = /** @type {any[]} */ (comments);
 		const ids = new Set(all.map((c) => c.id));
 		/** @type {Map<string | null, any[]>} */
 		const kids = new Map();
@@ -115,7 +116,7 @@
 	function remember() {
 		try {
 			const value = (/** @type {string} */ id) =>
-				/** @type {HTMLInputElement | null} */ (document.getElementById(id))?.value ?? '';
+				/** @type {HTMLInputElement} */ (document.getElementById(id)).value;
 			localStorage.setItem(
 				'commenter',
 				JSON.stringify({ name: value('comment-name'), email: value('comment-email') })

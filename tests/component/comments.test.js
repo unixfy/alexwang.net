@@ -96,6 +96,16 @@ describe('the thread', () => {
 	});
 });
 
+test('replies that only answer each other show nothing rather than failing', () => {
+	const { container } = render(Comments, {
+		comments: [
+			{ id: 1, parent: 2, author_name: 'A', content: 'x', date_created: '2025-01-01' },
+			{ id: 2, parent: 1, author_name: 'B', content: 'y', date_created: '2025-01-02' }
+		]
+	});
+	expect(container.querySelector('[id^="comment-"]')).toBeNull();
+});
+
 describe('the form', () => {
 	test('a Turnstile that fails to load says so, and loads again next time', async () => {
 		const { unmount } = render(Comments, { comments: [], siteKey: 'key' });
