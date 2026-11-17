@@ -1,11 +1,17 @@
-import getDirectusInstance from '#lib/directus.js';
+import getDirectusInstance, { edgeCached } from '#lib/directus.js';
 import { readItems } from '@directus/sdk';
 import { ORIGIN, visible } from '#lib/blog.js';
 
 /** @param {string} s */
 const xml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
-export async function GET({ fetch }) {
+// Built once per data centre while its cache-control lasts.
+export function GET({ fetch, url }) {
+	return edgeCached(url.href, () => build(fetch));
+}
+
+/** @param {typeof globalThis.fetch} fetch */
+async function build(fetch) {
 	const directus = getDirectusInstance(fetch);
 	/** @param {string} collection @param {object} [query] */
 	const slugs = (collection, query = {}) =>
