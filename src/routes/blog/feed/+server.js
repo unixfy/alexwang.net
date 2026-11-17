@@ -48,7 +48,7 @@ ${categoriesOf(post)
 	.map((c) => `<category>${xml(c.name)}</category>`)
 	.join('\n')}
 <description>${cdata(post.excerpt || post.seo_description || '')}</description>
-<content:encoded>${cdata(render(post.content).html)}</content:encoded>
+<content:encoded>${cdata(render(post.content, { count: false }).html)}</content:encoded>
 </item>`;
 		})
 		.join('\n');

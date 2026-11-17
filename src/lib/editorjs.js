@@ -263,9 +263,11 @@ function blockHtml({ type, data }, state, onSection) {
 
 /**
  * @param {any} content an Editor.js document ({ blocks }) or its JSON text
+ * @param {{ count?: boolean }} [options] `count: false` skips counting words (and `words` is 0,
+ *   every heading's `before` too), for callers that only want the HTML, like the feed
  * @returns {{ html: string, headings: { id: string, text: string, before: number }[], words: number }}
  */
-export function render(content) {
+export function render(content, { count = true } = {}) {
 	/** @type {{ id: string, text: string, before: number }[]} */
 	const headings = [];
 	const state = { used: new Set(), sections: 0 };
@@ -273,7 +275,7 @@ export function render(content) {
 	const html = blocksOf(content)
 		.map((block) => {
 			const out = blockHtml(block, state, (id, text) => headings.push({ id, text, before: words }));
-			words += blockWords(block);
+			if (count) words += blockWords(block);
 			return out;
 		})
 		.join('\n');

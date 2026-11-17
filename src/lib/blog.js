@@ -84,22 +84,22 @@ export function toCard({ categories, excerpt: summary, seo_description, content,
  * One page of posts, newest first. Asks for one more than a page holds, which says whether an older
  * page exists without a second count request.
  * @param {ReturnType<typeof import('#lib/directus.js').default>} directus
- * @param {{ page?: number, filter?: object, search?: string }} options
+ * @param {{ page?: number, perPage?: number, filter?: object, search?: string }} options
  */
-export async function listPosts(directus, { page = 1, filter, search }) {
+export async function listPosts(directus, { page = 1, perPage = PER_PAGE, filter, search }) {
 	const rows = await directus.request(
 		readItems('posts', {
 			fields: CARD_FIELDS,
 			filter: filter ? { _and: [visible(), filter] } : visible(),
 			sort: ['-date_published'],
-			limit: PER_PAGE + 1,
-			offset: (page - 1) * PER_PAGE,
+			limit: perPage + 1,
+			offset: (page - 1) * perPage,
 			...(search ? { search } : {})
 		})
 	);
 	return {
-		posts: rows.slice(0, PER_PAGE).map(toCard),
-		hasOlder: rows.length > PER_PAGE,
+		posts: rows.slice(0, perPage).map(toCard),
+		hasOlder: rows.length > perPage,
 		page
 	};
 }

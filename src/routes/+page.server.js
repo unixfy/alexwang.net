@@ -55,8 +55,9 @@ export async function load({ fetch }) {
 			}
 		}),
 		// a failing blog leaves its section empty instead of failing the whole page
-		listPosts(getDirectusInstance(fetch), { page: 1 })
-			.then(({ posts }) => posts.slice(0, FEATURED))
+		// only as many as are shown: each post's whole body comes along, to count its reading time
+		listPosts(getDirectusInstance(fetch), { perPage: FEATURED })
+			.then(({ posts }) => posts)
 			.catch((/** @type {unknown} */ err) => {
 				console.error(`Directus posts unavailable: ${describe(err)}`);
 				return [];
