@@ -1,24 +1,27 @@
 /**
- * Format a CMS date in UTC (Directus stores dates without a zone).
- * @param {string | number | Date | null | undefined} value
+ * A formatter for CMS dates in UTC (Directus stores dates without a zone). Building an
+ * Intl.DateTimeFormat costs far more than using one, and a page formats dozens of dates, so each
+ * kind is built once, on first use, and kept.
  * @param {Intl.DateTimeFormatOptions} options
+ * @returns {(value: string | number | Date | null | undefined) => string}
  */
-function formatDate(value, options) {
-	if (!value) return '';
-	return new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', ...options }).format(new Date(value));
+function formatter(options) {
+	/** @type {Intl.DateTimeFormat | undefined} */
+	let format;
+	return (value) => {
+		if (!value) return '';
+		format ??= new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', ...options });
+		return format.format(new Date(value));
+	};
 }
 
-/** @param {string} d */
-export const year = (d) => formatDate(d, { year: 'numeric' });
+export const year = formatter({ year: 'numeric' });
 
-/** @param {string} d */
-export const monthYear = (d) => formatDate(d, { month: '2-digit', year: 'numeric' });
+export const monthYear = formatter({ month: '2-digit', year: 'numeric' });
 
-/** @param {string} d */
-export const monthDay = (d) => formatDate(d, { month: 'short', day: 'numeric' });
+export const monthDay = formatter({ month: 'short', day: 'numeric' });
 
-/** @param {string} d */
-export const fullDate = (d) => formatDate(d, { month: 'long', day: '2-digit', year: 'numeric' });
+export const fullDate = formatter({ month: 'long', day: '2-digit', year: 'numeric' });
 
 /**
  * A span like "06/2021 – Present"; a missing end date means it is ongoing. With no start date there

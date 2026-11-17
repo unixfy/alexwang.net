@@ -137,75 +137,170 @@ function tableOf(table) {
 }
 
 /**
- * @param {any} content an Editor.js document ({ blocks }) or its JSON text
- * @returns {{ html: string, headings: { id: string, text: string, before: number }[], words: number }}
+ * Whether a character code is whitespace, exactly as `\s` in a regular expression means it.
+ * @param {number} c
  */
-export function render(content) {
+const isSpace = (c) =>
+	c === 32 ||
+	(c >= 9 && c <= 13) ||
+	(c > 127 &&
+		(c === 0xa0 ||
+			c === 0x1680 ||
+			(c >= 0x2000 && c <= 0x200a) ||
+			c === 0x2028 ||
+			c === 0x2029 ||
+			c === 0x202f ||
+			c === 0x205f ||
+			c === 0x3000 ||
+			c === 0xfeff));
+
+/**
+ * How many runs of non-whitespace a text holds; the same count as splitting on `\s+`, without
+ * building an array of every word (this runs over whole posts for reading times).
+ * @param {string} text
+ */
+const wordsIn = (text) => {
+	let n = 0;
+	let inWord = false;
+	for (let i = 0; i < text.length; i++) {
+		const space = isSpace(text.charCodeAt(i));
+		if (!space && !inWord) n++;
+		inWord = !space;
+	}
+	return n;
+};
+
+/**
+ * An Editor.js document from the CMS, which sends it as an object or as its JSON text.
+ * @param {any} content
+ * @returns {{ type: string, data: any }[]}
+ */
+function blocksOf(content) {
 	let doc = content;
 	if (typeof doc === 'string') {
 		try {
 			doc = JSON.parse(doc);
 		} catch {
-			return { html: '', headings: [], words: 0 };
+			return [];
 		}
 	}
-	const blocks = /** @type {{ type: string, data: any }[]} */ (doc?.blocks ?? []);
+	return doc?.blocks ?? [];
+}
+
+/**
+ * The words a reader reads in a block: paragraphs, lists and quotes (headings are not counted).
+ * @param {{ type: string, data: any }} block
+ */
+function blockWords({ type, data }) {
+	switch (type) {
+		case 'paragraph':
+		case 'quote':
+			return wordsIn(plain(data?.text ?? ''));
+		case 'list':
+		case 'nestedlist':
+			// counted over the items' JSON, as the reading times always have been
+			return wordsIn(plain(JSON.stringify(data?.items ?? [])));
+		default:
+			return 0;
+	}
+}
+
+/**
+ * One block as HTML. Headings get an id unique in `state.used`, and second-level ones are counted
+ * and reported to `onSection` with that id and their text.
+ * @param {{ type: string, data: any }} block
+ * @param {{ used: Set<string>, sections: number }} state
+ * @param {(id: string, text: string) => void} [onSection]
+ */
+function blockHtml({ type, data }, state, onSection) {
+	switch (type) {
+		case 'paragraph':
+			// the editor leaves blank paragraphs (nbsp, br) between blocks; they are spacing, not content
+			return plain(data.text ?? '')
+				.replace(/\u00a0/g, '')
+				.trim()
+				? `<p>${inline(data.text)}</p>`
+				: '';
+		case 'header': {
+			const level = Math.min(6, Math.max(2, Number(data.level) || 2));
+			const label = plain(data.text ?? '');
+			if (!label) return '';
+			let id = slugify(label) || `section-${state.sections + 1}`;
+			while (state.used.has(id)) id += '-2';
+			state.used.add(id);
+			if (level === 2) {
+				state.sections++;
+				onSection?.(id, label);
+			}
+			return `<h${level} id="${id}">${inline(data.text)}</h${level}>`;
+		}
+		case 'list':
+		case 'nestedlist':
+			return list(data.items, data.style === 'ordered' ? 'ol' : 'ul');
+		case 'checklist':
+			return `<ul class="checklist">${(data.items ?? [])
+				.map(
+					(/** @type {any} */ i) =>
+						`<li><input type="checkbox" disabled${i.checked ? ' checked' : ''} aria-label="${i.checked ? 'Done' : 'Not done'}"> ${inline(i.text)}</li>`
+				)
+				.join('')}</ul>`;
+		case 'quote':
+			return `<blockquote><p>${inline(data.text)}</p>${data.caption ? `<cite>${inline(data.caption)}</cite>` : ''}</blockquote>`;
+		case 'code':
+			return `<pre><code>${esc(data.code ?? '')}</code></pre>`;
+		case 'image':
+			return image(data);
+		case 'delimiter':
+			return '<hr>';
+		case 'table':
+			return tableOf(data);
+		case 'raw':
+			return data.html ?? '';
+		default:
+			return '';
+	}
+}
+
+/**
+ * @param {any} content an Editor.js document ({ blocks }) or its JSON text
+ * @param {{ count?: boolean }} [options] `count: false` skips counting words (and `words` is 0,
+ *   every heading's `before` too), for callers that only want the HTML, like the feed
+ * @returns {{ html: string, headings: { id: string, text: string, before: number }[], words: number }}
+ */
+export function render(content, { count = true } = {}) {
 	/** @type {{ id: string, text: string, before: number }[]} */
 	const headings = [];
-	const used = new Set();
-	let text = '';
-	const wordsSoFar = () => text.split(/\s+/).filter(Boolean).length;
-
-	const html = blocks
-		.map(({ type, data }) => {
-			switch (type) {
-				case 'paragraph':
-					text += ` ${plain(data.text ?? '')}`;
-					// the editor leaves blank paragraphs (nbsp, br) between blocks; they are spacing, not content
-					return plain(data.text ?? '')
-						.replace(/\u00a0/g, '')
-						.trim()
-						? `<p>${inline(data.text)}</p>`
-						: '';
-				case 'header': {
-					const level = Math.min(6, Math.max(2, Number(data.level) || 2));
-					const label = plain(data.text ?? '');
-					if (!label) return '';
-					let id = slugify(label) || `section-${headings.length + 1}`;
-					while (used.has(id)) id += '-2';
-					used.add(id);
-					if (level === 2) headings.push({ id, text: label, before: wordsSoFar() });
-					return `<h${level} id="${id}">${inline(data.text)}</h${level}>`;
-				}
-				case 'list':
-				case 'nestedlist':
-					text += ` ${plain(JSON.stringify(data.items ?? []))}`;
-					return list(data.items, data.style === 'ordered' ? 'ol' : 'ul');
-				case 'checklist':
-					return `<ul class="checklist">${(data.items ?? [])
-						.map(
-							(/** @type {any} */ i) =>
-								`<li><input type="checkbox" disabled${i.checked ? ' checked' : ''} aria-label="${i.checked ? 'Done' : 'Not done'}"> ${inline(i.text)}</li>`
-						)
-						.join('')}</ul>`;
-				case 'quote':
-					text += ` ${plain(data.text ?? '')}`;
-					return `<blockquote><p>${inline(data.text)}</p>${data.caption ? `<cite>${inline(data.caption)}</cite>` : ''}</blockquote>`;
-				case 'code':
-					return `<pre><code>${esc(data.code ?? '')}</code></pre>`;
-				case 'image':
-					return image(data);
-				case 'delimiter':
-					return '<hr>';
-				case 'table':
-					return tableOf(data);
-				case 'raw':
-					return data.html ?? '';
-				default:
-					return '';
-			}
+	const state = { used: new Set(), sections: 0 };
+	let words = 0;
+	const html = blocksOf(content)
+		.map((block) => {
+			const out = blockHtml(block, state, (id, text) => headings.push({ id, text, before: words }));
+			if (count) words += blockWords(block);
+			return out;
 		})
 		.join('\n');
+	return { html, headings, words };
+}
 
-	return { html, headings, words: text.split(/\s+/).filter(Boolean).length };
+/**
+ * What a post card needs from a body, without rendering all of it: its word count, and the HTML of
+ * its opening blocks, enough to hold `chars` characters of text (none when `chars` is 0).
+ * @param {any} content an Editor.js document ({ blocks }) or its JSON text
+ * @param {number} chars
+ */
+export function summarize(content, chars) {
+	const blocks = blocksOf(content);
+	const state = { used: new Set(), sections: 0 };
+	const lead = [];
+	let words = 0;
+	let length = 0;
+	for (const block of blocks) {
+		words += blockWords(block);
+		if (chars > 0 && length <= chars) {
+			const html = blockHtml(block, state);
+			lead.push(html);
+			length += html.replace(/<[^>]*>/g, '').length;
+		}
+	}
+	return { lead: lead.join('\n'), words };
 }

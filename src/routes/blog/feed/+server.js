@@ -1,4 +1,4 @@
-import getDirectusInstance from '#lib/directus.js';
+import getDirectusInstance, { edgeCached } from '#lib/directus.js';
 import { readItems } from '@directus/sdk';
 import { ORIGIN, visible, categoriesOf } from '#lib/blog.js';
 import { render } from '#lib/editorjs.js';
@@ -8,7 +8,14 @@ const xml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, 
 /** @param {string} s */
 const cdata = (s) => `<![CDATA[${s.replace(/]]>/g, ']]]]><![CDATA[>')}]]>`;
 
-export async function GET({ fetch }) {
+// The feed renders twenty whole posts, so it is built once per data centre while its cache-control
+// lasts, not on every poll by a reader.
+export function GET({ fetch, url }) {
+	return edgeCached(url.href, () => build(fetch));
+}
+
+/** @param {typeof globalThis.fetch} fetch */
+async function build(fetch) {
 	const posts = await getDirectusInstance(fetch).request(
 		readItems('posts', {
 			fields: [
@@ -25,7 +32,8 @@ export async function GET({ fetch }) {
 			],
 			filter: visible(),
 			sort: ['-date_published'],
-			limit: 20
+			// ten whole posts: each is rendered in full, and the feed must fit a Free-plan CPU budget
+			limit: 10
 		})
 	);
 
@@ -41,7 +49,7 @@ ${categoriesOf(post)
 	.map((c) => `<category>${xml(c.name)}</category>`)
 	.join('\n')}
 <description>${cdata(post.excerpt || post.seo_description || '')}</description>
-<content:encoded>${cdata(render(post.content).html)}</content:encoded>
+<content:encoded>${cdata(render(post.content, { count: false }).html)}</content:encoded>
 </item>`;
 		})
 		.join('\n');

@@ -5,8 +5,49 @@ const ORIGIN = 'https://cms.alexwang.net';
 /** How long a CMS answer is reused, in seconds. Edits show up within this long. */
 const TTL = 60;
 
+/** How many answers this server instance keeps in memory, oldest dropped first. */
+const MEMORY_MAX = 200;
+
 /** Answers already fetched by this server instance, newest per request. */
 const memory = new Map();
+
+/**
+ * Keep an answer in memory. Expired answers are dropped first, then the oldest past MEMORY_MAX, so
+ * an instance that lives for hours (and sees many different searches) doesn't grow without end;
+ * a growing heap costs garbage collection time, which counts against the Worker's CPU limit.
+ * @param {string} key
+ * @param {{ at: number, status: number, text: string }} entry
+ */
+function remember(key, entry) {
+	memory.delete(key);
+	memory.set(key, entry);
+	for (const [k, e] of memory) {
+		if (memory.size <= MEMORY_MAX && entry.at - e.at < TTL * 1000) break;
+		memory.delete(k);
+	}
+}
+
+/** The edge's cache, shared by every instance in the data centre; absent in development. */
+const edgeCache = () =>
+	/** @type {Cache | undefined} */ (/** @type {any} */ (globalThis.caches)?.default);
+
+/**
+ * A whole response kept in the edge's cache under `key` (normally the request's URL) for as long as
+ * its own cache-control allows, so expensive pages (the feed, the sitemap) are built once per data
+ * centre rather than on every request. Only successful responses are kept.
+ * @param {string} key
+ * @param {() => Promise<Response>} make
+ * @returns {Promise<Response>}
+ */
+export async function edgeCached(key, make) {
+	const edge = import.meta.env.DEV ? undefined : edgeCache();
+	const hit = await edge?.match(key).catch(() => undefined);
+	// a copy, since a cached response's headers can't be changed and SvelteKit may add to them
+	if (hit) return new Response(hit.body, hit);
+	const res = await make();
+	if (res.status === 200 && edge) await edge.put(key, res.clone()).catch(() => {});
+	return res;
+}
 /** Requests on their way, so two pages asking for the same thing share one trip. */
 const flying = new Map();
 
@@ -35,14 +76,16 @@ export function cachedFetch(fetch) {
 
 		const key = query ? `${url}?q=${await digest(String(init?.body))}` : url;
 		const now = Date.now();
+		// searches are many and rarely repeated: they are left to the edge's cache
+		const keep = !/[?&]search=/.test(url);
 		const fresh = memory.get(key);
 		if (fresh && now - fresh.at < TTL * 1000) return reply(fresh);
 
-		const edge = /** @type {Cache | undefined} */ (/** @type {any} */ (globalThis.caches)?.default);
+		const edge = edgeCache();
 		const stored = await edge?.match(key).catch(() => undefined);
 		if (stored) {
 			const entry = { at: now, status: stored.status, text: await stored.text() };
-			memory.set(key, entry);
+			if (keep) remember(key, entry);
 			return reply(entry);
 		}
 
@@ -53,7 +96,7 @@ export function cachedFetch(fetch) {
 				const text = await res.text();
 				const entry = { at: Date.now(), status: res.status, text };
 				if (res.ok) {
-					memory.set(key, entry);
+					if (keep) remember(key, entry);
 					await edge
 						?.put(
 							key,
