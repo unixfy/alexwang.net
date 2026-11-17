@@ -2,6 +2,7 @@
 	import { darkmode } from '../stores';
 	import { page } from '$app/state';
 	import { tick } from 'svelte';
+	import { prefersReducedMotion } from 'svelte/motion';
 
 	let open = $state(false);
 	/** @type {HTMLElement | undefined} */
@@ -26,7 +27,7 @@
 
 	const toggleDarkMode = () => {
 		const flip = () => ($darkmode = !$darkmode);
-		if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		if (!document.startViewTransition || prefersReducedMotion.current) {
 			return flip();
 		}
 		document.startViewTransition(async () => {

@@ -1,31 +1,18 @@
 import { createDirectus, rest } from '@directus/sdk';
+import { LRUCache } from 'lru-cache';
 
 const ORIGIN = 'https://cms.alexwang.net';
 
 /** How long a CMS answer is reused, in seconds. Edits show up within this long. */
 const TTL = 60;
 
-/** How many answers this server instance keeps in memory, oldest dropped first. */
-const MEMORY_MAX = 200;
-
-/** Answers already fetched by this server instance, newest per request. */
-const memory = new Map();
-
 /**
- * Keep an answer in memory. Expired answers are dropped first, then the oldest past MEMORY_MAX, so
- * an instance that lives for hours (and sees many different searches) doesn't grow without end;
- * a growing heap costs garbage collection time, which counts against the Worker's CPU limit.
- * @param {string} key
- * @param {{ at: number, status: number, text: string }} entry
+ * Answers already fetched by this server instance. Bounded, so an instance that lives for hours (and
+ * sees many different searches) doesn't grow without end: a growing heap costs garbage collection
+ * time, which counts against the Worker's CPU limit.
+ * @type {LRUCache<string, { status: number, text: string }>}
  */
-function remember(key, entry) {
-	memory.delete(key);
-	memory.set(key, entry);
-	for (const [k, e] of memory) {
-		if (memory.size <= MEMORY_MAX && entry.at - e.at < TTL * 1000) break;
-		memory.delete(k);
-	}
-}
+const memory = new LRUCache({ max: 200, ttl: TTL * 1000 });
 
 /** The edge's cache, shared by every instance in the data centre; absent in development. */
 const edgeCache = () =>
@@ -75,17 +62,16 @@ export function cachedFetch(fetch) {
 		if ((method !== 'GET' && !query) || !url.startsWith(ORIGIN)) return fetch(input, init);
 
 		const key = query ? `${url}?q=${await digest(String(init?.body))}` : url;
-		const now = Date.now();
 		// searches are many and rarely repeated: they are left to the edge's cache
 		const keep = !/[?&]search=/.test(url);
 		const fresh = memory.get(key);
-		if (fresh && now - fresh.at < TTL * 1000) return reply(fresh);
+		if (fresh) return reply(fresh);
 
 		const edge = edgeCache();
 		const stored = await edge?.match(key).catch(() => undefined);
 		if (stored) {
-			const entry = { at: now, status: stored.status, text: await stored.text() };
-			if (keep) remember(key, entry);
+			const entry = { status: stored.status, text: await stored.text() };
+			if (keep) memory.set(key, entry);
 			return reply(entry);
 		}
 
@@ -94,9 +80,9 @@ export function cachedFetch(fetch) {
 			trip = (async () => {
 				const res = await fetch(input, init);
 				const text = await res.text();
-				const entry = { at: Date.now(), status: res.status, text };
+				const entry = { status: res.status, text };
 				if (res.ok) {
-					if (keep) remember(key, entry);
+					if (keep) memory.set(key, entry);
 					await edge
 						?.put(
 							key,

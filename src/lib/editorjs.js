@@ -1,4 +1,4 @@
-import { decodeEntities } from '#lib/entities.js';
+import { decodeHTML } from 'entities';
 
 // Renders the post body, which the CMS stores as Editor.js blocks, to HTML. Inline text may carry
 // the editor's own markup (links, bold, code...) and is cut down to an allowlist; the "raw" block is
@@ -51,7 +51,7 @@ export function inline(html) {
 
 /** @param {string} text */
 // plain text from editor HTML, with entities turned back into characters ("&amp;" into "&")
-const plain = (text) => decodeEntities(text.replace(/<[^>]*>/g, '')).trim();
+const plain = (text) => decodeHTML(text.replace(/<[^>]*>/g, '')).trim();
 
 /** @param {string} text */
 export const slugify = (text) =>

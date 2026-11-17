@@ -114,24 +114,6 @@ export function pageOf(url) {
 }
 
 /**
- * A page of post cards from the blog's own endpoint. The endpoint reads each body on the server to
- * build a summary; asking it, rather than the CMS, keeps those bodies out of the page's HTML, which
- * SvelteKit would otherwise inline for hydration.
- * @param {typeof globalThis.fetch} fetch
- * @param {{ page?: number, q?: string, category?: string, tag?: string }} [scope]
- * @returns {Promise<{ posts: any[], hasOlder: boolean, page: number }>}
- */
-export async function fetchCards(fetch, { page = 1, q, category, tag } = {}) {
-	const params = new URLSearchParams({ page: String(page) });
-	if (q) params.set('q', q);
-	if (category) params.set('category', category);
-	if (tag) params.set('tag', tag);
-	const res = await fetch(`/blog/posts.json?${params}`);
-	if (!res.ok) throw new Error(`Blog request failed (${res.status})`);
-	return res.json();
-}
-
-/**
  * The shared data of a blog archive page, from the server: its posts, and in one query the categories
  * to move between plus whatever else the page names (its tag list, the category it is about).
  * @param {typeof globalThis.fetch} fetch

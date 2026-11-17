@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { animate } from 'motion';
+	import { prefersReducedMotion } from 'svelte/motion';
 	import { goto } from '$app/navigation';
 	import Station from '#lib/Station.svelte';
 	import Stop from '#lib/Stop.svelte';
@@ -123,7 +124,7 @@
 		if (!atEnd || pulsed) return;
 		pulsed = true;
 		const ring = document.querySelector('#next .station-ring');
-		if (ring && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		if (ring && !prefersReducedMotion.current) {
 			animate(ring, { scale: [1, 1.7, 1] }, { duration: 0.8, ease: [0.16, 1, 0.3, 1] });
 		}
 	});
