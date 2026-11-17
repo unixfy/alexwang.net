@@ -32,7 +32,8 @@ async function build(fetch) {
 			],
 			filter: visible(),
 			sort: ['-date_published'],
-			limit: 20
+			// ten whole posts: each is rendered in full, and the feed must fit a Free-plan CPU budget
+			limit: 10
 		})
 	);
 
