@@ -17,7 +17,7 @@ yarn.lock
 .impeccable
 
 # Test output
-coverage
-test-results
-playwright-report
-perf-results.json
+/coverage
+/test-results
+/playwright-report
+/perf-results.json

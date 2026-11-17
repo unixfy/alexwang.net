@@ -7,7 +7,7 @@ node_modules
 .env.*
 !.env.example
 .wrangler
-coverage
-test-results
-playwright-report
-perf-results.json
+/coverage
+/test-results
+/playwright-report
+/perf-results.json
