@@ -1,6 +1,9 @@
 name: Tests
 
 # Every commit on every branch, and every pull request, is checked before it can reach the site.
+# A pull request from a branch in this repository was already tested when that branch was pushed,
+# and the push run's checks show on the pull request, so each job skips the second, identical run;
+# pull requests from forks, whose pushes run nothing here, are tested on the pull_request event.
 on:
   push:
     branches: ['**']
@@ -20,6 +23,7 @@ env:
 jobs:
   check:
     name: Types and formatting
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -34,6 +38,7 @@ jobs:
 
   unit:
     name: Unit, component and integration tests (coverage)
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -62,6 +67,7 @@ jobs:
 
   system:
     name: System tests (Playwright)
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -84,6 +90,7 @@ jobs:
 
   performance:
     name: CPU budget (Cloudflare Free plan, 10 ms)
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
