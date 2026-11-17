@@ -1,7 +1,7 @@
 import { readItems } from '@directus/sdk';
 import { error } from '@sveltejs/kit';
 import { excerpt } from '#lib/excerpt.js';
-import { render } from '#lib/editorjs.js';
+import { summarize } from '#lib/editorjs.js';
 import getDirectusInstance from '#lib/directus.js';
 import { collections } from '#lib/cms.js';
 
@@ -69,11 +69,12 @@ export const readingMinutes = (words) => Math.max(1, Math.round(words / 220));
  */
 export function toCard({ categories, excerpt: summary, seo_description, content, ...post }) {
 	const cats = categoriesOf({ categories });
-	const body = render(content);
+	// only the body's opening blocks are rendered, for the excerpt; the rest is only counted
+	const body = summarize(content, summary || seo_description ? 0 : 220);
 	return {
 		...post,
 		// the editor's summary, then the SEO description, then the opening words of the body
-		excerpt: excerpt(summary || seo_description || body.html, 220),
+		excerpt: excerpt(summary || seo_description || body.lead, 220),
 		category: cats[0] ?? null,
 		minutes: readingMinutes(body.words)
 	};
