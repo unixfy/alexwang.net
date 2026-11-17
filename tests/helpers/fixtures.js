@@ -1,24 +1,55 @@
 // A small, realistic CMS: enough of every collection for each page to render all of its parts.
 
 const paragraph = (/** @type {string} */ text) => ({ type: 'paragraph', data: { text } });
-const header = (/** @type {string} */ text, level = 2) => ({ type: 'header', data: { text, level } });
+const header = (/** @type {string} */ text, level = 2) => ({
+	type: 'header',
+	data: { text, level }
+});
 
 /** An Editor.js body of roughly `words` words, with headings, lists, a table, code and an image. */
 export function body(words = 600) {
-	const sentence = 'The train left the station on time & the passengers watched the city slide by. ';
+	const sentence =
+		'The train left the station on time & the passengers watched the city slide by. ';
 	const per = sentence.split(' ').length - 1;
 	const paras = Math.max(1, Math.round(words / per / 3));
 	return {
 		time: 0,
 		blocks: [
-			paragraph(`Opening words with <b>bold</b>, <a href="https://example.com">a link</a> and <code>code</code>.`),
+			paragraph(
+				`Opening words with <b>bold</b>, <a href="https://example.com">a link</a> and <code>code</code>.`
+			),
 			header('Getting started'),
 			...Array.from({ length: paras }, () => paragraph(sentence.repeat(3))),
-			{ type: 'list', data: { style: 'unordered', items: [{ content: 'One', items: [] }, { content: 'Two', items: [{ content: 'Two-a', items: [] }] }] } },
+			{
+				type: 'list',
+				data: {
+					style: 'unordered',
+					items: [
+						{ content: 'One', items: [] },
+						{ content: 'Two', items: [{ content: 'Two-a', items: [] }] }
+					]
+				}
+			},
 			header('Details'),
-			{ type: 'table', data: { withHeadings: true, content: [['Item', 'Cost'], ['Fare', '$2'], ['Total', '$2']] } },
+			{
+				type: 'table',
+				data: {
+					withHeadings: true,
+					content: [
+						['Item', 'Cost'],
+						['Fare', '$2'],
+						['Total', '$2']
+					]
+				}
+			},
 			{ type: 'code', data: { code: 'const x = 1 < 2;' } },
-			{ type: 'image', data: { file: { url: 'https://cms.alexwang.net/assets/abc-123', width: 2000, height: 1000 }, caption: 'A <i>train</i>' } },
+			{
+				type: 'image',
+				data: {
+					file: { url: 'https://cms.alexwang.net/assets/abc-123', width: 2000, height: 1000 },
+					caption: 'A <i>train</i>'
+				}
+			},
 			header('Wrapping up'),
 			...Array.from({ length: paras }, () => paragraph(sentence.repeat(3))),
 			{ type: 'quote', data: { text: 'All aboard', caption: 'Conductor' } },
@@ -81,27 +112,128 @@ export function fixtures() {
 			categories,
 			tags,
 			comments: [
-				{ id: 1, parent: null, author_name: 'Ada', content: 'Great post', date_created: '2025-12-29T00:00:00', post: 1 },
-				{ id: 2, parent: 1, author_name: 'Grace', content: 'Agreed', date_created: '2025-12-30T00:00:00', post: 1 },
-				{ id: 3, parent: 99, author_name: 'Linus', content: 'Orphan', date_created: '2025-12-31T00:00:00', post: 1 }
+				{
+					id: 1,
+					parent: null,
+					author_name: 'Ada',
+					content: 'Great post',
+					date_created: '2025-12-29T00:00:00',
+					post: 1
+				},
+				{
+					id: 2,
+					parent: 1,
+					author_name: 'Grace',
+					content: 'Agreed',
+					date_created: '2025-12-30T00:00:00',
+					post: 1
+				},
+				{
+					id: 3,
+					parent: 99,
+					author_name: 'Linus',
+					content: 'Orphan',
+					date_created: '2025-12-31T00:00:00',
+					post: 1
+				}
 			],
 			pages: [
-				{ title: 'Now', subtitle: '<p>What I am doing</p>', slug: 'now', date_updated: '2025-11-01T00:00:00', status: 'published', content_html: '<h2>Work</h2><p>Busy.</p><ul>' + '<li>item</li>'.repeat(14) + '</ul><h2>Play</h2><p>Trains.</p>' },
-				{ title: 'What I Like', subtitle: null, slug: 'i-like', date_updated: '2025-10-01T00:00:00', status: 'published', content_html: '<p>No headings here.</p>' }
+				{
+					title: 'Now',
+					subtitle: '<p>What I am doing</p>',
+					slug: 'now',
+					date_updated: '2025-11-01T00:00:00',
+					status: 'published',
+					content_html:
+						'<h2>Work</h2><p>Busy.</p><ul>' +
+						'<li>item</li>'.repeat(14) +
+						'</ul><h2>Play</h2><p>Trains.</p>'
+				},
+				{
+					title: 'What I Like',
+					subtitle: null,
+					slug: 'i-like',
+					date_updated: '2025-10-01T00:00:00',
+					status: 'published',
+					content_html: '<p>No headings here.</p>'
+				}
 			],
 			projects: [
-				{ title: 'Transit map', slug: 'transit-map', image: 'p1', start_date: '2024-01-01', end_date: null, url: 'https://www.example.com/map', content_html: '<p>A map of <b>everything</b>.</p>', status: 'published' },
-				{ title: 'Home lab', slug: 'home-lab', image: null, start_date: '2022-03-01', end_date: '2023-06-01', url: null, content_html: '<p>Servers in a closet.</p>', status: 'published' },
-				{ title: 'Old site', slug: 'old-site', image: 'p3', start_date: null, end_date: '2020-01-01', url: 'not a url', content_html: null, status: 'published' }
+				{
+					title: 'Transit map',
+					slug: 'transit-map',
+					image: 'p1',
+					start_date: '2024-01-01',
+					end_date: null,
+					url: 'https://www.example.com/map',
+					content_html: '<p>A map of <b>everything</b>.</p>',
+					status: 'published'
+				},
+				{
+					title: 'Home lab',
+					slug: 'home-lab',
+					image: null,
+					start_date: '2022-03-01',
+					end_date: '2023-06-01',
+					url: null,
+					content_html: '<p>Servers in a closet.</p>',
+					status: 'published'
+				},
+				{
+					title: 'Old site',
+					slug: 'old-site',
+					image: 'p3',
+					start_date: null,
+					end_date: '2020-01-01',
+					url: 'not a url',
+					content_html: null,
+					status: 'published'
+				}
 			],
-			certifications: [{ name: 'Cert', reference: 'ABC', date: '2024-05-01', image: 'c1', url: 'https://cert.example' }],
-			socials: [{ name: 'GitHub', color: '#000', url: 'https://github.com/example', icon: 'fa-github' }],
-			recognitions: [{ name: 'Award', image: 'r1', description: '<p>For trains</p>', date: '2023-01-01' }],
+			certifications: [
+				{
+					name: 'Cert',
+					reference: 'ABC',
+					date: '2024-05-01',
+					image: 'c1',
+					url: 'https://cert.example'
+				}
+			],
+			socials: [
+				{ name: 'GitHub', color: '#000', url: 'https://github.com/example', icon: 'fa-github' }
+			],
+			recognitions: [
+				{ name: 'Award', image: 'r1', description: '<p>For trains</p>', date: '2023-01-01' }
+			],
 			employments: [
-				{ start_date: '2023-01-01', end_date: null, title: 'Engineer', employer_name: 'Rail Co', employer_url: 'https://rail.example', location: 'Remote', description: '<p>Built trains.</p>' },
-				{ start_date: '2020-01-01', end_date: '2022-12-01', title: 'Intern', employer_name: 'Bus Co', employer_url: null, location: null, description: null }
+				{
+					start_date: '2023-01-01',
+					end_date: null,
+					title: 'Engineer',
+					employer_name: 'Rail Co',
+					employer_url: 'https://rail.example',
+					location: 'Remote',
+					description: '<p>Built trains.</p>'
+				},
+				{
+					start_date: '2020-01-01',
+					end_date: '2022-12-01',
+					title: 'Intern',
+					employer_name: 'Bus Co',
+					employer_url: null,
+					location: null,
+					description: null
+				}
 			],
-			educations: [{ start_date: '2016-09-01', end_date: '2020-06-01', institution_name: 'University', degree_name: 'BSc', description: '<p>Studied.</p>' }],
+			educations: [
+				{
+					start_date: '2016-09-01',
+					end_date: '2020-06-01',
+					institution_name: 'University',
+					degree_name: 'BSc',
+					description: '<p>Studied.</p>'
+				}
+			],
 			links: [
 				{ title: 'Website', url: 'https://alexwang.net', icon: 'fa-globe' },
 				{ title: 'Blog', url: 'https://alexwang.net/blog', icon: null }

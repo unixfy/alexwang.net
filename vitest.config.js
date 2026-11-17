@@ -32,7 +32,16 @@ export default defineConfig({
 			provider: 'v8',
 			include: ['src/**/*.{js,svelte}'],
 			reporter: ['text', 'html', 'json-summary', 'lcov'],
-			thresholds: { lines: 99, statements: 99, functions: 99, branches: 95 }
+			thresholds: {
+				lines: 99,
+				statements: 99,
+				functions: 99,
+				// Svelte compiles every `{expression}` in markup to `expression ?? ''`, a branch that is never
+				// taken while data is present, so components are held to statements and lines; plain
+				// modules are held to their branches as well
+				branches: 90,
+				'src/**/*.js': { lines: 99, statements: 99, functions: 99, branches: 99 }
+			}
 		}
 	}
 });

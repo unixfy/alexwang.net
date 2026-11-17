@@ -99,7 +99,9 @@ describe('home', () => {
 			'home-lab',
 			'old-site'
 		]);
-		expect(data.projects[0]).toEqual(expect.objectContaining({ excerpt: 'A map of everything.', image: 'p1' }));
+		expect(data.projects[0]).toEqual(
+			expect.objectContaining({ excerpt: 'A map of everything.', image: 'p1' })
+		);
 		expect(data.projects[0]).not.toHaveProperty('content_html');
 		expect(data.projects[2].excerpt).toBe('');
 		for (const k of ['certifications', 'socials', 'recognitions', 'employments', 'educations'])
@@ -125,7 +127,7 @@ describe('blog archives', () => {
 	});
 
 	test('later pages and searches are titled; searches are not indexed', async () => {
-		expect((/** @type {any} */ (await blog.load(ev('/blog?page=2')))).title).toBe('Blog, page 2');
+		expect(/** @type {any} */ (await blog.load(ev('/blog?page=2'))).title).toBe('Blog, page 2');
 		const long = 'x'.repeat(150);
 		const search = /** @type {any} */ (await blog.load(ev(`/blog?q=%20${long}%20`)));
 		expect(search.q).toBe('x'.repeat(100));
@@ -136,12 +138,16 @@ describe('blog archives', () => {
 	});
 
 	test('a category page', async () => {
-		const data = /** @type {any} */ (await category.load(ev('/blog/category/technology', { slug: 'technology' })));
+		const data = /** @type {any} */ (
+			await category.load(ev('/blog/category/technology', { slug: 'technology' }))
+		);
 		expect(data.category.name).toBe('Technology');
 		expect(data.title).toBe('Technology');
 		expect(data.description).toBe('Servers and code.');
 		expect(data).not.toHaveProperty('found');
-		const travel = /** @type {any} */ (await category.load(ev('/blog/category/travel?page=2', { slug: 'travel' })));
+		const travel = /** @type {any} */ (
+			await category.load(ev('/blog/category/travel?page=2', { slug: 'travel' }))
+		);
 		expect(travel.title).toBe('Travel, page 2');
 		expect(travel.description).toBe('Posts filed under Travel.');
 	});
@@ -156,7 +162,9 @@ describe('blog archives', () => {
 		const data = /** @type {any} */ (await tag.load(ev('/blog/tag/rail', { slug: 'rail' })));
 		expect(data.tag.name).toBe('Rail');
 		expect(data.description).toBe('Trains.');
-		const linux = /** @type {any} */ (await tag.load(ev('/blog/tag/linux?page=2', { slug: 'linux' })));
+		const linux = /** @type {any} */ (
+			await tag.load(ev('/blog/tag/linux?page=2', { slug: 'linux' }))
+		);
 		expect(linux.title).toBe('Linux, page 2');
 		expect(linux.description).toBe('Posts tagged “Linux”.');
 		const e = await thrown(() => tag.load(ev('/blog/tag/nope', { slug: 'nope' })));
@@ -164,7 +172,9 @@ describe('blog archives', () => {
 	});
 
 	test('posts.json: a page of cards for the infinite scroll', async () => {
-		const res = await postsJson.GET(ev('/blog/posts.json?page=2&category=technology&tag=rail&q=%20post%20'));
+		const res = await postsJson.GET(
+			ev('/blog/posts.json?page=2&category=technology&tag=rail&q=%20post%20')
+		);
 		expect(res.headers.get('cache-control')).toBe('public, max-age=60');
 		const body = await res.json();
 		expect(body.page).toBe(2);
@@ -182,7 +192,7 @@ describe('feed', () => {
 		const posts = cms.state.collections.posts;
 		posts[0].title = 'Trains & <buses>';
 		posts[0].excerpt = 'A ]]> trap';
-		posts[1].date_published = null;
+		posts[1].date_published = '2026-01-01T00:00:00'; // newest, so it is in the ten
 		const res = await feed.GET(ev('/blog/feed'));
 		expect(res.headers.get('content-type')).toBe('application/rss+xml; charset=utf-8');
 		expect(res.headers.get('cache-control')).toBe('public, max-age=900');
@@ -195,8 +205,16 @@ describe('feed', () => {
 		expect(xml).toContain('<category>Technology</category>');
 		expect(xml).toContain('<content:encoded><![CDATA[<p>Opening words');
 		expect(xml).toMatch(/<pubDate>\w{3}, \d{2} \w{3} 2025/);
-		// a post without a date has no pubDate, and one without any summary has an empty description
+		// a post without any summary has an empty description
 		expect(xml).toContain('<description><![CDATA[]]></description>');
+	});
+
+	test('a post without a date has no pubDate', async () => {
+		cms.state.collections.posts = cms.state.collections.posts.slice(0, 2);
+		cms.state.collections.posts[1].date_published = null;
+		const xml = await (await feed.GET(ev('/blog/feed'))).text();
+		expect(xml.match(/<item>/g)).toHaveLength(2);
+		expect(xml.match(/<pubDate>/g)).toHaveLength(1);
 	});
 });
 
@@ -206,9 +224,19 @@ describe('sitemap', () => {
 		const res = await sitemap.GET(ev('/sitemap.xml'));
 		expect(res.headers.get('content-type')).toBe('application/xml; charset=utf-8');
 		const xml = await res.text();
-		for (const loc of ['/', '/projects', '/blog', '/now', '/project/home-lab', '/blog/category/travel', '/blog/tag/rail'])
+		for (const loc of [
+			'/',
+			'/projects',
+			'/blog',
+			'/now',
+			'/project/home-lab',
+			'/blog/category/travel',
+			'/blog/tag/rail'
+		])
 			expect(xml).toContain(`<loc>https://alexwang.net${loc}</loc>`);
-		expect(xml).toContain('<url><loc>https://alexwang.net/blog/post-1</loc><lastmod>2025-12-28</lastmod></url>');
+		expect(xml).toContain(
+			'<url><loc>https://alexwang.net/blog/post-1</loc><lastmod>2025-12-28</lastmod></url>'
+		);
 		expect(xml).toContain('<url><loc>https://alexwang.net/blog/post-3</loc></url>');
 		expect(xml).not.toContain('/blog/post-6<'); // redirect stub
 		expect(xml).not.toContain('/blog/post-7<'); // noindex
@@ -233,10 +261,18 @@ describe('a post', () => {
 		const data = /** @type {any} */ (await load('post-2'));
 		expect(data.title).toBe('Post number 2 & friends');
 		expect(data.post).not.toHaveProperty('content');
-		expect(data.post.categories[0]).toMatchObject({ is_primary: true, name: 'Travel', slug: 'travel' });
+		expect(data.post.categories[0]).toMatchObject({
+			is_primary: true,
+			name: 'Travel',
+			slug: 'travel'
+		});
 		expect(data.post.tags).toMatchObject([{ name: 'Linux', slug: 'linux' }]);
 		expect(data.body).toContain('<h2 id="getting-started">Getting started</h2>');
-		expect(data.headings.map((/** @type {any} */ h) => h.id)).toEqual(['getting-started', 'details', 'wrapping-up']);
+		expect(data.headings.map((/** @type {any} */ h) => h.id)).toEqual([
+			'getting-started',
+			'details',
+			'wrapping-up'
+		]);
 		expect(data.words).toBeGreaterThan(400);
 		expect(data.minutes).toBe(Math.max(1, Math.round(data.words / 220)));
 		expect(data.older.slug).toBe('post-3');
@@ -257,7 +293,7 @@ describe('a post', () => {
 		expect(data.newer).toBeNull();
 
 		cms.state.fail.add('comments');
-		expect((/** @type {any} */ (await load('post-1'))).comments).toBeNull();
+		expect(/** @type {any} */ (await load('post-1')).comments).toBeNull();
 		expect(errors).toHaveBeenCalledWith('Directus comments unavailable: comments is unavailable');
 	});
 
@@ -278,13 +314,24 @@ describe('a post', () => {
 	test('the description falls back to the body', async () => {
 		cms.state.collections.posts[2].seo_description = null;
 		cms.state.collections.posts[2].excerpt = null;
-		expect((/** @type {any} */ (await load('post-3'))).description).toMatch(/^Opening words with bold, a link and code\./);
+		expect(/** @type {any} */ (await load('post-3')).description).toMatch(
+			/^Opening words with bold, a link and code\./
+		);
 	});
 
 	test('robots settings are joined', async () => {
-		Object.assign(cms.state.collections.posts[1], { seo_noindex: true, seo_nofollow: true, seo_noarchive: true });
-		expect((/** @type {any} */ (await load('post-2'))).robots).toBe('noindex, nofollow, noarchive');
-		Object.assign(cms.state.collections.posts[1], { seo_noindex: false, seo_nofollow: true, seo_noarchive: false, tags: undefined });
+		Object.assign(cms.state.collections.posts[1], {
+			seo_noindex: true,
+			seo_nofollow: true,
+			seo_noarchive: true
+		});
+		expect(/** @type {any} */ (await load('post-2')).robots).toBe('noindex, nofollow, noarchive');
+		Object.assign(cms.state.collections.posts[1], {
+			seo_noindex: false,
+			seo_nofollow: true,
+			seo_noarchive: false,
+			tags: undefined
+		});
 		const data = /** @type {any} */ (await load('post-2'));
 		expect(data.robots).toBe('nofollow');
 		expect(data.post.tags).toEqual([]);
@@ -292,7 +339,7 @@ describe('a post', () => {
 
 	test('without every comment setting the form is replaced by a note', async () => {
 		env.DIRECTUS_COMMENTS_TOKEN = undefined;
-		expect((/** @type {any} */ (await load('post-2'))).turnstileSiteKey).toBe('');
+		expect(/** @type {any} */ (await load('post-2')).turnstileSiteKey).toBe('');
 	});
 
 	test('a missing post is a 404; a stub redirects', async () => {
@@ -333,7 +380,9 @@ describe('posting a comment', () => {
 
 	test('a good comment is checked and saved as a draft', async () => {
 		expect(await send(good)).toEqual({ sent: true });
-		const verify = cms.state.calls.find((c) => c.url.startsWith('https://challenges.cloudflare.com/'));
+		const verify = cms.state.calls.find((c) =>
+			c.url.startsWith('https://challenges.cloudflare.com/')
+		);
 		expect(Object.fromEntries(new URLSearchParams(verify?.body))).toEqual({
 			secret: 'secret',
 			response: 'tok',
@@ -356,7 +405,9 @@ describe('posting a comment', () => {
 
 	test('the Turnstile check is sent as a URL-encoded body', async () => {
 		await send(good);
-		const verify = cms.state.calls.find((c) => c.url.startsWith('https://challenges.cloudflare.com/'));
+		const verify = cms.state.calls.find((c) =>
+			c.url.startsWith('https://challenges.cloudflare.com/')
+		);
 		expect(verify?.method).toBe('POST');
 	});
 
@@ -406,7 +457,9 @@ describe('posting a comment', () => {
 	});
 
 	test('limits are inclusive', async () => {
-		expect(await send({ ...good, name: 'n'.repeat(100), content: 'c'.repeat(5000) })).toEqual({ sent: true });
+		expect(await send({ ...good, name: 'n'.repeat(100), content: 'c'.repeat(5000) })).toEqual({
+			sent: true
+		});
 	});
 
 	test.each([['TURNSTILE_SECRET_KEY'], ['DIRECTUS_COMMENTS_TOKEN']])(
@@ -493,16 +546,20 @@ describe('other pages', () => {
 		cms.state.collections.projects[1].content_html = `<p>${'word '.repeat(60)}</p>`;
 		const data = /** @type {any} */ (await projects.load(ev('/projects')));
 		expect(data.title).toBe('Projects');
-		expect(data.projects.map((/** @type {any} */ p) => p.slug)).toEqual(['transit-map', 'home-lab', 'old-site']);
+		expect(data.projects.map((/** @type {any} */ p) => p.slug)).toEqual([
+			'transit-map',
+			'home-lab',
+			'old-site'
+		]);
 		expect(data.projects[1].excerpt.length).toBeLessThanOrEqual(151);
 		expect(data.projects[1].excerpt.endsWith('…')).toBe(true);
 	});
 
 	test('a project knows its place on the line', async () => {
-		const mid = /** @type {any} */ (await project.load(ev('/project/home-lab', { project: 'home-lab' })));
-		expect(mid).toEqual(
-			expect.objectContaining({ index: 1, total: 3, title: 'Home lab' })
+		const mid = /** @type {any} */ (
+			await project.load(ev('/project/home-lab', { project: 'home-lab' }))
 		);
+		expect(mid).toEqual(expect.objectContaining({ index: 1, total: 3, title: 'Home lab' }));
 		expect(mid.prev.slug).toBe('transit-map');
 		expect(mid.next.slug).toBe('old-site');
 		expect(mid.route).toEqual([
@@ -510,9 +567,13 @@ describe('other pages', () => {
 			{ slug: 'home-lab', title: 'Home lab' },
 			{ slug: 'old-site', title: 'Old site' }
 		]);
-		const first = /** @type {any} */ (await project.load(ev('/project/transit-map', { project: 'transit-map' })));
+		const first = /** @type {any} */ (
+			await project.load(ev('/project/transit-map', { project: 'transit-map' }))
+		);
 		expect([first.prev, first.next.slug]).toEqual([null, 'home-lab']);
-		const last = /** @type {any} */ (await project.load(ev('/project/old-site', { project: 'old-site' })));
+		const last = /** @type {any} */ (
+			await project.load(ev('/project/old-site', { project: 'old-site' }))
+		);
 		expect([last.prev.slug, last.next]).toEqual(['home-lab', null]);
 	});
 
@@ -529,7 +590,9 @@ describe('other pages', () => {
 				{ state: real.state }
 			)
 		);
-		const data = /** @type {any} */ (await project.load(ev('/project/home-lab', { project: 'home-lab' })));
+		const data = /** @type {any} */ (
+			await project.load(ev('/project/home-lab', { project: 'home-lab' }))
+		);
 		expect([data.index, data.prev, data.next]).toEqual([-1, null, null]);
 	});
 
@@ -548,7 +611,7 @@ describe('other pages', () => {
 
 	test('a lone CMS page has no next page', async () => {
 		cms.state.collections.pages = [cms.state.collections.pages[0]];
-		expect((/** @type {any} */ (await cmsPage.load(ev('/now', { slug: 'now' })))).next).toBeNull();
+		expect(/** @type {any} */ (await cmsPage.load(ev('/now', { slug: 'now' }))).next).toBeNull();
 	});
 
 	test('an unknown CMS page is a 404', async () => {
@@ -569,7 +632,7 @@ describe('other pages', () => {
 				{ state: real.state }
 			)
 		);
-		expect((/** @type {any} */ (await cmsPage.load(ev('/now', { slug: 'now' })))).next).toBeNull();
+		expect(/** @type {any} */ (await cmsPage.load(ev('/now', { slug: 'now' }))).next).toBeNull();
 	});
 
 	test('the SSH key page', async () => {

@@ -69,6 +69,7 @@
 			}
 		].filter((g) => g.show)
 	);
+	const group = $derived(Object.fromEntries(groups.map((g) => [g.id, g])));
 
 	// shortcuts for the rail on the right; the same sections the page is made of
 	const stops = $derived(
@@ -98,13 +99,8 @@
 		'group flex items-baseline gap-4 py-4 no-underline text-gray-900 dark:text-white hover:text-gray-900 dark:hover:text-white';
 </script>
 
-{#snippet more(/** @type {string} */ href, /** @type {string} */ label, external = false)}
-	<a
-		{href}
-		class={row}
-		target={external ? '_blank' : undefined}
-		rel={external ? 'noopener' : undefined}
-	>
+{#snippet more(/** @type {string} */ href, /** @type {string} */ label)}
+	<a {href} class={row}>
 		<span class="t-item group-hover:underline underline-offset-4">
 			{label}
 			<i
@@ -115,27 +111,24 @@
 	</a>
 {/snippet}
 
+<!-- the heads are only rendered for groups that are shown -->
 {#snippet foldHead(/** @type {string} */ id)}
-	{@const g = groups.find((x) => x.id === id)}
-	{#if g}
-		<summary
-			class="t-group group-head flex w-fit max-w-4xl cursor-pointer list-none items-baseline gap-3 underline-offset-4 hover:underline [&::-webkit-details-marker]:hidden"
-		>
-			{g.label}
-			<span class="t-meta font-normal tabular-nums">{g.count}</span>
-			<i
-				class="fa-solid fa-chevron-down self-center text-sm text-gray-500 transition-transform group-open:rotate-180 motion-reduce:transition-none dark:text-gray-400"
-				aria-hidden="true"
-			></i>
-		</summary>
-	{/if}
+	<summary
+		class="t-group group-head flex w-fit max-w-4xl cursor-pointer list-none items-baseline gap-3 underline-offset-4 hover:underline [&::-webkit-details-marker]:hidden"
+	>
+		{group[id].label}
+		<span class="t-meta font-normal tabular-nums">{group[id].count}</span>
+		<i
+			class="fa-solid fa-chevron-down self-center text-sm text-gray-500 transition-transform group-open:rotate-180 motion-reduce:transition-none dark:text-gray-400"
+			aria-hidden="true"
+		></i>
+	</summary>
 {/snippet}
 
 {#snippet groupHead(/** @type {string} */ id)}
-	{@const g = groups.find((x) => x.id === id)}
-	{#if g}
-		<h3 {id} class="t-group group-head scroll-mt-8 mt-20 first-of-type:mt-0 mb-8">{g.label}</h3>
-	{/if}
+	<h3 {id} class="t-group group-head scroll-mt-8 mt-20 first-of-type:mt-0 mb-8">
+		{group[id].label}
+	</h3>
 {/snippet}
 
 <div class="line-page bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">

@@ -282,7 +282,8 @@ export function startTower(host, canvas, ids, lines, onActive, subs = []) {
 		const yaw = 0.3 + (reduced ? 0 : Math.sin(t * 0.4) * 0.06) + (overall - 0.5) * 0.9 + lean;
 		tower.rotation.set(TILT, yaw, 0, 'XYZ');
 
-		const top = lit.userData.top ?? 0;
+		// set by layout(), which always runs before the first frame
+		const top = lit.userData.top;
 		const litLen = Math.max(0.001, top - trainY);
 		lit.scale.y = litLen;
 		lit.position.y = top - litLen / 2;
@@ -303,7 +304,7 @@ export function startTower(host, canvas, ids, lines, onActive, subs = []) {
 		});
 
 		// pulses fall from the top of the line and disappear at the train
-		const length = top - (lit.userData.bottom ?? 0);
+		const length = top - lit.userData.bottom;
 		pulses.forEach((m, k) => {
 			if (reduced) {
 				m.visible = false;

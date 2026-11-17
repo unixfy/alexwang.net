@@ -26,9 +26,7 @@ describe('inline', () => {
 	});
 
 	test('other tags and stray brackets are shown as text', () => {
-		expect(inline('<script>alert("x")</script>')).toBe(
-			'&lt;script&gt;alert("x")&lt;/script&gt;'
-		);
+		expect(inline('<script>alert("x")</script>')).toBe('&lt;script&gt;alert("x")&lt;/script&gt;');
 		expect(inline('<img src=x onerror="y">')).toBe('&lt;img src=x onerror=&quot;y&quot;&gt;');
 		expect(inline('1 < 2 and <3')).toBe('1 &lt; 2 and &lt;3');
 	});
@@ -166,7 +164,9 @@ describe('render: blocks', () => {
 		expect(html({ type: 'quote', data: { text: 'Go', caption: 'Me' } })).toBe(
 			'<blockquote><p>Go</p><cite>Me</cite></blockquote>'
 		);
-		expect(html({ type: 'quote', data: { text: 'Go' } })).toBe('<blockquote><p>Go</p></blockquote>');
+		expect(html({ type: 'quote', data: { text: 'Go' } })).toBe(
+			'<blockquote><p>Go</p></blockquote>'
+		);
 	});
 
 	test('code is escaped', () => {
@@ -208,7 +208,9 @@ describe('render: images', () => {
 				type: 'image',
 				data: { file: { url: 'https://cms.alexwang.net/assets/x', width: 800, height: 600 } }
 			})
-		).toContain('src="https://cms.alexwang.net/assets/x?format=webp&amp;width=800" alt="" width="800" height="600"');
+		).toContain(
+			'src="https://cms.alexwang.net/assets/x?format=webp&amp;width=800" alt="" width="800" height="600"'
+		);
 		const unsized = html({
 			type: 'image',
 			data: { file: { url: 'https://cms.alexwang.net/assets/x', width: 0, height: 'x' } }
@@ -295,13 +297,29 @@ describe('render: word counts', () => {
 		// lists are counted over their JSON, as reading times always have been: ["six","seven"] is one
 		// run of non-space, and so is an empty list's [] (3 + 2 + 1 + 1)
 		expect(r.words).toBe(7);
-		expect(r.headings).toEqual([{ id: 'not-counted-at-all', text: 'Not counted at all', before: 3 }]);
+		expect(r.headings).toEqual([
+			{ id: 'not-counted-at-all', text: 'Not counted at all', before: 3 }
+		]);
 	});
 
 	test('every kind of Unicode whitespace separates words, as \\s does', () => {
 		const spaces = [
-			' ', '\t', '\n', '\v', '\f', '\r', ' ', ' ', ' ', ' ',
-			' ', ' ', ' ', ' ', '　', '﻿'
+			' ',
+			'\t',
+			'\n',
+			'\v',
+			'\f',
+			'\r',
+			' ',
+			' ',
+			' ',
+			' ',
+			' ',
+			' ',
+			' ',
+			' ',
+			'　',
+			'﻿'
 		];
 		const text = spaces.map((s, i) => `w${i}${s}`).join('');
 		expect(render(doc({ type: 'paragraph', data: { text } })).words).toBe(spaces.length);
@@ -334,7 +352,10 @@ describe('summarize', () => {
 
 	test('renders opening blocks until the text holds enough characters', () => {
 		expect(summarize(d, 5)).toEqual({ lead: '<p>aaaa bbbb</p>', words: 5 });
-		expect(summarize(d, 9)).toEqual({ lead: '<p>aaaa bbbb</p>\n<h2 id="head">Head</h2>', words: 5 });
+		expect(summarize(d, 9)).toEqual({
+			lead: '<p>aaaa bbbb</p>\n<h2 id="head">Head</h2>',
+			words: 5
+		});
 		expect(summarize(JSON.stringify(d), 1000).lead.split('\n')).toHaveLength(4);
 	});
 

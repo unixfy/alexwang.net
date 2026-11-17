@@ -15,3 +15,8 @@ yarn.lock
 # Local tooling, not part of the site
 .claude
 .impeccable
+
+# Test output
+coverage
+test-results
+playwright-report

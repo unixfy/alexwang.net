@@ -22,7 +22,10 @@ describe('collections', () => {
 	test('asks for every spec in one GraphQL query', async () => {
 		const cms = fakeCms({
 			collections: {
-				projects: [{ slug: 'a', image: 'img1' }, { slug: 'b', image: null }],
+				projects: [
+					{ slug: 'a', image: 'img1' },
+					{ slug: 'b', image: null }
+				],
 				pages: [{ slug: 'x' }]
 			}
 		});
@@ -55,7 +58,9 @@ describe('collections', () => {
 
 	test('a section absent from the answer is empty', async () => {
 		const cms = vi.fn(async () => Response.json({ data: {} }));
-		expect(await collections(/** @type {any} */ (cms), { a: { collection: 'a', fields: ['id'] } })).toEqual({ a: [] });
+		expect(
+			await collections(/** @type {any} */ (cms), { a: { collection: 'a', fields: ['id'] } })
+		).toEqual({ a: [] });
 	});
 
 	test.each([
@@ -70,7 +75,13 @@ describe('collections', () => {
 		const fetch = (/** @type {any} */ input, /** @type {any} */ init) =>
 			String(input).endsWith('/graphql') ? graphql() : rest(input, init);
 		const out = await collections(fetch, {
-			links: { collection: 'links', fields: ['title'], sort: 'sort', limit: 5, filter: { a: { _eq: 1 } } },
+			links: {
+				collection: 'links',
+				fields: ['title'],
+				sort: 'sort',
+				limit: 5,
+				filter: { a: { _eq: 1 } }
+			},
 			socials: { collection: 'socials', fields: ['name'] }
 		});
 		expect(out).toEqual({ links: [{ title: 'L' }], socials: [] });
@@ -78,7 +89,9 @@ describe('collections', () => {
 		const [links, socials] = rest.state.calls.map((c) => new URL(c.url));
 		expect(links.searchParams.get('sort')).toBe('sort');
 		expect(links.searchParams.get('limit')).toBe('5');
-		expect(JSON.parse(/** @type {string} */ (links.searchParams.get('filter')))).toEqual({ a: { _eq: 1 } });
+		expect(JSON.parse(/** @type {string} */ (links.searchParams.get('filter')))).toEqual({
+			a: { _eq: 1 }
+		});
 		expect(socials.searchParams.has('sort')).toBe(false);
 		expect(socials.searchParams.has('limit')).toBe(false);
 		expect(socials.searchParams.has('filter')).toBe(false);
@@ -86,13 +99,19 @@ describe('collections', () => {
 
 	test('one broken collection leaves only itself empty', async () => {
 		const error = quiet();
-		const cms = fakeCms({ graphql: false, fail: new Set(['socials']), collections: { links: [{ t: 1 }] } });
+		const cms = fakeCms({
+			graphql: false,
+			fail: new Set(['socials']),
+			collections: { links: [{ t: 1 }] }
+		});
 		const out = await collections(cms, {
 			links: { collection: 'links', fields: ['t'] },
 			socials: { collection: 'socials', fields: ['t'] }
 		});
 		expect(out).toEqual({ links: [{ t: 1 }], socials: [] });
-		expect(error.mock.calls.at(-1)?.[0]).toBe('Directus socials unavailable: socials is unavailable');
+		expect(error.mock.calls.at(-1)?.[0]).toBe(
+			'Directus socials unavailable: socials is unavailable'
+		);
 	});
 
 	test('a required collection that fails fails the whole call', async () => {
@@ -147,9 +166,19 @@ describe('blog helpers', () => {
 
 	test('toCard: summary, then SEO description, then the body', () => {
 		const content = { blocks: [{ type: 'paragraph', data: { text: 'Body &amp; words here' } }] };
-		const base = { title: 'T', slug: 's', categories: [{ is_primary: true, categories_id: { name: 'C', slug: 'c' } }] };
+		const base = {
+			title: 'T',
+			slug: 's',
+			categories: [{ is_primary: true, categories_id: { name: 'C', slug: 'c' } }]
+		};
 		const a = toCard({ ...base, excerpt: '<p>Mine</p>', seo_description: 'SEO', content });
-		expect(a).toEqual({ title: 'T', slug: 's', excerpt: 'Mine', category: { is_primary: true, name: 'C', slug: 'c' }, minutes: 1 });
+		expect(a).toEqual({
+			title: 'T',
+			slug: 's',
+			excerpt: 'Mine',
+			category: { is_primary: true, name: 'C', slug: 'c' },
+			minutes: 1
+		});
 		expect(toCard({ ...base, excerpt: null, seo_description: 'SEO', content }).excerpt).toBe('SEO');
 		const c = toCard({ title: 'T', slug: 's', content });
 		expect(c.excerpt).toBe('Body & words here');
@@ -215,9 +244,14 @@ describe('archive', () => {
 
 	test('posts and categories together, plus extras', async () => {
 		const cms = fakeCms({ collections: data });
-		const out = await archive(cms, new URL('https://x/blog'), {}, {
-			tags: { collection: 'tags', fields: ['name', 'slug'] }
-		});
+		const out = await archive(
+			cms,
+			new URL('https://x/blog'),
+			{},
+			{
+				tags: { collection: 'tags', fields: ['name', 'slug'] }
+			}
+		);
 		expect(out.posts).toHaveLength(PER_PAGE);
 		expect(out.categories.map((c) => c.slug)).toEqual(['technology', 'travel']);
 		expect(out.tags).toHaveLength(2);
@@ -226,14 +260,18 @@ describe('archive', () => {
 	test('a search and a scope reach the posts query', async () => {
 		const cms = fakeCms({ collections: data });
 		await archive(cms, new URL('https://x/blog'), { q: 'post-2', tag: 'rail' });
-		const posts = new URL(/** @type {string} */ (cms.state.calls.find((c) => c.url.includes('/items/posts'))?.url));
+		const posts = new URL(
+			/** @type {string} */ (cms.state.calls.find((c) => c.url.includes('/items/posts'))?.url)
+		);
 		expect(posts.searchParams.get('search')).toBe('post-2');
 		expect(posts.searchParams.get('filter')).toContain('"tags"');
 	});
 
 	test('a later page with no posts is a 404; the first page may be empty', async () => {
 		const cms = fakeCms({ collections: { ...data, posts: [] } });
-		await expect(archive(cms, new URL('https://x/blog?page=2'))).rejects.toMatchObject({ status: 404 });
+		await expect(archive(cms, new URL('https://x/blog?page=2'))).rejects.toMatchObject({
+			status: 404
+		});
 		expect((await archive(cms, new URL('https://x/blog'))).posts).toEqual([]);
 	});
 });

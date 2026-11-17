@@ -136,9 +136,13 @@ export function fakeCms(state = {}) {
 		if (search) rows = rows.filter((r) => JSON.stringify(r).includes(search));
 		const sort = url.searchParams.get('sort');
 		if (sort === '-date_published')
-			rows = [...rows].sort((a, b) => (b.date_published ?? '').localeCompare(a.date_published ?? ''));
+			rows = [...rows].sort((a, b) =>
+				(b.date_published ?? '').localeCompare(a.date_published ?? '')
+			);
 		if (sort === 'date_published')
-			rows = [...rows].sort((a, b) => (a.date_published ?? '').localeCompare(b.date_published ?? ''));
+			rows = [...rows].sort((a, b) =>
+				(a.date_published ?? '').localeCompare(b.date_published ?? '')
+			);
 		const offset = Number(url.searchParams.get('offset') ?? 0);
 		const limit = Number(url.searchParams.get('limit') ?? -1);
 		rows = rows.slice(offset, limit > 0 ? offset + limit : undefined);

@@ -30,7 +30,9 @@ afterEach(() => {
 
 describe('describe', () => {
 	test('joins the messages of an SDK error', () => {
-		expect(mod.describe({ errors: [{ message: 'a' }, { message: 'b' }], response: {} })).toBe('a; b');
+		expect(mod.describe({ errors: [{ message: 'a' }, { message: 'b' }], response: {} })).toBe(
+			'a; b'
+		);
 		expect(mod.describe({ errors: ['plain', null] })).toBe('plain; ');
 	});
 	test('uses an Error message or the value as text', () => {

@@ -1,20 +1,17 @@
 <script>
 	import Station from '#lib/Station.svelte';
 	import Stop from '#lib/Stop.svelte';
-	import { goto } from '$app/navigation';
 	import { dateSpan } from '#lib/date.js';
+	import { rideKeys } from '#lib/keys.js';
 	import { domain } from '#lib/url.js';
 
 	let { data } = $props();
 
 	// ← and → ride the line: previous stop (newer) and next stop (older)
-	const onKey = (/** @type {KeyboardEvent} */ e) => {
-		if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
-		const t = e.target;
-		if (t instanceof HTMLElement && t.closest('input, textarea, select, [contenteditable]')) return;
-		const to = e.key === 'ArrowLeft' ? data.prev : e.key === 'ArrowRight' ? data.next : null;
-		if (to) goto(`/project/${to.slug}`);
-	};
+	const onKey = rideKeys(
+		() => data.prev && `/project/${data.prev.slug}`,
+		() => data.next && `/project/${data.next.slug}`
+	);
 </script>
 
 <svelte:window onkeydown={onKey} />

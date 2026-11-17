@@ -7,8 +7,8 @@
 
 	let { data } = $props();
 
-	/** @type {HTMLElement | undefined} */
-	let content = $state();
+	/** @type {HTMLElement} */
+	let content = $state(/** @type {any} */ (undefined));
 	let stops = $state(/** @type {{ id: string; text: string }[]} */ ([]));
 	let current = $state('');
 	let fresh = $state(false);
@@ -27,7 +27,6 @@
 
 	// The page's own headings become a route strip, and very long lists fold
 	onMount(() => {
-		if (!content) return;
 		const heads = [...content.querySelectorAll('h2')].filter((h) => h.textContent?.trim());
 		heads.forEach((h, i) => (h.id ||= `stop-${i + 1}`));
 		stops = heads.map((h) => ({ id: h.id, text: h.textContent?.trim() ?? '' }));
@@ -49,25 +48,24 @@
 
 		// The line ends at the page's last station: its last heading, or the title's ring when there are
 		// none. The page has no closing station to cut the trunk off, so it says where the trunk stops.
-		const line = content.closest('.line-page');
+		const line = /** @type {HTMLElement} */ (content.closest('.line-page'));
 		const measure = () => {
-			if (!(line instanceof HTMLElement) || !content) return;
 			const last = [...content.querySelectorAll(':scope > h2')]
 				.filter((h) => h.textContent?.trim())
 				.at(-1);
-			const ring = line.querySelector('.station-ring')?.getBoundingClientRect();
+			const ring = /** @type {Element} */ (
+				line.querySelector('.station-ring')
+			).getBoundingClientRect();
 			const y = last
 				? last.getBoundingClientRect().top + parseFloat(getComputedStyle(last, '::before').top)
-				: ring
-					? ring.top + ring.height / 2
-					: line.getBoundingClientRect().bottom;
+				: ring.top + ring.height / 2;
 			line.style.setProperty(
 				'--trunk-end',
 				`${Math.max(0, line.getBoundingClientRect().bottom - y)}px`
 			);
 		};
 		const watch = new ResizeObserver(measure);
-		if (line) watch.observe(line);
+		watch.observe(line);
 		measure();
 
 		return () => {

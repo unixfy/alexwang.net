@@ -9,7 +9,12 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"test:system": "playwright test",
+		"test:perf": "node --expose-gc tests/perf/cpu.js"
 	},
 	"devDependencies": {
 		"@directus/sdk": "^27.0.0",

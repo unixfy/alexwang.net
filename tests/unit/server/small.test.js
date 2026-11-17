@@ -133,6 +133,16 @@ describe('dates', () => {
 		expect(dateSpan(null, null)).toBe('');
 	});
 
+	test('byRecency: a missing date on either side sorts last', () => {
+		expect(
+			byRecency({ end_date: '2020' }, { end_date: '2020', start_date: '2019' })
+		).toBeGreaterThan(0);
+		expect(byRecency({ end_date: '2020', start_date: '2019' }, { end_date: '2020' })).toBeLessThan(
+			0
+		);
+		expect(byRecency({ end_date: '2020' }, { end_date: '2020' })).toBe(0);
+	});
+
 	test('byRecency: ongoing first, then latest end, then latest start', () => {
 		const rows = [
 			{ id: 'old', start_date: '2010-01-01', end_date: '2012-01-01' },
@@ -172,14 +182,21 @@ describe('hooks', () => {
 });
 
 describe('env', () => {
-	test('every variable is optional: blank becomes undefined', () => {
-		for (const v of Object.values(/** @type {Record<string, any>} */ (variables))) {
-			const schema = v.schema ?? v;
-			const parse = typeof schema === 'function' ? schema : schema.parse;
-			if (typeof parse !== 'function') continue;
-			expect(parse('')).toBeUndefined();
-			expect(parse(undefined)).toBeUndefined();
-			expect(parse('abc')).toBe('abc');
+	test('every variable is optional: blank becomes undefined', async () => {
+		const all = Object.entries(/** @type {Record<string, any>} */ (variables));
+		expect(all.map(([k]) => k)).toEqual([
+			'TURNSTILE_SITE_KEY',
+			'TURNSTILE_SECRET_KEY',
+			'DIRECTUS_COMMENTS_TOKEN'
+		]);
+		expect(all[0][1].public).toBe(true);
+		for (const [, v] of all) {
+			// defineEnvVars wraps a plain function as a Standard Schema
+			const parse = async (/** @type {any} */ value) =>
+				(await v.schema['~standard'].validate(value)).value;
+			expect(await parse('')).toBeUndefined();
+			expect(await parse(undefined)).toBeUndefined();
+			expect(await parse('abc')).toBe('abc');
 		}
 	});
 });
