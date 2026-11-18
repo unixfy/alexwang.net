@@ -21,7 +21,7 @@ export function watchReveals(root) {
 	const stops = [];
 
 	const scan = () => {
-		for (const el of root.querySelectorAll('.reveal:not(.in)')) {
+		for (const el of root.querySelectorAll(/** @type {'div'} */ ('.reveal:not(.in)'))) {
 			if (seen.has(el)) continue;
 			seen.add(el);
 			if (calm()) {

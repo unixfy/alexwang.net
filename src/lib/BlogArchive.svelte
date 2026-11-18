@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/state';
+	import { inView } from 'motion';
 	import BlogCards from '#lib/BlogCards.svelte';
 	import Network from '#lib/Network.svelte';
 	import Station from '#lib/Station.svelte';
@@ -79,14 +80,7 @@
 	// the link below the list is the no-script way on; with script, reaching it loads the next page
 	$effect(() => {
 		if (!sentinel || !more || failed) return;
-		const watch = new IntersectionObserver(
-			(entries) => {
-				if (entries.some((e) => e.isIntersecting)) loadMore();
-			},
-			{ rootMargin: '800px 0px' }
-		);
-		watch.observe(sentinel);
-		return () => watch.disconnect();
+		return inView(sentinel, () => void loadMore(), { margin: '800px 0px' });
 	});
 </script>
 
@@ -290,10 +284,10 @@
 		</div>
 	{/if}
 
-	{#if tagged}
+	{#if data.tags?.length}
 		<Station id="tags" title="Browse by tag" line="contact" end>
 			<ul class="flex max-w-5xl list-none flex-wrap gap-3 p-0">
-				{#each data.tags ?? [] as t}
+				{#each data.tags as t}
 					<li>
 						<a href="/blog/tag/{t.slug}" class="badge badge-lg badge-outline no-underline"
 							>{t.name}</a

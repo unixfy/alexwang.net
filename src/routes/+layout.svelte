@@ -7,6 +7,7 @@
 	import { watchReveals } from '#lib/reveal.js';
 	import { fade } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
+	import { prefersReducedMotion } from 'svelte/motion';
 
 	import { browser, dev } from '$app/env';
 	import { onNavigate } from '$app/navigation';
@@ -24,7 +25,7 @@
 	});
 	const image = $derived(page.data.image || 'https://alexwang.net/og.png');
 
-	const calm = browser && matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const calm = prefersReducedMotion.current;
 	// Where the browser can, pages cross-fade and shared images (a project card to its page) morph;
 	// elsewhere the simple fade below applies. Neither runs under reduced motion.
 	const morph = browser && !calm && 'startViewTransition' in document;

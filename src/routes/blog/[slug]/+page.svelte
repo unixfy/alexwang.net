@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { animate } from 'motion';
-	import { goto } from '$app/navigation';
+	import { prefersReducedMotion } from 'svelte/motion';
 	import Station from '#lib/Station.svelte';
 	import Stop from '#lib/Stop.svelte';
 	import Comments from '#lib/Comments.svelte';
@@ -9,6 +9,7 @@
 	import RideBar from '#lib/RideBar.svelte';
 	import { asset } from '#lib/blog.js';
 	import { fullDate } from '#lib/date.js';
+	import { rideKeys } from '#lib/keys.js';
 
 	let { data } = $props();
 	const post = $derived(data.post);
@@ -36,13 +37,10 @@
 	);
 
 	// ← and → ride the line, as on a project: previous stop (newer) and next stop (older)
-	const onKey = (/** @type {KeyboardEvent} */ e) => {
-		if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
-		const t = e.target;
-		if (t instanceof HTMLElement && t.closest('input, textarea, select, [contenteditable]')) return;
-		const to = e.key === 'ArrowLeft' ? data.newer : e.key === 'ArrowRight' ? data.older : null;
-		if (to) goto(`/blog/${to.slug}`);
-	};
+	const onKey = rideKeys(
+		() => data.newer && `/blog/${data.newer.slug}`,
+		() => data.older && `/blog/${data.older.slug}`
+	);
 
 	// ---- the ride: the post's headings are its stops ----
 	const stops = $derived(data.headings);
@@ -123,7 +121,7 @@
 		if (!atEnd || pulsed) return;
 		pulsed = true;
 		const ring = document.querySelector('#next .station-ring');
-		if (ring && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		if (ring && !prefersReducedMotion.current) {
 			animate(ring, { scale: [1, 1.7, 1] }, { duration: 0.8, ease: [0.16, 1, 0.3, 1] });
 		}
 	});

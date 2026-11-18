@@ -428,9 +428,7 @@ export function startNetwork(host, canvas, options = {}) {
 		gl.uniform1i(u('uStN'), net.stations.length);
 		gl.uniform4fv(u('uSt'), stData);
 
-		const pad = (/** @type {number[]} */ a, /** @type {number} */ n, /** @type {number} */ v) =>
-			Array.from({ length: n }, (_, i) => a[i] ?? v);
-		gl.uniform1fv(u('uLen'), pad(net.routeLen, ROUTES, 1));
+		gl.uniform1fv(u('uLen'), net.routeLen);
 		gl.uniform1fv(u('uHalf'), [3.5, 3.5, 3.5, 2.25, 2.25, 2.25]);
 		gl.uniform1fv(u('uAlpha'), alphas());
 		gl.uniform1fv(u('uSpeed'), [210, 180, 160, 120, 100, 140]);
@@ -464,7 +462,6 @@ export function startNetwork(host, canvas, options = {}) {
 	/** @param {number} now */
 	function frame(now) {
 		raf = 0;
-		if (lost) return;
 		if (!t0) t0 = now;
 		const t = (now - t0) / 1000;
 
